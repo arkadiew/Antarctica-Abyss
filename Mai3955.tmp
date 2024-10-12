@@ -96,7 +96,7 @@ use_collision = true
 size = Vector3(2.91231, 12.1371, 41.7536)
 
 [node name="RigidBody3D2" parent="." instance=ExtResource("4_x1wad")]
-transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 19.1666, -11.9011, -10.9047)
+transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 3.14631, 0, -10.9047)
 
 [node name="RigidBody3D" parent="." instance=ExtResource("3_258lm")]
 transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
