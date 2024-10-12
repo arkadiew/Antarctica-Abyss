@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://5v2ic1cxc6l8"]
+
+[ext_resource type="Texture2D" uid="uid://cexj483js6tin" path="res://addons/devblocks/textures/orange/texture_01.png" id="1_nr88k"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lkojt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rl1bd"]
+albedo_texture = ExtResource("1_nr88k")
+
+[node name="RigidBody3D4" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.22504, 0, 0)
+mass = 0.001
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.07006, 0, 0, 0, 1.07006, 0, 0, 0, 1.07006, 0, 0, 0)
+shape = SubResource("SphereShape3D_lkojt")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+material_override = SubResource("StandardMaterial3D_rl1bd")
+use_collision = true

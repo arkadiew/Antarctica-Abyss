@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=3 uid="uid://wssnx1an6whd"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hq87f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.00888, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_hq87f")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.611025, 0)
+shape = SubResource("CapsuleShape3D_4q6bg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0549469, 0)
+shape = SubResource("CapsuleShape3D_4q6bg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00115883, 2.28422, 0.181869)
+current = true
+fov = 90.0
+
+[node name="scary" type="ProgressBar" parent="Camera3D"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
+show_behind_parent = true
+top_level = true
+clip_contents = true
+custom_minimum_size = Vector2(90, 0)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = -109.0
+offset_right = 246.0
+offset_bottom = -55.0
+grow_vertical = 0
+fill_mode = 1
+show_percentage = false
+
+[node name="Rayscary3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.155787, -1.14258, 0, 11.8689, 0.0149971, 0, 0, -0.935285)
+
+[node name="InteractRay" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1.34086, 0, 0, 0, 1.27981, -0.24051, 0, 0.399989, 0.76954, 0, -0.690812, -0.908325)
+target_position = Vector3(0, 0, -3)
+collide_with_areas = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Camera3D"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
+show_behind_parent = true
+top_level = true
+clip_contents = true
+custom_minimum_size = Vector2(90, 0)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -272.0
+offset_top = -110.0
+offset_right = -76.0
+offset_bottom = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+fill_mode = 1
+show_percentage = false
+
+[node name="Label3D" type="Label3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.883044)
+
+[node name="Marker3D" type="Marker3D" parent="Camera3D"]
+transform = Transform3D(2.88281, 0, 0, 0, 2.88281, 0, 0, 0, 2.88281, 0, 0, -0.858803)
+gizmo_extents = 27.45
+
+[node name="Panel" type="Panel" parent="Camera3D"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_top = -298.0
+offset_right = 5.0
+offset_bottom = -288.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="GroundRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
+target_position = Vector3(0, -0.1, 0)

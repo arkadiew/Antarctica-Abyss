@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://m0sqhkvhgsdd"]
+
+[ext_resource type="Texture2D" uid="uid://dvuxrvk1ghdxr" path="res://addons/devblocks/textures/purple/texture_01.png" id="1_85ldx"]
+[ext_resource type="Shader" uid="uid://bg0s74rfgn7qx" path="res://gridmaterial.tres" id="1_q7u0t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5amll"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_43h4a"]
+albedo_texture = ExtResource("1_85ldx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7ash"]
+render_priority = 12
+shader = ExtResource("1_q7u0t")
+shader_parameter/grid_size = null
+shader_parameter/Color_1 = null
+shader_parameter/Color_2 = null
+
+[node name="RigidBody3D" type="RigidBody3D" groups=["grab"]]
+transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 0, 0, 0)
+center_of_mass_mode = 1
+angular_damp = 30.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00382352, 0.00271457, -0.00776839)
+shape = SubResource("BoxShape3D_5amll")
+
+[node name="stamina" type="Label3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.76609)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, -0.0112081)
+material_override = SubResource("StandardMaterial3D_43h4a")
+collision_layer = 6
+material = SubResource("ShaderMaterial_a7ash")
