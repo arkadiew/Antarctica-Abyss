@@ -9,6 +9,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.724673, 0)
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1.00888, 0, 0, 0, 1, 0, 0, 0)
+use_collision = true
 mesh = SubResource("CapsuleMesh_hq87f")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
@@ -16,7 +17,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0301087, 0)
 shape = SubResource("CapsuleShape3D_4q6bg")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00115883, 2.28422, 0.181869)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00115883, 1.33861, 0.181869)
 current = true
 fov = 90.0
 
