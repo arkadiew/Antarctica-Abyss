@@ -1,1 +1,6 @@
-res://TSCN/fi_sh.gd
+res://Main.tscn
+res://gridmaterial.tres
+res://bool.tscn
+res://TSCN/cube.tscn
+res://TSCN/FISh.tscn
+res://TSCN/Player.tscn
