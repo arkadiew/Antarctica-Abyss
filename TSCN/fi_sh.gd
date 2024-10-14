@@ -3,8 +3,8 @@ extends CSGBox3D
 var start_position = Vector3()
 var velocity = Vector3()
 var speed = 1.5  # Adjust this for desired speed
-var max_distance = 10.0  # Max distance the fish will wander from its starting point
-var fish_bounds = 10.0  # Limit the swimming area for the fish
+var max_distance = 60.0  # Max distance the fish will wander from its starting point
+var fish_bounds = 60.0  # Limit the swimming area for the fish
 var wander_timer = 0.0  # Timer to trigger wandering
 var wander_interval = 3.0  # Time between direction changes
 var turn_angle = 90.0 #Angle the fish will turn when hitting a wall

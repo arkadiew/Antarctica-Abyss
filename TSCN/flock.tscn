@@ -17,3 +17,9 @@ transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 1.35865, 
 
 [node name="CSGBox3D4" parent="." instance=ExtResource("1_e24ej")]
 transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -1.62344, -0.0284693, -2.12074)
+
+[node name="CSGBox3D5" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 3.11551, -2.30972)
+
+[node name="CSGBox3D6" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, 3.648)
