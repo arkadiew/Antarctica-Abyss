@@ -245,7 +245,7 @@ light_energy = 0.75
 shadow_enabled = true
 
 [node name="Flock" parent="." instance=ExtResource("7_bx3uo")]
-transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 16.8679, -4.38543, -31.1222)
+transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 16.8679, -8.74955, -31.1222)
 
 [node name="Flock2" parent="." instance=ExtResource("7_bx3uo")]
 transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 21.0832, -4.54375, -30.7779)

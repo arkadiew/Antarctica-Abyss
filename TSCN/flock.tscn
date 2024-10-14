@@ -23,3 +23,39 @@ transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 3.1155
 
 [node name="CSGBox3D6" parent="." instance=ExtResource("1_e24ej")]
 transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, 3.648)
+
+[node name="CSGBox3D7" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 3.75521, -5.56956, 0.419589)
+
+[node name="CSGBox3D8" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 3.75521, -5.56956, -4.60909)
+
+[node name="CSGBox3D9" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 5.11386, -5.56956, -2.21684)
+
+[node name="CSGBox3D10" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 2.13177, -5.59803, -2.12074)
+
+[node name="CSGBox3D11" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 3.75521, -2.45406, -2.30972)
+
+[node name="CSGBox3D12" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 3.75521, -5.56956, 3.648)
+
+[node name="CSGBox3D13" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -4.56291, -9.84505, 0.419589)
+
+[node name="CSGBox3D14" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -4.56291, -9.84505, -4.60909)
+
+[node name="CSGBox3D15" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -3.20426, -9.84505, -2.21684)
+
+[node name="CSGBox3D16" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -6.18635, -9.87352, -2.12074)
+
+[node name="CSGBox3D17" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -4.56291, -6.72955, -2.30972)
+
+[node name="CSGBox3D18" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -4.56291, -9.84505, 3.648)
