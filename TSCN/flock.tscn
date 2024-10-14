@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b61blxdyfso18"]
+
+[ext_resource type="Script" path="res://TSCN/flock.gd" id="1_8xjlx"]
+[ext_resource type="PackedScene" uid="uid://0pjgspw1hybq" path="res://TSCN/FISh.tscn" id="1_e24ej"]
+
+[node name="Flock" type="Node3D"]
+transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 0, 0, 0)
+script = ExtResource("1_8xjlx")
+
+[node name="CSGBox3D" parent="." instance=ExtResource("1_e24ej")]
+
+[node name="CSGBox3D2" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, -4.60909)
+
+[node name="CSGBox3D3" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 1.35865, 0, -2.21684)
+
+[node name="CSGBox3D4" parent="." instance=ExtResource("1_e24ej")]
+transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, -1.62344, -0.0284693, -2.12074)

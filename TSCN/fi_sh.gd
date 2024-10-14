@@ -7,7 +7,7 @@ var max_distance = 10.0  # Max distance the fish will wander from its starting p
 var fish_bounds = 10.0  # Limit the swimming area for the fish
 var wander_timer = 0.0  # Timer to trigger wandering
 var wander_interval = 3.0  # Time between direction changes
-var turn_angle = 45.0  # Angle the fish will turn when hitting a wall
+var turn_angle = 90.0 #Angle the fish will turn when hitting a wall
 
 @onready var raycast = $RayCast3D
 

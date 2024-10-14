@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://m0sqhkvhgsdd" path="res://TSCN/cube.tscn" id="3_258lm"]
 [ext_resource type="Texture2D" uid="uid://7ju4mpg442yk" path="res://addons/devblocks/textures/green/texture_01.png" id="3_sp6o7"]
 [ext_resource type="PackedScene" uid="uid://ca0wevg1lb4rx" path="res://utils/WaterMaker3D/WaterMaker3D.tscn" id="4_002id"]
-[ext_resource type="PackedScene" uid="uid://0pjgspw1hybq" path="res://TSCN/FISh.tscn" id="4_x1wad"]
 [ext_resource type="PackedScene" uid="uid://5v2ic1cxc6l8" path="res://bool.tscn" id="6_1v1di"]
+[ext_resource type="PackedScene" uid="uid://b61blxdyfso18" path="res://TSCN/flock.tscn" id="7_bx3uo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s08bx"]
 albedo_texture = ExtResource("3_sp6o7")
@@ -246,14 +246,5 @@ shadow_enabled = true
 
 [node name="fihis" type="Node3D" parent="."]
 
-[node name="CSGBox3D" parent="fihis" instance=ExtResource("4_x1wad")]
-transform = Transform3D(0.33877, 0, 0, 0, 0.337331, 0, 0, 0, 0.335749, 13.8038, -8.81095, -8.77155)
-
-[node name="CSGBox3D2" parent="fihis" instance=ExtResource("4_x1wad")]
-transform = Transform3D(0.33877, 0, 0, 0, 0.337331, 0, 0, 0, 0.335749, 13.8038, -8.81095, -7.21522)
-
-[node name="CSGBox3D3" parent="fihis" instance=ExtResource("4_x1wad")]
-transform = Transform3D(0.33877, 0, 0, 0, 0.337331, 0, 0, 0, 0.335749, 13.8038, -8.81095, -5.5967)
-
-[node name="CSGBox3D4" parent="fihis" instance=ExtResource("4_x1wad")]
-transform = Transform3D(0.33877, 0, 0, 0, 0.337331, 0, 0, 0, 0.335749, 13.8054, -8.81095, -3.90672)
+[node name="Flock" parent="fihis" instance=ExtResource("7_bx3uo")]
+transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 9.37426, 0, -6.92669)
