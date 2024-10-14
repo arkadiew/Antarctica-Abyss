@@ -252,3 +252,6 @@ transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 25.4099,
 
 [node name="Flock3" parent="." instance=ExtResource("7_bx3uo")]
 transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 43.0508, -8.38159, 0)
+
+[node name="Flock4" parent="." instance=ExtResource("7_bx3uo")]
+transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 32.854, -9.44624, 13.1875)
