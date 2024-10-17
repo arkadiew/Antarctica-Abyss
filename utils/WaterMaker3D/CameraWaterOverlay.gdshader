@@ -5,18 +5,18 @@ uniform sampler2D screen_texture : hint_screen_texture;
 void fragment() {
     vec2 uv = SCREEN_UV;
 
-    // Ripple effect
+    // Ripple effect parameters
     float rippleSpeed = 1.5;
     float rippleDensity = 5.0;
     float rippleStrength = 0.01;
 
-    // Calculate angle and distance from the center of the screen
+    // Calculate the distance from the center of the screen
     vec2 center = vec2(0.5, 0.5);
     vec2 delta = uv - center;
     float distance = length(delta);
     float angle = atan(delta.y, delta.x);
 
-    // Apply the ripple effect
+    // Apply the ripple effect to the UV coordinates
     uv.x += cos(angle * rippleDensity + TIME * rippleSpeed) * rippleStrength * distance;
     uv.y += sin(angle * rippleDensity + TIME * rippleSpeed) * rippleStrength * distance;
 
@@ -25,7 +25,7 @@ void fragment() {
     float total = 0.0;
     for (float x = -2.0; x <= 2.0; x++) {
         for (float y = -2.0; y <= 2.0; y++) {
-            vec2 samplePos = uv + vec2(x, y) * 0.001; // Blur radius
+            vec2 samplePos = uv + vec2(x, y) * 0.001; // Adjust the blur radius
             color += texture(screen_texture, samplePos);
             total += 1.0;
         }

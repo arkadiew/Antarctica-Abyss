@@ -22,5 +22,14 @@ size = Vector3(1, 1, 1.90381)
 material = SubResource("ShaderMaterial_a7ash")
 script = ExtResource("3_68t23")
 
+[node name="RayCast3D3" type="RayCast3D" parent="."]
+transform = Transform3D(0.155687, 0, 0, 0, 1.03257, 0.00260445, 0, -0.0066882, 1.03258, -0.0397558, -0.562957, -0.149191)
+
+[node name="RayCast3D2" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.781236, -0.00324056, 0, 0.00253011, -2.56956, 0.030257, 0.572892, 0.0653667)
+
+[node name="RayCast3D4" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.000970054, 1.001, 0, -0.769204, -0.00324175, 0.00255278, 0.159469, 0.886229)
+
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.00233424, -1.00143, 0, 2.57167, 0.000908978, 0, 0, -0.958802)
+transform = Transform3D(0.770484, 0, 0, 0, 0.00218957, -0.771739, 0, 2.41229, 0.000700492, 0, 0, -0.958802)

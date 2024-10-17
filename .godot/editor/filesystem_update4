@@ -1,8 +1,15 @@
 res://Main.tscn
 res://gridmaterial.tres
+res://utils/WaterMaker3D/CameraWaterOverlay.gdshader
 res://bool.tscn
 res://TSCN/cube.tscn
 res://TSCN/FISh.tscn
 res://TSCN/Player.tscn
 res://TSCN/flock.tscn
-res://TSCN/flock.gd
+res://utils/WaterMaker3D/FogFade.gdshader
+res://utils/WaterMaker3D/WaterMaker3D.tscn
+res://utils/WaterMaker3D/WaterMaker3D.gd
+res://addons/boujie_water_shader/prefabs/deep_ocean.tscn
+res://addons/boujie_water_shader/prefabs/outset_ocean_material.tres
+res://addons/boujie_water_shader/shader/water.gdshader
+res://TSCN/fi_sh.gd
