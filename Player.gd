@@ -209,7 +209,7 @@ func update_label_for_held_object(object):
 	var object_height = get_object_height(object)
 	var target_position = object_position + Vector3(0, object_height + 0.1, 0)
 	label_3d.global_transform.origin = label_3d.global_transform.origin.lerp(target_position, LERP_SPEED * get_process_delta_time())
-	label_3d.text = "[E] Drop " + object.name
+	label_3d.text = "[R] Drop " + object.name
 	label_3d.visible = true
 
 func update_label_for_nearby_object():
@@ -222,7 +222,7 @@ func update_label_for_nearby_object():
 				var object_height = get_object_height(collider)
 				var target_position = object_position + Vector3(0, object_height + 0.1, 0)
 				label_3d.global_transform.origin = label_3d.global_transform.origin.lerp(target_position, LERP_SPEED * get_process_delta_time())
-				label_3d.text = "[E] Interact with " + collider.name
+				label_3d.text = "[R] Interact with " + collider.name
 				label_3d.visible = true
 				return
 	label_3d.visible = false
