@@ -4,6 +4,8 @@ var restart_timer: float = 0.0
 const RESTART_DELAY: float = 9.0  
 @onready var darken_screen: ColorRect = $Camera3D/DarkenScreen
 const DARKEN_MAX_ALPHA: float = 1
+const OXYGEN_REPLENISH_RATE: float = 20.0  
+const OXYGEN_INTERACTION_DISTANCE: float = 3.0  
 
 # Constants
 const SENSITIVITY: float = 0.01
@@ -56,6 +58,7 @@ const LERP_SPEED: float = 5.0
 @onready var h2oLabel: Label = $Camera3D/h2o
 @onready var h2o_bar: ProgressBar = $Camera3D/h2o2
 
+
 # Initialization
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -71,6 +74,7 @@ func _process(delta: float) -> void:
 	update_stamina_bar(delta)
 	_handle_water_physics(delta)
 	update_h2o(delta) 
+	update_oxygen_tank_interaction(delta) 
 	
 func _initialize_h2o_bar() -> void:
 	h2o_bar.max_value = MAX_H20
@@ -364,3 +368,8 @@ func update_h2o_bar() -> void:
 	
 func restart_scene() -> void:
 	get_tree().reload_current_scene()
+func update_oxygen_tank_interaction(delta: float) -> void:
+	for oxygen_tank in get_tree().get_nodes_in_group("oxygen_source"):
+		if oxygen_tank.global_transform.origin.distance_to(global_transform.origin) <= OXYGEN_INTERACTION_DISTANCE:
+			increase_h2o(OXYGEN_REPLENISH_RATE * delta)
+			return 
