@@ -1,5 +1,10 @@
 extends CharacterBody3D
 
+var restart_timer: float = 0.0
+const RESTART_DELAY: float = 9.0  
+@onready var darken_screen: ColorRect = $Camera3D/DarkenScreen
+const DARKEN_MAX_ALPHA: float = 1
+
 # Constants
 const SENSITIVITY: float = 0.01
 const GRAVITY: float = -9.8
@@ -9,6 +14,9 @@ const LOW_STAMINA_SPEED: float = 1.0
 const JUMP_FORCE: float = 3.0
 const JUMP_STAMINA_COST: float = 10.0
 const MAX_STAMINA: float = 100.0
+const MAX_H20: float = 100.0
+const H2O_DEPLETION_RATE: float = 5.0  
+const H2O_RECOVERY_RATE: float = 30.0  
 const STAMINA_RECOVERY_RATE: float = 30.0
 const STAMINA_RUN_DEPLETION_RATE: float = 20.0
 const STAMINA_RECOVERY_DELAY: float = 3.5
@@ -25,6 +33,7 @@ const FADE_OUT_SPEED: float = 1.0
 @export var climb_speed: float = 7.0
 
 # Variables
+var is_underwater: bool = false
 var move_vector: Vector3 = Vector3.ZERO
 var stamina: float = MAX_STAMINA
 var is_running: bool = false
@@ -33,7 +42,7 @@ var held_object: RigidBody3D = null
 var stamina_recovery_timer: float = 0.0
 var can_run: bool = true
 var holding_object_time: float = 0.0
-
+var h2o: float = MAX_H20
 # Interaction Constants
 const INTERACTION_DISTANCE: float = 3.0
 const LERP_SPEED: float = 5.0
@@ -43,15 +52,16 @@ const LERP_SPEED: float = 5.0
 @onready var camera: Camera3D = $Camera3D
 @onready var stamina_bar: ProgressBar = $Camera3D/ProgressBar
 @onready var label_3d: Label3D = $Camera3D/Label3D
-
 @onready var staminad: Label = $Camera3D/stamina
-@onready var h2o: ProgressBar = $Camera3D/H2O
 @onready var h2oLabel: Label = $Camera3D/h2o
+@onready var h2o_bar: ProgressBar = $Camera3D/h2o2
 
 # Initialization
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_initialize_stamina_bar()
+	stamina_bar.modulate.a = 0.0  
+	staminad.modulate.a = 0.0
 
 # Main Loop
 func _process(delta: float) -> void:
@@ -60,6 +70,12 @@ func _process(delta: float) -> void:
 	update_stamina(delta)
 	update_stamina_bar(delta)
 	_handle_water_physics(delta)
+	update_h2o(delta) 
+	
+func _initialize_h2o_bar() -> void:
+	h2o_bar.max_value = MAX_H20
+	h2o_bar.value = h2o
+	h2o_bar.modulate.a = 1  
 
 # Stamina Bar Initialization
 func _initialize_stamina_bar() -> void:
@@ -269,6 +285,7 @@ func is_in_water() -> bool:
 	return false
 
 func apply_water_physics(delta: float) -> void:
+
 	var water_gravity = GRAVITY * 0.2
 	var water_drag_horizontal = 1.5
 	var water_drag_vertical = 1.2
@@ -317,3 +334,33 @@ func apply_water_physics(delta: float) -> void:
 
 	# Prevent running in water
 	is_running = false
+	
+func update_h2o(delta: float) -> void:
+	is_underwater = is_in_water()  # Проверка, находится ли игрок под водой
+
+	if is_underwater:
+		decrease_h2o(H2O_DEPLETION_RATE * delta)
+		if h2o <= 0:
+			# Затемняем экран, если кислород исчерпан
+			darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
+			restart_timer += delta  # Запускаем таймер на перезапуск
+			if restart_timer >= RESTART_DELAY:
+				restart_scene()  # Перезапуск сцены после задержки
+	else:
+		increase_h2o(H2O_RECOVERY_RATE * delta)
+		# Постепенно осветляем экран и сбрасываем таймер перезапуска
+		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 2)
+		restart_timer = 0.0  # Сброс таймера перезапуска, если игрок выходит из воды
+
+	update_h2o_bar()  # Обновление H2O-прогресс бара
+
+func decrease_h2o(amount: float) -> void:
+	h2o = clamp(h2o - amount, 0, MAX_H20)
+
+func increase_h2o(amount: float) -> void:
+	h2o = clamp(h2o + amount, 0, MAX_H20)
+func update_h2o_bar() -> void:
+	h2o_bar.value = h2o
+	
+func restart_scene() -> void:
+	get_tree().reload_current_scene()
