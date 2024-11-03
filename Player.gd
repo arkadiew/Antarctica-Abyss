@@ -44,6 +44,10 @@ const LERP_SPEED: float = 5.0
 @onready var stamina_bar: ProgressBar = $Camera3D/ProgressBar
 @onready var label_3d: Label3D = $Camera3D/Label3D
 
+@onready var staminad: Label = $Camera3D/stamina
+@onready var h2o: ProgressBar = $Camera3D/H2O
+@onready var h2oLabel: Label = $Camera3D/h2o
+
 # Initialization
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -152,21 +156,31 @@ func update_stamina_bar(delta: float) -> void:
 	stamina_bar.value = stamina
 
 	if stamina < MAX_STAMINA and not bar_visible:
-		show_stamina_bar()
+		show_stamina_bar(delta)
 	elif stamina >= MAX_STAMINA and bar_visible:
 		hide_stamina_bar(delta)
 
-# Show the Stamina Bar
-func show_stamina_bar() -> void:
-	bar_visible = true
-	stamina_bar.modulate.a = 1
 
-# Hide the Stamina Bar with Fade Out
 func hide_stamina_bar(delta: float) -> void:
-	stamina_bar.modulate.a = lerp(stamina_bar.modulate.a, 0.0, delta /1.5 )
-	if stamina_bar.modulate.a <= 0.1:
+	stamina_bar.modulate.a = lerp(stamina_bar.modulate.a, 0.0, delta * 5) 
+	staminad.modulate.a = stamina_bar.modulate.a 
+
+
+	if stamina_bar.modulate.a <= 0.01:
 		stamina_bar.modulate.a = 0.0
+		staminad.modulate.a = 0.0
 		bar_visible = false
+
+
+func show_stamina_bar(delta: float) -> void:
+	stamina_bar.modulate.a = lerp(stamina_bar.modulate.a, 1.0, delta * 5) 
+	staminad.modulate.a = stamina_bar.modulate.a 
+
+	if stamina_bar.modulate.a >= 0.99:
+		stamina_bar.modulate.a = 1.0
+		staminad.modulate.a = 1.0
+		bar_visible = true
+
 
 # Object Interaction Functions
 func handle_object_interactions(delta: float) -> void:
