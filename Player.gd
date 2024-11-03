@@ -366,10 +366,15 @@ func increase_h2o(amount: float) -> void:
 func update_h2o_bar() -> void:
 	h2o_bar.value = h2o
 	
-func restart_scene() -> void:
-	get_tree().reload_current_scene()
+
 func update_oxygen_tank_interaction(delta: float) -> void:
+	if get_tree() == null:
+		return  # Exit if the node is not yet part of the scene tree
+
 	for oxygen_tank in get_tree().get_nodes_in_group("oxygen_source"):
 		if oxygen_tank.global_transform.origin.distance_to(global_transform.origin) <= OXYGEN_INTERACTION_DISTANCE:
 			increase_h2o(OXYGEN_REPLENISH_RATE * delta)
-			return 
+			return
+
+func restart_scene() -> void:
+	get_tree().reload_current_scene()
