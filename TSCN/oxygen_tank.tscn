@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://nbwwfl61lklx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mrfkw"]
+
+[node name="OxygenTank" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1.29548, 0, 0, 0, 0.549294, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_mrfkw")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]

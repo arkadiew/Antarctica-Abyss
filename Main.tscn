@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bj3l75816anov"]
+[gd_scene load_steps=17 format=3 uid="uid://bj3l75816anov"]
 
 [ext_resource type="PackedScene" uid="uid://wssnx1an6whd" path="res://TSCN/Player.tscn" id="1_s72jo"]
 [ext_resource type="Script" path="res://Player.gd" id="2_kg5ig"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ca0wevg1lb4rx" path="res://utils/WaterMaker3D/WaterMaker3D.tscn" id="4_002id"]
 [ext_resource type="PackedScene" uid="uid://5v2ic1cxc6l8" path="res://bool.tscn" id="6_1v1di"]
 [ext_resource type="PackedScene" uid="uid://b61blxdyfso18" path="res://TSCN/flock.tscn" id="7_bx3uo"]
+[ext_resource type="PackedScene" uid="uid://nbwwfl61lklx" path="res://TSCN/oxygen_tank.tscn" id="8_r3o46"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s08bx"]
 albedo_texture = ExtResource("3_sp6o7")
@@ -252,3 +253,7 @@ transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 43.0508,
 
 [node name="Flock4" parent="." instance=ExtResource("7_bx3uo")]
 transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 32.854, -9.44624, 13.1875)
+
+[node name="OxygenTank" parent="." instance=ExtResource("8_r3o46")]
+transform = Transform3D(1, 0, 0, 0, 1.12033, 0, 0, 0, 0.266534, 0, 0.444346, -15.4115)
+mass = 50.0
