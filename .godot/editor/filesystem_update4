@@ -1,8 +1,8 @@
 res://Main.tscn
+res://Player.gd
 res://gridmaterial.tres
 res://utils/WaterMaker3D/FogFade.gdshader
 res://utils/WaterMaker3D/CameraWaterOverlay.gdshader
-res://Player.gd
 res://bool.tscn
 res://TSCN/cube.tscn
 res://TSCN/FISh.tscn
@@ -10,3 +10,4 @@ res://TSCN/Player.tscn
 res://TSCN/flock.tscn
 res://utils/WaterMaker3D/WaterMaker3D.tscn
 res://TSCN/oxygen_tank.tscn
+res://TSCN/fi_sh.gd

@@ -65,6 +65,8 @@ func _ready() -> void:
 	_initialize_stamina_bar()
 	stamina_bar.modulate.a = 0.0  
 	staminad.modulate.a = 0.0
+	h2o_bar.modulate.a = 0.0  
+	h2oLabel.modulate.a = 0.0
 
 # Main Loop
 func _process(delta: float) -> void:
@@ -338,6 +340,16 @@ func apply_water_physics(delta: float) -> void:
 
 	# Prevent running in water
 	is_running = false
+func update_h2o_label_and_bar_visibility(delta: float) -> void:
+	if is_underwater and h2o < MAX_H20:
+		# Быстрое и плавное появление индикатора H2O
+		h2o_bar.modulate.a = lerp(h2o_bar.modulate.a, 1.0, delta * 3)
+		h2oLabel.modulate.a = lerp(h2oLabel.modulate.a, 1.0, delta * 3)
+	else:
+		# Быстрое и плавное исчезновение индикатора H2O
+		h2o_bar.modulate.a = lerp(h2o_bar.modulate.a, 0.0, delta * 3)
+		h2oLabel.modulate.a = lerp(h2oLabel.modulate.a, 0.0, delta * 3)
+
 	
 func update_h2o(delta: float) -> void:
 	is_underwater = is_in_water()  # Проверка, находится ли игрок под водой
@@ -357,6 +369,7 @@ func update_h2o(delta: float) -> void:
 		restart_timer = 0.0  # Сброс таймера перезапуска, если игрок выходит из воды
 
 	update_h2o_bar()  # Обновление H2O-прогресс бара
+	update_h2o_label_and_bar_visibility(delta)
 
 func decrease_h2o(amount: float) -> void:
 	h2o = clamp(h2o - amount, 0, MAX_H20)

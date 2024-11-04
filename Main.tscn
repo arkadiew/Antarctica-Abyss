@@ -91,6 +91,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2.06672, 40.6922, -12.3473, 2.45
 use_collision = true
 size = Vector3(71.1659, 0.932686, 68.9065)
 
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D/CSGBox3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2.06672, -9.87069, 22.3402, 2.45225)
+use_collision = true
+size = Vector3(64.8276, 0.932686, 68.9065)
+
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5184, 4.42432, 2.67252)
 use_collision = true
@@ -217,7 +222,8 @@ disable_mode = 1
 mass = 0.5
 
 [node name="WaterMaker3D" parent="." instance=ExtResource("4_002id")]
-transform = Transform3D(59.9999, 0, 0, 0, 18.7647, 0, 0, 0, 79.2873, 32.2289, -11.2121, -1.59455)
+transform = Transform3D(59.9999, 0, 0, 0, 18.7647, 0, 0, 0, 79.2873, 32.2289, -5.7341, -1.59455)
+size = Vector3(1, 1.58386, 1)
 material = SubResource("StandardMaterial3D_p8gj2")
 
 [node name="stamina" type="Label3D" parent="WaterMaker3D"]
@@ -256,4 +262,4 @@ transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 32.854, 
 
 [node name="OxygenTank" parent="." groups=["oxygen_source"] instance=ExtResource("8_r3o46")]
 transform = Transform3D(1, 0, 0, 0, 1.12033, 0, 0, 0, 0.266534, 0, 0.444346, -15.4115)
-mass = 50.0
+mass = 20.0
