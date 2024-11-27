@@ -1,4 +1,16 @@
 extends CharacterBody3D
+# Переменные для дрожания камеры
+var original_fov: float = 70.0  # Исходный угол обзора камеры
+var is_shaking: bool = false
+var shake_intensity: float = 0.0
+var shake_timer: float = 0.0
+const MIN_H2O_THRESHOLD: float = 10.0  # Порог активации эффекта
+var shake_randomizer: RandomNumberGenerator = RandomNumberGenerator.new()
+# Переменные для течения
+var current_flow: Vector3 = Vector3(1, 0, 0)  # Направление течения (пример: вправо)
+var flow_strength: float = 2.0  # Сила течения
+var resisting_flow: bool = false  # Флаг для проверки, сопротивляется ли игрок
+
 
 var restart_timer: float = 0.0
 const RESTART_DELAY: float = 9.0  
@@ -67,6 +79,27 @@ func _ready() -> void:
 	staminad.modulate.a = 0.0
 	h2o_bar.modulate.a = 0.0  
 	h2oLabel.modulate.a = 0.0
+	original_fov = camera.fov
+	
+func apply_camera_shake(delta: float) -> void:
+	if is_shaking:
+		# Случайное смещение камеры
+		var shake_offset = Vector3(
+			shake_randomizer.randf_range(-shake_intensity, shake_intensity),
+			shake_randomizer.randf_range(-shake_intensity, shake_intensity),
+			0
+		)
+		camera.global_transform.origin += shake_offset * delta
+
+		# Постепенно уменьшаем интенсивность дрожания
+		shake_intensity = lerp(shake_intensity, 0.0, delta * 3)
+		shake_timer -= delta
+
+		# Сбрасываем дрожание, когда таймер истёк
+		if shake_timer <= 0:
+			is_shaking = false
+			shake_intensity = 0.0
+			camera.fov = original_fov  # Возвращаем стандартный FOV
 
 # Main Loop
 func _process(delta: float) -> void:
@@ -77,7 +110,9 @@ func _process(delta: float) -> void:
 	_handle_water_physics(delta)
 	update_h2o(delta) 
 	update_oxygen_tank_interaction(delta) 
-	
+	apply_camera_shake(delta)  # Применяем дрожание камеры
+	apply_drift(delta)
+
 func _initialize_h2o_bar() -> void:
 	h2o_bar.max_value = MAX_H20
 	h2o_bar.value = h2o
@@ -282,7 +317,9 @@ func follow_player_with_object() -> void:
 # Water Physics Handling
 func _handle_water_physics(delta: float) -> void:
 	if is_in_water():
+		update_current_flow()
 		apply_water_physics(delta)
+		apply_drift(delta)
 
 func is_in_water() -> bool:
 	for area in get_tree().get_nodes_in_group("water_area"):
@@ -291,15 +328,14 @@ func is_in_water() -> bool:
 	return false
 
 func apply_water_physics(delta: float) -> void:
-
 	var water_gravity = GRAVITY * 0.2
 	var water_drag_horizontal = 1.5
 	var water_drag_vertical = 1.2
 	var swim_up_force = 13.0
-	var is_moving_in_water = false
 	var input_dir = Vector3.ZERO
+	var is_moving_in_water = false
 
-	# Handle movement input
+	# Определяем направление движения игрока
 	if Input.is_action_pressed("move_forward"):
 		input_dir.z -= 1
 	if Input.is_action_pressed("move_backward"):
@@ -309,37 +345,48 @@ func apply_water_physics(delta: float) -> void:
 	if Input.is_action_pressed("move_right"):
 		input_dir.x += 1
 
-	# Apply movement direction and speed in water
+	# Если есть движение, игрок сопротивляется течению
 	if input_dir != Vector3.ZERO:
-		is_moving_in_water = true
 		input_dir = input_dir.normalized()
+		resisting_flow = true
 		velocity.x = input_dir.x * (WALK_SPEED * 0.5)
 		velocity.z = input_dir.z * (WALK_SPEED * 0.5)
+	else:
+		resisting_flow = false
 
-	# Handle swimming upward with jump input
+	# Плавающий вверх
 	if Input.is_action_pressed("jump") and stamina > 1:
 		velocity.y += swim_up_force * delta
 		is_moving_in_water = true
 		decrease_stamina(0.9)
 	else:
 		velocity.y -= water_gravity * delta
-	# Adjust stamina based on movement in water
-	if is_moving_in_water:
-		decrease_stamina(0.5 * delta)
+
+	# Применяем течение, если игрок не сопротивляется
+	if not resisting_flow:
+		velocity += current_flow * flow_strength * delta
+		decrease_stamina(0.3 * delta)  # Постепенный расход выносливости
 	else:
-		if not Input.is_action_pressed("jump") and stamina > 0:
-			increase_stamina(15.0 * delta)
-		else:
-			Input.action_release("jump")  # Automatically release the "jump" action
+		# Если игрок сопротивляется, уменьшение течения
+		velocity += current_flow * flow_strength * 0.5 * delta
 
-
-	# Apply water drag to the velocity
+	# Применяем водное сопротивление
 	velocity.x = lerp(velocity.x, 0.0, water_drag_horizontal * delta)
 	velocity.z = lerp(velocity.z, 0.0, water_drag_horizontal * delta)
 	velocity.y = lerp(velocity.y, 0.0, water_drag_vertical * delta)
 
-	# Prevent running in water
+	# Ограничиваем бег в воде
 	is_running = false
+	
+func update_current_flow() -> void:
+	# Пример изменения направления течения
+	if global_transform.origin.x > 50:
+		current_flow = Vector3(-1, 0, 0)  # Течение влево
+	elif global_transform.origin.z < -50:
+		current_flow = Vector3(0, 0, 1)  # Течение вперед
+	else:
+		current_flow = Vector3(1, 0, 0)  # Течение вправо
+
 func update_h2o_label_and_bar_visibility(delta: float) -> void:
 	if is_underwater and h2o < MAX_H20:
 		# Быстрое и плавное появление индикатора H2O
@@ -352,24 +399,38 @@ func update_h2o_label_and_bar_visibility(delta: float) -> void:
 
 	
 func update_h2o(delta: float) -> void:
-	is_underwater = is_in_water()  # Проверка, находится ли игрок под водой
+	is_underwater = is_in_water()
 
 	if is_underwater:
 		decrease_h2o(H2O_DEPLETION_RATE * delta)
+
+		# Активируем дрожание, если H2O ниже порога
+		if h2o <= MIN_H2O_THRESHOLD and not is_shaking:
+			is_shaking = true
+			shake_intensity = 0.2  # Начальная интенсивность дрожания
+			shake_timer = 2.0      # Длительность дрожания
+			camera.fov = lerp(camera.fov, original_fov + 10, delta * 5)  # Увеличиваем FOV плавно
+
+		# Если H2O восстановлен, выключаем эффект
+		elif h2o > MIN_H2O_THRESHOLD and is_shaking:
+			is_shaking = false
+			shake_intensity = 0.0
+			camera.fov = original_fov  # Возвращаем FOV
+
 		if h2o <= 0:
-			# Затемняем экран, если кислород исчерпан
 			darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
-			restart_timer += delta  # Запускаем таймер на перезапуск
+			restart_timer += delta
 			if restart_timer >= RESTART_DELAY:
-				restart_scene()  # Перезапуск сцены после задержки
+				restart_scene()
 	else:
 		increase_h2o(H2O_RECOVERY_RATE * delta)
-		# Постепенно осветляем экран и сбрасываем таймер перезапуска
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 2)
-		restart_timer = 0.0  # Сброс таймера перезапуска, если игрок выходит из воды
+		restart_timer = 0.0
 
-	update_h2o_bar()  # Обновление H2O-прогресс бара
+	update_h2o_bar()
 	update_h2o_label_and_bar_visibility(delta)
+
+
 
 func decrease_h2o(amount: float) -> void:
 	h2o = clamp(h2o - amount, 0, MAX_H20)
@@ -390,3 +451,7 @@ func update_oxygen_tank_interaction(delta: float) -> void:
 
 func restart_scene() -> void:
 	get_tree().reload_current_scene()
+	
+func apply_drift(delta: float) -> void:
+	if not resisting_flow:
+		velocity += current_flow * (flow_strength * 0.5) * delta  # Слабый дрифт
