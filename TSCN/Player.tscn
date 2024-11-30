@@ -131,7 +131,7 @@ size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 
 [node name="HandSlot" type="Node3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.402277, -0.10626, -2.0782)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0433952, 0.117052, -2.35171)
 
 [node name="NotificationLabel" type="Label" parent="Camera3D"]
 offset_left = 39.0

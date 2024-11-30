@@ -131,7 +131,6 @@ func handle_object_interactions(delta: float) -> void:
 		if stamina <= 0:
 			drop_held_object()
 			holding_object_time = 0.0
-			
 
 # Обновление позиции метки
 func update_label_position() -> void:
@@ -270,8 +269,17 @@ func hide_stamina_bar(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		handle_mouse_motion(event)
-	elif event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
-		toggle_mouse_mode()
+	elif event is InputEventKey and event.pressed:
+		if Input.is_action_pressed("exit"):
+			toggle_mouse_mode()
+		elif Input.is_action_pressed("use_item"):
+			if interact_ray.is_colliding():
+				var collider = interact_ray.get_collider()
+				if collider and inventory.size() < MAX_INVENTORY_SIZE:
+					claim_item(collider)
+		elif event.keycode >= KEY_1 and event.keycode <= KEY_9:
+			select_item(event.keycode - KEY_1)
+
 	
 func handle_mouse_motion(event: InputEventMouseMotion) -> void:
 	rotation.y -= event.relative.x * SENSITIVITY
@@ -327,7 +335,6 @@ func apply_water_physics(delta: float) -> void:
 	var swim_up_force = 13.0
 	var input_dir = Vector3.ZERO
 	var is_moving_in_water = false
-
 
 
 	# Если есть движение, игрок сопротивляется течению
@@ -443,3 +450,27 @@ func apply_camera_shake(delta: float) -> void:
 			shake_intensity = 0.0
 			camera.fov = original_fov
 			
+func select_item(index: int) -> void:
+	if index >= 0 and index < inventory.size():
+		selected_item_index = index
+		notification_label.text = "Selected: " + inventory[selected_item_index].name
+		notification_label.visible = true
+		await get_tree().create_timer(2.0).timeout
+		notification_label.visible = false
+	else:
+		notification_label.text = "No item at slot " + str(index + 1)
+		notification_label.visible = true
+		await get_tree().create_timer(2.0).timeout
+		notification_label.visible = false
+func claim_item(item: Node) -> void:
+	if inventory.size() < MAX_INVENTORY_SIZE:
+		inventory.append(item)
+		notification_label.text = "Picked up: " + item.name
+		notification_label.visible = true
+		await get_tree().create_timer(2.0).timeout
+		notification_label.visible = false
+	else:
+		notification_label.text = "Inventory full!"
+		notification_label.visible = true
+		await get_tree().create_timer(2.0).timeout
+		notification_label.visible = false
