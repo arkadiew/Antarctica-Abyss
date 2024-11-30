@@ -1,8 +1,13 @@
 extends CharacterBody3D
-
 # Константы
 const MAX_INVENTORY_SIZE: int = 5
-const PICKUP_SPEED: float = 0.2
+
+# Переменные инвентаря
+var inventory: Array = []  # Массив для хранения объектов инвентаря
+var selected_item_index: int = -1  # Индекс выбранного объекта (-1 - ничего не выбрано)
+var selected_object: RigidBody3D = null  # Выбранный объект из инвентаря
+# Константы
+
 const RUN_MULTIPLIER: float = 2.0
 const SENSITIVITY: float = 0.01
 const GRAVITY: float = -9.8
@@ -71,11 +76,9 @@ var flow_strength: float = 2.0
 @onready var h2o_label: Label = $Camera3D/h2o
 @onready var label_3d: Label3D = $Camera3D/Label3D
 @onready var darken_screen: ColorRect = $Camera3D/DarkenScreen
-@onready var hand_slot: Node3D = $Camera3D/HandSlot
-@onready var notification_label :Label =$Camera3D/NotificationLabel
-# Переменные состояния
-var inventory: Array = []  # Хранение объектов в инвентаре
-var selected_item_index: int = -1  # Индекс выбранного предмета
+
+@onready var NotificationLabel: Label =$Camera3D/NotificationLabel
+
 
 # Инициализация
 func _ready() -> void:
@@ -118,6 +121,17 @@ func handle_object_interactions(delta: float) -> void:
 			if collider is RigidBody3D and stamina > 10:
 				set_held_object(collider)
 				holding_object_time = 0.0
+				
+	if Input.is_action_just_pressed("use_item"):  # Добавление в инвентарь (E)
+		if interact_ray.is_colliding():
+			var collider = interact_ray.get_collider()
+			if collider is RigidBody3D and not collider in inventory and len(inventory) < MAX_INVENTORY_SIZE:
+				add_to_inventory(collider)
+	elif Input.is_action_just_pressed("Q"):  # Выбор объекта (цикл по инвентарю)
+		select_next_inventory_item()
+	elif Input.is_action_just_pressed("interact"):  # Убрать выбранный объект (R)
+		if selected_object:
+			drop_selected_object()
 	update_label_position()
 	
 
@@ -269,17 +283,8 @@ func hide_stamina_bar(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		handle_mouse_motion(event)
-	elif event is InputEventKey and event.pressed:
-		if Input.is_action_pressed("exit"):
-			toggle_mouse_mode()
-		elif Input.is_action_pressed("use_item"):
-			if interact_ray.is_colliding():
-				var collider = interact_ray.get_collider()
-				if collider and inventory.size() < MAX_INVENTORY_SIZE:
-					claim_item(collider)
-		elif event.keycode >= KEY_1 and event.keycode <= KEY_9:
-			select_item(event.keycode - KEY_1)
-
+	elif event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
+		toggle_mouse_mode()
 	
 func handle_mouse_motion(event: InputEventMouseMotion) -> void:
 	rotation.y -= event.relative.x * SENSITIVITY
@@ -450,27 +455,33 @@ func apply_camera_shake(delta: float) -> void:
 			shake_intensity = 0.0
 			camera.fov = original_fov
 			
-func select_item(index: int) -> void:
-	if index >= 0 and index < inventory.size():
-		selected_item_index = index
-		notification_label.text = "Selected: " + inventory[selected_item_index].name
-		notification_label.visible = true
-		await get_tree().create_timer(2.0).timeout
-		notification_label.visible = false
-	else:
-		notification_label.text = "No item at slot " + str(index + 1)
-		notification_label.visible = true
-		await get_tree().create_timer(2.0).timeout
-		notification_label.visible = false
-func claim_item(item: Node) -> void:
-	if inventory.size() < MAX_INVENTORY_SIZE:
-		inventory.append(item)
-		notification_label.text = "Picked up: " + item.name
-		notification_label.visible = true
-		await get_tree().create_timer(2.0).timeout
-		notification_label.visible = false
-	else:
-		notification_label.text = "Inventory full!"
-		notification_label.visible = true
-		await get_tree().create_timer(2.0).timeout
-		notification_label.visible = false
+func add_to_inventory(object: RigidBody3D) -> void:
+	inventory.append(object)
+	object.visible = false  # Убираем объект из сцены
+	NotificationLabel.text = object.name + " added to inventory"
+	NotificationLabel.visible = true
+func select_next_inventory_item() -> void:
+	if len(inventory) == 0:
+		return
+
+	selected_item_index += 1
+	if selected_item_index >= len(inventory):
+		selected_item_index = 0
+
+	if selected_object:
+		selected_object.visible = false  # Скрываем предыдущий объект
+
+	selected_object = inventory[selected_item_index]
+	selected_object.visible = true  # Показываем выбранный объект
+
+	NotificationLabel.text = "Selected: " + selected_object.name
+	NotificationLabel.visible = true
+func drop_selected_object() -> void:
+	if selected_object:
+		inventory.erase(selected_object)
+		selected_object.visible = true
+
+		selected_object = null
+		selected_item_index = -1
+		NotificationLabel.text = "Dropped object"
+		NotificationLabel.visible = true

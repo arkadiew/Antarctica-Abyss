@@ -75,7 +75,7 @@ text = "STAMINA"
 transform = Transform3D(1, 0, 0, 0, 0.155787, -1.14258, 0, 11.8689, 0.0149971, 0, 0, -0.935285)
 
 [node name="InteractRay" type="RayCast3D" parent="Camera3D"]
-transform = Transform3D(1.34086, 0, 0, 0, 1.27981, -0.24051, 0, 0.399989, 0.76954, 0, -0.690812, -0.908325)
+transform = Transform3D(1.34086, 0, 0, 0, 1.07764, -0.129825, 0, 0.336805, 0.415392, -0.0749416, -0.433537, -0.928925)
 target_position = Vector3(0, 0, -3)
 collide_with_areas = true
 
