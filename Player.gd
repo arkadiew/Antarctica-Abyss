@@ -132,8 +132,7 @@ func handle_object_interactions(delta: float) -> void:
 			drop_held_object()
 			holding_object_time = 0.0
 			
-	
-	
+
 # Обновление позиции метки
 func update_label_position() -> void:
 	if held_object:
@@ -173,7 +172,7 @@ func get_object_height(obj):
 
 func set_held_object(body: RigidBody3D) -> void:
 	held_object = body
-
+	
 func drop_held_object() -> void:
 	held_object = null
 
@@ -329,15 +328,7 @@ func apply_water_physics(delta: float) -> void:
 	var input_dir = Vector3.ZERO
 	var is_moving_in_water = false
 
-	# Определяем направление движения игрока
-	if Input.is_action_pressed("move_forward"):
-		input_dir.z -= 1
-	if Input.is_action_pressed("move_backward"):
-		input_dir.z += 1
-	if Input.is_action_pressed("move_left"):
-		input_dir.x -= 1
-	if Input.is_action_pressed("move_right"):
-		input_dir.x += 1
+
 
 	# Если есть движение, игрок сопротивляется течению
 	if input_dir != Vector3.ZERO:
