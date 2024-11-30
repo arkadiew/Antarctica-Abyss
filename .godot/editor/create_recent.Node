@@ -1,7 +1,10 @@
+CollisionShape3D
+MeshInstance3D
+AudioStreamPlayer
+Node
 RigidBody3D
 Label
 Node3D
 CSGBox3D
-CollisionShape3D
 ColorRect
 RayCast3D

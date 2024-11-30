@@ -132,11 +132,7 @@ func handle_object_interactions(delta: float) -> void:
 			drop_held_object()
 			holding_object_time = 0.0
 			
-	if Input.is_action_just_pressed("claim"):
-		if interact_ray.is_colliding():
-			var collider = interact_ray.get_collider()
-			if collider and collider.has_method("pickup"):
-				collider.pickup(self)
+	
 	
 # Обновление позиции метки
 func update_label_position() -> void:
@@ -456,18 +452,3 @@ func apply_camera_shake(delta: float) -> void:
 			shake_intensity = 0.0
 			camera.fov = original_fov
 			
-# Добавление в инвентарь
-func add_to_inventory(item_name: String) -> bool:
-	if inventory.size() < MAX_INVENTORY_SIZE:
-		inventory.append(item_name)
-		show_notification("Picked up: %s" % item_name)
-		return true
-	else:
-		show_notification("Inventory full!")
-		return false		
-			
-func show_notification(text: String) -> void:
-	notification_label.text = text
-	notification_label.visible = true
-	await get_tree().create_timer(1.5).timeout
-	notification_label.visible = false
