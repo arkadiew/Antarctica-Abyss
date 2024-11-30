@@ -1,7 +1,7 @@
-CSGBox3D
-CollisionShape3D
 RigidBody3D
-ColorRect
 Label
 Node3D
+CSGBox3D
+CollisionShape3D
+ColorRect
 RayCast3D

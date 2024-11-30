@@ -1,6 +1,9 @@
 extends CharacterBody3D
 
 # Константы
+const MAX_INVENTORY_SIZE: int = 5
+const PICKUP_SPEED: float = 0.2
+const RUN_MULTIPLIER: float = 2.0
 const SENSITIVITY: float = 0.01
 const GRAVITY: float = -9.8
 const WALK_SPEED: float = 5.0
@@ -68,6 +71,11 @@ var flow_strength: float = 2.0
 @onready var h2o_label: Label = $Camera3D/h2o
 @onready var label_3d: Label3D = $Camera3D/Label3D
 @onready var darken_screen: ColorRect = $Camera3D/DarkenScreen
+@onready var hand_slot: Node3D = $Camera3D/HandSlot
+@onready var notification_label :Label =$Camera3D/NotificationLabel
+# Переменные состояния
+var inventory: Array = []  # Хранение объектов в инвентаре
+var selected_item_index: int = -1  # Индекс выбранного предмета
 
 # Инициализация
 func _ready() -> void:
@@ -111,6 +119,7 @@ func handle_object_interactions(delta: float) -> void:
 				set_held_object(collider)
 				holding_object_time = 0.0
 	update_label_position()
+	
 
 	if held_object:
 		follow_player_with_object()
@@ -122,13 +131,20 @@ func handle_object_interactions(delta: float) -> void:
 		if stamina <= 0:
 			drop_held_object()
 			holding_object_time = 0.0
-
+			
+	if Input.is_action_just_pressed("claim"):
+		if interact_ray.is_colliding():
+			var collider = interact_ray.get_collider()
+			if collider and collider.has_method("pickup"):
+				collider.pickup(self)
+	
 # Обновление позиции метки
 func update_label_position() -> void:
 	if held_object:
 		update_label_for_held_object(held_object)
 	else:
 		update_label_for_nearby_object()
+	
 
 func update_label_for_held_object(object):
 	var object_position = object.global_transform.origin
@@ -261,7 +277,7 @@ func _input(event: InputEvent) -> void:
 		handle_mouse_motion(event)
 	elif event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
 		toggle_mouse_mode()
-
+	
 func handle_mouse_motion(event: InputEventMouseMotion) -> void:
 	rotation.y -= event.relative.x * SENSITIVITY
 	rotation.x = clamp(rotation.x - event.relative.y * SENSITIVITY, -1.5, 1.5)
@@ -274,16 +290,18 @@ func toggle_mouse_mode() -> void:
 
 # Получение направления движения из ввода
 func get_input_direction() -> Vector3:
-	var input_dir = Vector3.ZERO
-	if Input.is_action_pressed("move_forward"):
-		input_dir.z -= 1
-	if Input.is_action_pressed("move_backward"):
-		input_dir.z += 1
-	if Input.is_action_pressed("move_left"):
-		input_dir.x -= 1
-	if Input.is_action_pressed("move_right"):
-		input_dir.x += 1
-	return (transform.basis.z * input_dir.z + transform.basis.x * input_dir.x).normalized()
+	# Собираем вектор ввода на основе нажатых клавиш
+	var input_dir = Vector3(
+		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+		0,
+		Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")
+	)
+
+	# Преобразуем локальные координаты ввода в мировые
+	var world_dir = (transform.basis.x * input_dir.x + transform.basis.z * input_dir.z)
+
+	# Нормализуем, чтобы получить единичный вектор
+	return world_dir.normalized()
 
 # Обработка физики в воде
 func handle_water_physics(delta: float) -> void:
@@ -437,3 +455,19 @@ func apply_camera_shake(delta: float) -> void:
 			is_shaking = false
 			shake_intensity = 0.0
 			camera.fov = original_fov
+			
+# Добавление в инвентарь
+func add_to_inventory(item_name: String) -> bool:
+	if inventory.size() < MAX_INVENTORY_SIZE:
+		inventory.append(item_name)
+		show_notification("Picked up: %s" % item_name)
+		return true
+	else:
+		show_notification("Inventory full!")
+		return false		
+			
+func show_notification(text: String) -> void:
+	notification_label.text = text
+	notification_label.visible = true
+	await get_tree().create_timer(1.5).timeout
+	notification_label.visible = false
