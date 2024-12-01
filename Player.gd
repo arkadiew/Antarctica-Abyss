@@ -167,7 +167,10 @@ func update_label_for_held_object(object):
 func update_label_for_nearby_object():
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
-		if collider is RigidBody3D:
+		if collider and collider is RigidBody3D:
+			if not collider.is_inside_tree():
+				return  # Избегаем работы с объектом, не находящимся в дереве сцены
+
 			var distance = global_transform.origin.distance_to(collider.global_transform.origin)
 			if distance <= INTERACTION_DISTANCE:
 				var object_position = collider.global_transform.origin
