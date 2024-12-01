@@ -3,9 +3,9 @@ extends CharacterBody3D
 const MAX_INVENTORY_SIZE: int = 5
 
 # Переменные инвентаря
-var inventory: Array = []  # Массив для хранения объектов инвентаря
-var selected_item_index: int = -1  # Индекс выбранного объекта (-1 - ничего не выбрано)
-var selected_object: RigidBody3D = null  # Выбранный объект из инвентаря
+var inventory: Array = []
+var selected_item: RigidBody3D = null
+var selected_item_index: int = -1
 # Константы
 
 const RUN_MULTIPLIER: float = 2.0
@@ -130,12 +130,12 @@ func handle_object_interactions(delta: float) -> void:
 	elif Input.is_action_just_pressed("Q"):  # Выбор объекта (цикл по инвентарю)
 		select_next_inventory_item()
 	elif Input.is_action_just_pressed("interact"):  # Убрать выбранный объект (R)
-		if selected_object:
+		if selected_item:
 			drop_selected_object()
 	update_label_position()
 	
 
-	if held_object:
+	if held_object and held_object is RigidBody3D:
 		follow_player_with_object()
 		holding_object_time += delta
 		var mass = held_object.mass
@@ -145,6 +145,8 @@ func handle_object_interactions(delta: float) -> void:
 		if stamina <= 0:
 			drop_held_object()
 			holding_object_time = 0.0
+	else:
+		drop_held_object()
 
 # Обновление позиции метки
 func update_label_position() -> void:
@@ -185,6 +187,9 @@ func get_object_height(obj):
 
 func set_held_object(body: RigidBody3D) -> void:
 	held_object = body
+	
+	
+	
 	
 func drop_held_object() -> void:
 	held_object = null
@@ -455,33 +460,52 @@ func apply_camera_shake(delta: float) -> void:
 			shake_intensity = 0.0
 			camera.fov = original_fov
 			
+# Управление инвентарем
 func add_to_inventory(object: RigidBody3D) -> void:
+	if inventory.size() >= MAX_INVENTORY_SIZE:
+		show_notification("Inventory is full!", 2.0)
+		return
+	if object == held_object:
+		drop_held_object()  # Убираем из рук перед добавлением
 	inventory.append(object)
-	object.visible = false  # Убираем объект из сцены
-	NotificationLabel.text = object.name + " added to inventory"
-	NotificationLabel.visible = true
+	object.visible = false
+	object.get_parent().remove_child(object)
+	show_notification(object.name + " added to inventory", 2.0)
+
 func select_next_inventory_item() -> void:
-	if len(inventory) == 0:
+	if inventory.size() == 0:
+		show_notification("Inventory is empty!", 2.0)
 		return
 
-	selected_item_index += 1
-	if selected_item_index >= len(inventory):
-		selected_item_index = 0
+	if selected_item:
+		selected_item.visible = false
 
-	if selected_object:
-		selected_object.visible = false  # Скрываем предыдущий объект
+	selected_item_index = (selected_item_index + 1) % inventory.size()
+	selected_item = inventory[selected_item_index]
+	show_notification("Selected: " + selected_item.name, 2.0)
 
-	selected_object = inventory[selected_item_index]
-	selected_object.visible = true  # Показываем выбранный объект
-
-	NotificationLabel.text = "Selected: " + selected_object.name
-	NotificationLabel.visible = true
 func drop_selected_object() -> void:
-	if selected_object:
-		inventory.erase(selected_object)
-		selected_object.visible = true
+	if not selected_item:
+		show_notification("No item to drop!", 2.0)
+		return
 
-		selected_object = null
-		selected_item_index = -1
-		NotificationLabel.text = "Dropped object"
-		NotificationLabel.visible = true
+	selected_item.visible = true
+	get_tree().get_root().add_child(selected_item)
+	selected_item.global_transform.origin = camera.global_transform.origin + camera.global_transform.basis.z * -2.0
+
+	if selected_item is RigidBody3D:
+		selected_item.freeze = false
+		selected_item.linear_velocity = Vector3.ZERO
+		selected_item.angular_velocity = Vector3.ZERO
+
+	inventory.erase(selected_item)
+	selected_item = null
+	selected_item_index = -1
+	show_notification("Dropped object", 2.0)
+
+# Уведомления
+func show_notification(text: String, delay: float = 2.0) -> void:
+	NotificationLabel.text = text
+	NotificationLabel.visible = true
+	await get_tree().create_timer(delay).timeout
+	NotificationLabel.visible = false
