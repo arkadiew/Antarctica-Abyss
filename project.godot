@@ -23,6 +23,10 @@ DevkitMessenger="*res://addons/steam_devkit_notifier/devkit_messenger.gd"
 
 enabled=PackedStringArray()
 
+[gui]
+
+theme/custom_font="res://utils/PixelifySans-VariableFont_wght.ttf"
+
 [input]
 
 move_forward={
