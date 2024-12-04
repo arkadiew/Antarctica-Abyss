@@ -500,7 +500,7 @@ func drop_selected_object() -> void:
 		selected_item.freeze = false
 		selected_item.linear_velocity = Vector3.ZERO
 		selected_item.angular_velocity = Vector3.ZERO
-
+	set_held_object(selected_item)
 	inventory.erase(selected_item)
 	selected_item = null
 	selected_item_index = -1
