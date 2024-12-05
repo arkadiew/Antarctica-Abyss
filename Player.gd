@@ -2,6 +2,19 @@ extends CharacterBody3D
 # Константы
 const MAX_INVENTORY_SIZE: int = 5
 var global_delta: float = 0.0
+const OXYGEN_CONSUMPTION_RATE: float = 0.5   # Расход кислорода (H2O) в секунду
+const OXYGEN_CRITICAL_LEVEL: float = 10.0    # Критический уровень кислорода
+const OXYGEN_LOW_MOVEMENT_PENALTY: float = 0.5 # Замедление при низком запасе кислорода
+var is_scuba_mode: bool = true  # Флаг, что игрок в акваланге
+# Новые константы для режима акваланга и плавания
+const WATER_DENSITY: float = 1.0        # Плотность воды (можно подбирать)
+const PLAYER_VOLUME: float = 0.5        # Условный объём игрока
+const BUOYANCY_FACTOR: float = 1.0       # Коэффициент плавучести
+const SWIM_SPEED: float = 2.0            # Базовая скорость плавания в воде
+const SWIM_UP_SPEED: float = 3.0         # Скорость всплытия при зажатии прыжка
+const MIN_VERTICAL_SPEED: float = -0.5   # Минимальное опускание без действий
+const SWIM_DOWN_SPEED: float = 3.0  # Скорость погружения при нажатии Ctrl
+const STAMINA_DOWN_COST: float = 2.0 # Расход выносливости при активном погружении
 
 # Переменные инвентаря
 var inventory: Array = []
@@ -384,79 +397,56 @@ func is_in_water() -> bool:
 # Обработка физики под водой
 func handle_water_physics(delta: float) -> void:
 	if is_in_water():
-		apply_water_drag(delta)
-		handle_swimming_input_horror(delta)
-
-		if h2o <= MIN_H2O_THRESHOLD:
-			simulate_panic(delta)
+		apply_buoyancy_and_drag_scuba(delta)
+		handle_swimming_input_scuba(delta)
 	else:
-		if velocity.y < 0:  # Ускоренное падение в воздухе
+		# Если не в воде - просто гравитация
+		if velocity.y < 0:
 			velocity.y += GRAVITY * delta
 
-# Замедленное движение и сопротивление под водой
-func handle_swimming_input_horror(delta: float) -> void:
+func apply_buoyancy_and_drag_scuba(delta: float) -> void:
+	# При акваланге плавучесть можно оставить стабильной, чтобы игрок не тонул резко
+	var buoyant_force = -GRAVITY * WATER_DENSITY * PLAYER_VOLUME * BUOYANCY_FACTOR
+	velocity.y = lerp(velocity.y, buoyant_force, delta * 2.0)
+
+	# Сопротивление: под водой движение более плавное, но не столь «тяжёлое», как без акваланга
+	var drag_horizontal = 1.0
+	var drag_vertical = 0.7
+	velocity.x = lerp(velocity.x, 0.0, drag_horizontal * delta)
+	velocity.z = lerp(velocity.z, 0.0, drag_horizontal * delta)
+	velocity.y = lerp(velocity.y, 0.0, drag_vertical * delta * 0.5)
+
+
+func handle_swimming_input_scuba(delta: float) -> void:
 	var input_dir = get_input_direction()
-	var is_swimming = false
+	var current_swim_speed = SWIM_SPEED
+	# Если кислород низкий, уменьшаем максимальную скорость
+	if h2o < OXYGEN_CRITICAL_LEVEL:
+		current_swim_speed *= OXYGEN_LOW_MOVEMENT_PENALTY
 
 	if input_dir != Vector3.ZERO:
 		input_dir = input_dir.normalized()
+		velocity.x = lerp(velocity.x, input_dir.x * current_swim_speed, delta * 2.0)
+		velocity.z = lerp(velocity.z, input_dir.z * current_swim_speed, delta * 2.0)
 
-		# Медленное и тяжелое движение
-		velocity.x = lerp(velocity.x, input_dir.x * (WALK_SPEED * 0.4), delta * 2.0)
-		velocity.z = lerp(velocity.z, input_dir.z * (WALK_SPEED * 0.4), delta * 2.0)
-		is_swimming = true
+		# Расходуем выносливость только при активном движении
+		decrease_stamina(0.5 * delta)
 	else:
-		# Замедление, если игрок не двигается
+		# Если нет ввода, скорость замедляется до нуля (см. drag)
 		velocity.x = lerp(velocity.x, 0.0, delta * 1.5)
 		velocity.z = lerp(velocity.z, 0.0, delta * 1.5)
 
-	# Подъем вверх при нажатии прыжка
+	# Всплытие при нажатии прыжка — чуть быстрее, но расходует больше выносливости
 	if Input.is_action_pressed("jump") and stamina > 1:
-		velocity.y = lerp(velocity.y, swim_up_speed * 0.7, delta * 4)
+		velocity.y = lerp(velocity.y, SWIM_UP_SPEED, delta * 2.0)
 		decrease_stamina(2 * delta)
-		is_swimming = true
+	elif Input.is_action_pressed("crouch") and stamina > 1:
+		velocity.y = lerp(velocity.y, -SWIM_DOWN_SPEED, delta * 2.0)
+		decrease_stamina(STAMINA_DOWN_COST * delta)
 	else:
-		# Медленное падение вниз под водой
-		velocity.y = lerp(velocity.y, -0.5, delta * 0.5)
-
-	if is_swimming:
-		decrease_stamina(0.5 * delta)
-
-
-# Эффект сопротивления воды
-func apply_water_drag(delta: float) -> void:
-	var drag_factor_horizontal = 1.0
-	var drag_factor_vertical = 0.7
-
-	# Замедляем горизонтальное движение
-	velocity.x = lerp(velocity.x, 0.0, drag_factor_horizontal * delta)
-	velocity.z = lerp(velocity.z, 0.0, drag_factor_horizontal * delta)
-
-	# Замедляем вертикальное движение
-	velocity.y = lerp(velocity.y, 0.0, drag_factor_vertical * delta)
-
-# Симуляция паники при низком уровне H2O
-func simulate_panic(delta: float) -> void:
-	if h2o <= MIN_H2O_THRESHOLD:
-		is_shaking = true
-		shake_intensity = lerp(shake_intensity, 0.5, delta * 3)
-		shake_timer = 2.0
-		camera.fov = lerp(camera.fov, original_fov + 15, delta * 5)
-
-		# Беспорядочные движения
-		velocity.x += randf_range(-1.0, 1.0) * delta
-		velocity.z += randf_range(-1.0, 1.0) * delta
-
-		# Быстрое истощение выносливости
-		decrease_stamina(5.0 * delta)
-
-		if stamina <= 0:
-			velocity = Vector3.ZERO  # Игрок "замирает" из-за истощения
-	else:
-		is_shaking = false
-		shake_intensity = lerp(shake_intensity, 0.0, delta * 5)
-		camera.fov = lerp(camera.fov, original_fov, delta * 5)
-
+		# Без всплытия — медленное опускание, но фактически компенсируется плавучестью
+		if velocity.y < MIN_VERTICAL_SPEED:
+			velocity.y = MIN_VERTICAL_SPEED
 # Обновление H2O
 func update_h2o(delta: float) -> void:
 	is_underwater = is_in_water()
