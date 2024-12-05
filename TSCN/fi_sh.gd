@@ -3,7 +3,6 @@ extends CSGBox3D
 enum State { WANDER, FLEE }
 
 var state = State.WANDER
-
 var start_position = Vector3()
 var velocity = Vector3()
 var speed = 0.3
@@ -48,7 +47,7 @@ func set_random_velocity(target: Vector3 = Vector3.ZERO):
 		velocity = random_direction * speed
 
 func _process(delta):
-	# Определяем состояние
+	# Determine state
 	if predator != Vector3.ZERO and transform.origin.distance_to(predator) < flee_distance:
 		state = State.FLEE
 	else:
@@ -65,12 +64,12 @@ func _process(delta):
 	if is_colliding():
 		handle_collision()
 
-	# Перемещаем рыбу через новую переменную
+	# Move fish according to the velocity
 	var new_transform = transform
 	new_transform.origin += velocity * delta
 	transform = new_transform
 
-	# Ограничиваем пространство плавания
+	# Constrain fish within defined bounds
 	if transform.origin.distance_to(start_position) > fish_bounds:
 		var direction_to_start = (start_position - transform.origin).normalized()
 		velocity = steer_towards(direction_to_start, velocity, delta)
@@ -179,15 +178,18 @@ func handle_collision():
 			break
 
 	if collision_normal != Vector3.ZERO:
+		# Reflect the velocity away from the collision
 		var reflect_direction = velocity.bounce(collision_normal).normalized()
+
+		# Apply a small random turn to avoid too-uniform reflections
 		var random_turn = deg_to_rad(randf_range(-turn_angle, turn_angle))
 		var rotation_axis = collision_normal.cross(Vector3.UP).normalized()
-
 		if rotation_axis.length() > 0:
 			velocity = reflect_direction.rotated(rotation_axis, random_turn) * speed
 		else:
 			velocity = reflect_direction * speed
 
+		# Move the fish slightly away from the collided obstacle so it doesn't remain stuck
 		var new_transform = transform
 		new_transform.origin += velocity.normalized() * (-retreat_distance)
-		transform = new_transform
+		transform = new_transform  # so that when fish hit an obstacle they turn away and move back
