@@ -85,7 +85,7 @@ var flow_strength: float = 2.0
 # Onready переменные
 @onready var camera: Camera3D = $Camera3D
 @onready var interact_ray: RayCast3D = $Camera3D/InteractRay
-@onready var stamina_bar: ProgressBar = $Camera3D/ProgressBar
+@onready var stamina_bar: TextureProgressBar = $Camera3D/TextureProgressBar
 @onready var stamina_label: Label = $Camera3D/stamina
 @onready var h2o_bar: ProgressBar = $Camera3D/h2o2
 @onready var h2o_label: Label = $Camera3D/h2o
@@ -271,6 +271,7 @@ func handle_jump(delta: float) -> void:
 		velocity.y = JUMP_FORCE + jump_charge * JUMP_FORCE
 		jump_charge = 0.0
 		decrease_stamina(JUMP_STAMINA_COST)
+
 func apply_inertia(delta: float) -> void:
 	if move_vector.length() == 0.0:
 		velocity.x = lerp(velocity.x,0.0, delta * 5.0)

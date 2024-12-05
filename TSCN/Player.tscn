@@ -1,4 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=11 format=3 uid="uid://wssnx1an6whd"]
+
+[ext_resource type="Texture2D" uid="uid://b1xbatblje1jm" path="res://utils/img/stamina_img/full_stamin.png" id="1_6mo7b"]
+[ext_resource type="Texture2D" uid="uid://biix3sa2uir3k" path="res://utils/img/stamina_img/stamin_no.png" id="2_k1srk"]
+[ext_resource type="Texture2D" uid="uid://csyxkd03fj4bx" path="res://utils/img/stamina_img/stamin_1.png" id="3_geka2"]
+[ext_resource type="Texture2D" uid="uid://d2xdifkfncpbw" path="res://utils/img/stamina_img/stamin_2.png" id="4_pfhll"]
+[ext_resource type="Texture2D" uid="uid://bkflhwasqhit4" path="res://utils/img/stamina_img/stamin_3.png" id="5_1tyxv"]
+[ext_resource type="Texture2D" uid="uid://bf4t0jhto3sw7" path="res://utils/img/stamina_img/stamin_4.png" id="6_wbvqo"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hq87f"]
 
@@ -11,6 +18,22 @@ outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_cvq70"]
+frames = 6
+pause = true
+one_shot = true
+frame_0/texture = ExtResource("1_6mo7b")
+frame_1/texture = ExtResource("3_geka2")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("4_pfhll")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("5_1tyxv")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("6_wbvqo")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("2_k1srk")
+frame_5/duration = 1.0
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.724673, 0)
@@ -84,20 +107,6 @@ transform = Transform3D(1.34086, 0, 0, 0, 1.07764, -0.129825, 0, 0.336805, 0.415
 target_position = Vector3(0, 0, -3)
 collide_with_areas = true
 
-[node name="ProgressBar" type="ProgressBar" parent="Camera3D"]
-modulate = Color(0, 0, 0, 1)
-self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
-show_behind_parent = true
-top_level = true
-clip_contents = true
-custom_minimum_size = Vector2(90, 0)
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 4.0
-grow_vertical = 2
-fill_mode = 3
-show_percentage = false
-
 [node name="Label3D" type="Label3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.883044)
 pixel_size = 0.006
@@ -145,10 +154,18 @@ autowrap_mode = 3
 justification_flags = 171
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Camera3D"]
-offset_left = 782.0
-offset_top = 373.0
-offset_right = 822.0
-offset_bottom = 413.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 41.0
+offset_top = -193.0
+offset_right = 197.0
+offset_bottom = -37.0
+grow_vertical = 0
+step = 4.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = SubResource("AnimatedTexture_cvq70")
 
 [node name="GroundRay" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
