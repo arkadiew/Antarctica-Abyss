@@ -262,14 +262,24 @@ func apply_inertia(delta: float) -> void:
 	if move_vector.length() == 0.0:
 		velocity.x = lerp(velocity.x,0.0, delta * 5.0)
 		velocity.z = lerp(velocity.z, 0.0, delta * 5.0)
+var elapsed_time: float = 0.0
 
-# Определение текущей скорости движения
 func determine_speed() -> float:
+	# Рассчёт фактора уменьшения скорости 
+	# Допустим, каждые 10 секунд скорость уменьшается на 1%
+	# через 100 секунд скорость уменьшится на 10%
+	var reduction_factor = 1.0 - (elapsed_time / 10.0) * 0.01
+	if reduction_factor < 0.5:
+		reduction_factor = 0.5 # Минимальная скорость 50% от исходной
+
+	var effective_walk_speed = WALK_SPEED * reduction_factor
+
 	if is_running and stamina > 0:
-		return WALK_SPEED * RUN_SPEED_MULTIPLIER
+		return effective_walk_speed * RUN_SPEED_MULTIPLIER
 	elif stamina == 0:
-		return LOW_STAMINA_SPEED
-	return WALK_SPEED
+		return LOW_STAMINA_SPEED * reduction_factor
+	return effective_walk_speed
+
 
 
 # Обновление выносливости
