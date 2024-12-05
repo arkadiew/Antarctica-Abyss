@@ -24,7 +24,7 @@ resource_local_to_scene = true
 transparency = 1
 cull_mode = 2
 depth_draw_mode = 1
-albedo_color = Color(0.097825, 0.249085, 0.456925, 0.388235)
+albedo_color = Color(0.0470588, 0.152941, 0.294118, 0.858824)
 roughness = 0.0
 normal_enabled = true
 normal_texture = SubResource("NoiseTexture2D_mdx3j")
@@ -43,9 +43,9 @@ size = Vector3(0.1, 0.1, 0.1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wrt5a"]
 resource_local_to_scene = true
 shader = ExtResource("2_5f01f")
-shader_parameter/density = 1.0
-shader_parameter/albedo = Color(0, 0.0431373, 0.156863, 1)
-shader_parameter/emission = Color(0, 0.0431373, 0.156863, 1)
+shader_parameter/density = 0.5
+shader_parameter/albedo = Color(0, 0.309093, 0.309225, 1)
+shader_parameter/emission = Color(0.0256807, 0.252251, 0.371293, 1)
 shader_parameter/height_falloff = 0.0
 shader_parameter/edge_fade = 0.1
 shader_parameter/fade_plane = Vector4(0, 1, 0, -999)
@@ -75,8 +75,8 @@ collide_with_bodies = false
 
 [node name="FogVolume" type="FogVolume" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00170898, 0, 0)
-size = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0140941, 0.114807, -0.0231209)
+size = Vector3(1.15863, 2.36951, 1.24322)
 material = SubResource("ShaderMaterial_wrt5a")
 script = ExtResource("3_b5ytn")
 
