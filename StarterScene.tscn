@@ -505,32 +505,6 @@ transform = Transform3D(-0.866024, -0.433016, 0.250001, -0.353555, 0.883882, 0.3
 light_energy = 0.75
 shadow_enabled = true
 
-[node name="CharacterBody3D" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-platform_floor_layers = 4294967294
-camera_style = 2
-script = null
-
-[node name="Ladder" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-script = null
-
 [node name="Weights" type="Node3D" parent="."]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="Weights"]
@@ -703,86 +677,6 @@ transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, -25, 0
 use_collision = true
 size = Vector3(14, 0.001, 14)
 material = SubResource("StandardMaterial3D_f06cq")
-
-[node name="CSGStairMaker3D" parent="Level"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -11, 3, 15)
-use_collision = true
-size = Vector3(5, 5, 5)
-num_stairs = 12
-script = null
-
-[node name="CSGStairMaker3D10" parent="Level"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -11, 3, 31.5)
-use_collision = true
-size = Vector3(2, 5, 5)
-num_stairs = 12
-script = null
-
-[node name="CSGStairMaker3D7" parent="Level"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -33, 8, 24.5)
-use_collision = true
-size = Vector3(12, 15, 5)
-num_stairs = 9
-script = null
-
-[node name="CSGStairMaker3D2" parent="Level"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1, 3, 15)
-use_collision = true
-size = Vector3(5, 5, 5)
-num_stairs = 0
-script = null
-
-[node name="CSGStairMaker3D8" parent="Level"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -1, 3, 32)
-use_collision = true
-size = Vector3(3, 5, 5)
-num_stairs = 0
-script = null
 
 [node name="CSGStairMaker3D3" type="CSGBox3D" parent="Level"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1, 3, 20)
@@ -1077,16 +971,3 @@ libraries = {
 }
 
 [node name="InteractableComponent" type="Node" parent="AnimatableBody3D"]
-
-[node name="SwagCapsule" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1.14304, 0.0219994, -61.7708)
-script = null

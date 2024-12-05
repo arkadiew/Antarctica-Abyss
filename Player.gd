@@ -1,6 +1,7 @@
 extends CharacterBody3D
 # Константы
 const MAX_INVENTORY_SIZE: int = 5
+var global_delta: float = 0.0
 
 # Переменные инвентаря
 var inventory: Array = []
@@ -55,7 +56,8 @@ var is_underwater: bool = false
 var resisting_flow: bool = false
 var restart_timer: float = 0.0
 var held_object: RigidBody3D = null
-
+var interaction_cooldown: float = 0.5
+var last_interaction_time: float = 0.0
 # Переменные для дрожания камеры
 var original_fov: float = 70.0
 var is_shaking: bool = false
@@ -100,6 +102,7 @@ func _initialize_bars() -> void:
 
 # Главный цикл
 func _process(delta: float) -> void:
+	global_delta = delta
 	handle_object_interactions(delta)
 	update_movement(delta)
 	update_stamina(delta)
@@ -108,11 +111,15 @@ func _process(delta: float) -> void:
 	update_h2o(delta)
 	update_oxygen_tank_interaction(delta)
 	apply_camera_shake(delta)
-	apply_drift(delta)
+
+	apply_inertia(delta)  # Применение скольжения
+	handle_jump(delta)    # Обработка прыжков
 
 # Обработка взаимодействий с объектами
 func handle_object_interactions(delta: float) -> void:
-	if Input.is_action_just_pressed("interact"):
+	last_interaction_time += delta
+	if Input.is_action_just_pressed("interact") and last_interaction_time >= interaction_cooldown:
+		last_interaction_time = 0.0
 		if held_object:
 			drop_held_object()
 			holding_object_time = 0.0
@@ -207,22 +214,54 @@ func follow_player_with_object() -> void:
 	elif drop_below_player and ground_ray.is_colliding() and ground_ray.get_collider() == held_object:
 		drop_held_object()
 
-# Обновление движения игрока
 func update_movement(delta: float) -> void:
 	move_vector = get_input_direction()
-	var current_speed = determine_speed()
+	
+	# Плавное ускорение и замедление
+	var target_speed = determine_speed() * move_vector.length()
+	var current_speed = velocity.length()
+	var speed_difference = target_speed - current_speed
+	var acceleration = 20.0 if speed_difference > 0 else 10.0  # Ускорение и торможение
+	var adjusted_speed = current_speed + sign(speed_difference) * min(abs(speed_difference), acceleration * delta)
+	
+	# Направление движения
+	if move_vector.length() > 0:
+		move_vector = move_vector.normalized() * adjusted_speed
+	else:
+		move_vector *= max(0, current_speed - 10.0 * delta)  # Замедление при отсутствии ввода
 
-	velocity.x = move_vector.x * current_speed
-	velocity.z = move_vector.z * current_speed
+	velocity.x = move_vector.x
+	velocity.z = move_vector.z
 
+	# Управление в воздухе
 	if not is_on_floor():
+		velocity.x = lerp(velocity.x, move_vector.x, delta * 2.0)
+		velocity.z = lerp(velocity.z, move_vector.z, delta * 2.0)
 		velocity.y += GRAVITY * delta
+	else:
+		# Прыжок
+		if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
+			velocity.y = JUMP_FORCE
+			decrease_stamina(JUMP_STAMINA_COST)
 
-	if Input.is_action_just_pressed("jump") and is_on_floor() and stamina >= JUMP_STAMINA_COST:
-		velocity.y = JUMP_FORCE
-		decrease_stamina(JUMP_STAMINA_COST)
-
+	# Убедитесь, что мы вызываем метод без переназначения
 	move_and_slide()
+
+var jump_charge: float = 0.0
+var max_jump_charge: float = 1.0
+var jump_charge_rate: float = 0.5
+
+func handle_jump(delta: float) -> void:
+	if Input.is_action_pressed("jump") and is_on_floor():
+		jump_charge = clamp(jump_charge + jump_charge_rate * delta, 0, max_jump_charge)
+	elif Input.is_action_just_released("jump") and jump_charge > 0.0:
+		velocity.y = JUMP_FORCE + jump_charge * JUMP_FORCE
+		jump_charge = 0.0
+		decrease_stamina(JUMP_STAMINA_COST)
+func apply_inertia(delta: float) -> void:
+	if move_vector.length() == 0.0:
+		velocity.x = lerp(velocity.x,0.0, delta * 5.0)
+		velocity.z = lerp(velocity.z, 0.0, delta * 5.0)
 
 # Определение текущей скорости движения
 func determine_speed() -> float:
@@ -231,6 +270,7 @@ func determine_speed() -> float:
 	elif stamina == 0:
 		return LOW_STAMINA_SPEED
 	return WALK_SPEED
+
 
 # Обновление выносливости
 func update_stamina(delta: float) -> void:
@@ -242,13 +282,14 @@ func update_stamina(delta: float) -> void:
 	if is_running:
 		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta)
 		stamina_recovery_timer = 0.0
+		
 		if stamina <= 0:
 			can_run = false
 	else:
 		stamina_recovery_timer += delta
 		if not Input.is_action_pressed("run"):
 			if stamina_recovery_timer >= STAMINA_RECOVERY_DELAY:
-				increase_stamina(STAMINA_RECOVERY_RATE * delta)
+				increase_stamina(STAMINA_RECOVERY_RATE * delta * (1 - stamina / MAX_STAMINA))
 			if stamina > 0:
 				can_run = true
 	if stamina <= 0 and is_moving:
@@ -295,8 +336,14 @@ func _input(event: InputEvent) -> void:
 		toggle_mouse_mode()
 	
 func handle_mouse_motion(event: InputEventMouseMotion) -> void:
-	rotation.y -= event.relative.x * SENSITIVITY
-	rotation.x = clamp(rotation.x - event.relative.y * SENSITIVITY, -1.5, 1.5)
+	var sensitivity_factor = 0.1
+	rotation.y -= event.relative.x * SENSITIVITY * sensitivity_factor
+	rotation.x = clamp(rotation.x - event.relative.y * SENSITIVITY * sensitivity_factor, -1.5, 1.5)
+
+	# Используем сохранённое значение delta
+	global_transform.basis = global_transform.basis.slerp(Basis().rotated(Vector3(1, 0, 0), rotation.x).rotated(Vector3(0, 1, 0), rotation.y), global_delta * 5.0)
+
+	
 
 func toggle_mouse_mode() -> void:
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -318,73 +365,87 @@ func get_input_direction() -> Vector3:
 
 	# Нормализуем, чтобы получить единичный вектор
 	return world_dir.normalized()
-
-# Обработка физики в воде
-func handle_water_physics(delta: float) -> void:
-	if is_in_water():
-		update_current_flow()
-		apply_water_physics(delta)
-		apply_drift(delta)
-
 func is_in_water() -> bool:
 	for area in get_tree().get_nodes_in_group("water_area"):
 		if area.overlaps_body(self):
 			return true
 	return false
 
-func update_current_flow() -> void:
-	# Пример изменения направления течения
-	if global_transform.origin.x > 50:
-		current_flow = Vector3(-1, 0, 0)  # Течение влево
-	elif global_transform.origin.z < -50:
-		current_flow = Vector3(0, 0, 1)  # Течение вперед
+# Обработка физики под водой
+func handle_water_physics(delta: float) -> void:
+	if is_in_water():
+		apply_water_drag(delta)
+		handle_swimming_input_horror(delta)
+
+		if h2o <= MIN_H2O_THRESHOLD:
+			simulate_panic(delta)
 	else:
-		current_flow = Vector3(1, 0, 0)  # Течение вправо
+		if velocity.y < 0:  # Ускоренное падение в воздухе
+			velocity.y += GRAVITY * delta
 
-func apply_water_physics(delta: float) -> void:
-	var water_gravity = GRAVITY * 0.2
-	var water_drag_horizontal = 1.5
-	var water_drag_vertical = 1.2
-	var swim_up_force = 13.0
-	var input_dir = Vector3.ZERO
-	var is_moving_in_water = false
+# Замедленное движение и сопротивление под водой
+func handle_swimming_input_horror(delta: float) -> void:
+	var input_dir = get_input_direction()
+	var is_swimming = false
 
-
-	# Если есть движение, игрок сопротивляется течению
 	if input_dir != Vector3.ZERO:
 		input_dir = input_dir.normalized()
-		resisting_flow = true
-		velocity.x = input_dir.x * (WALK_SPEED * 0.5)
-		velocity.z = input_dir.z * (WALK_SPEED * 0.5)
-	else:
-		resisting_flow = false
 
-	# Плавание вверх
+		# Медленное и тяжелое движение
+		velocity.x = lerp(velocity.x, input_dir.x * (WALK_SPEED * 0.4), delta * 2.0)
+		velocity.z = lerp(velocity.z, input_dir.z * (WALK_SPEED * 0.4), delta * 2.0)
+		is_swimming = true
+	else:
+		# Замедление, если игрок не двигается
+		velocity.x = lerp(velocity.x, 0.0, delta * 1.5)
+		velocity.z = lerp(velocity.z, 0.0, delta * 1.5)
+
+	# Подъем вверх при нажатии прыжка
 	if Input.is_action_pressed("jump") and stamina > 1:
-		velocity.y += swim_up_force * delta
-		is_moving_in_water = true
-		decrease_stamina(0.9)
+		velocity.y = lerp(velocity.y, swim_up_speed * 0.7, delta * 4)
+		decrease_stamina(2 * delta)
+		is_swimming = true
 	else:
-		velocity.y -= water_gravity * delta
+		# Медленное падение вниз под водой
+		velocity.y = lerp(velocity.y, -0.5, delta * 0.5)
 
-	# Применяем течение, если игрок не сопротивляется
-	if not resisting_flow:
-		velocity += current_flow * flow_strength * delta
-		decrease_stamina(0.3 * delta)
+	if is_swimming:
+		decrease_stamina(0.5 * delta)
+
+
+# Эффект сопротивления воды
+func apply_water_drag(delta: float) -> void:
+	var drag_factor_horizontal = 1.0
+	var drag_factor_vertical = 0.7
+
+	# Замедляем горизонтальное движение
+	velocity.x = lerp(velocity.x, 0.0, drag_factor_horizontal * delta)
+	velocity.z = lerp(velocity.z, 0.0, drag_factor_horizontal * delta)
+
+	# Замедляем вертикальное движение
+	velocity.y = lerp(velocity.y, 0.0, drag_factor_vertical * delta)
+
+# Симуляция паники при низком уровне H2O
+func simulate_panic(delta: float) -> void:
+	if h2o <= MIN_H2O_THRESHOLD:
+		is_shaking = true
+		shake_intensity = lerp(shake_intensity, 0.5, delta * 3)
+		shake_timer = 2.0
+		camera.fov = lerp(camera.fov, original_fov + 15, delta * 5)
+
+		# Беспорядочные движения
+		velocity.x += randf_range(-1.0, 1.0) * delta
+		velocity.z += randf_range(-1.0, 1.0) * delta
+
+		# Быстрое истощение выносливости
+		decrease_stamina(5.0 * delta)
+
+		if stamina <= 0:
+			velocity = Vector3.ZERO  # Игрок "замирает" из-за истощения
 	else:
-		velocity += current_flow * flow_strength * 0.5 * delta
-
-	# Применяем водное сопротивление
-	velocity.x = lerp(velocity.x, 0.0, water_drag_horizontal * delta)
-	velocity.z = lerp(velocity.z, 0.0, water_drag_horizontal * delta)
-	velocity.y = lerp(velocity.y, 0.0, water_drag_vertical * delta)
-
-	# Ограничиваем бег в воде
-	is_running = false
-
-func apply_drift(delta: float) -> void:
-	if not resisting_flow:
-		velocity += current_flow * (flow_strength * 0.5) * delta
+		is_shaking = false
+		shake_intensity = lerp(shake_intensity, 0.0, delta * 5)
+		camera.fov = lerp(camera.fov, original_fov, delta * 5)
 
 # Обновление H2O
 func update_h2o(delta: float) -> void:
