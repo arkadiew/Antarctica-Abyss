@@ -2,7 +2,7 @@ extends CharacterBody3D
 # Константы
 const MAX_INVENTORY_SIZE: int = 5
 var global_delta: float = 0.0
-const OXYGEN_CONSUMPTION_RATE: float = 0.5   # Расход кислорода (H2O) в секунду
+const OXYGEN_CONSUMPTION_RATE: float = 0.2   # Расход кислорода (H2O) в секунду
 const OXYGEN_CRITICAL_LEVEL: float = 10.0    # Критический уровень кислорода
 const OXYGEN_LOW_MOVEMENT_PENALTY: float = 0.5 # Замедление при низком запасе кислорода
 var is_scuba_mode: bool = true  # Флаг, что игрок в акваланге
@@ -13,7 +13,7 @@ const BUOYANCY_FACTOR: float = 1.0       # Коэффициент плавуче
 const SWIM_SPEED: float = 2.0            # Базовая скорость плавания в воде
 const SWIM_UP_SPEED: float = 3.0         # Скорость всплытия при зажатии прыжка
 const MIN_VERTICAL_SPEED: float = -0.5   # Минимальное опускание без действий
-const SWIM_DOWN_SPEED: float = 3.0  # Скорость погружения при нажатии Ctrl
+const SWIM_DOWN_SPEED: float = 6.0  # Скорость погружения при нажатии Ctrl
 const STAMINA_DOWN_COST: float = 2.0 # Расход выносливости при активном погружении
 
 # Переменные инвентаря
@@ -32,7 +32,7 @@ const JUMP_FORCE: float = 3.0
 const JUMP_STAMINA_COST: float = 10.0
 const MAX_STAMINA: float = 100.0
 const MAX_H2O: float = 100.0
-const H2O_DEPLETION_RATE: float = 5.0  # Скорость расхода H2O под водой
+const H2O_DEPLETION_RATE: float = 1.0  # Скорость расхода H2O под водой
 const H2O_RECOVERY_RATE: float = 30.0  # Скорость восстановления H2O на поверхности
 const STAMINA_RECOVERY_RATE: float = 30.0
 const STAMINA_RUN_DEPLETION_RATE: float = 20.0

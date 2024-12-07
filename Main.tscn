@@ -174,4 +174,4 @@ transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 32.854, 
 
 [node name="OxygenTank" parent="." groups=["oxygen_source"] instance=ExtResource("8_r3o46")]
 transform = Transform3D(1, 0, 0, 0, 1.12033, 0, 0, 0, 0.266534, 0, 0.444346, -15.4115)
-mass = 20.0
+mass = 10.0
