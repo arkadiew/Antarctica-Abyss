@@ -1,11 +1,11 @@
+MeshInstance3D
+CSGBox3D
 TextureProgressBar
 CollisionShape3D
-MeshInstance3D
 AudioStreamPlayer
 Node
 RigidBody3D
 Label
 Node3D
-CSGBox3D
 ColorRect
 RayCast3D

@@ -11,3 +11,5 @@ res://TSCN/flock.tscn
 res://utils/WaterMaker3D/WaterMaker3D.tscn
 res://TSCN/oxygen_tank.tscn
 res://StarterScene.tscn
+res://utils/psx_camera/psx_camera_shader.gdshader
+res://utils/psx_camera/camera_example.tscn
