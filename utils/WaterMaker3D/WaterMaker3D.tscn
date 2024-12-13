@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://ca0wevg1lb4rx"]
+[gd_scene load_steps=14 format=3 uid="uid://ca0wevg1lb4rx"]
 
+[ext_resource type="Script" path="res://SCR/swimmable_area_3d.gd" id="1_pijk5"]
 [ext_resource type="Shader" path="res://utils/WaterMaker3D/FogFade.gdshader" id="2_5f01f"]
 [ext_resource type="Shader" path="res://utils/WaterMaker3D/CameraWaterOverlay.gdshader" id="2_12cox"]
 [ext_resource type="Script" path="res://utils/WaterMaker3D/FogVolumeFadeScript.gd" id="3_b5ytn"]
@@ -61,6 +62,7 @@ material = SubResource("StandardMaterial3D_gdho2")
 
 [node name="SwimmableArea3D" type="Area3D" parent="." groups=["water_area"]]
 unique_name_in_owner = true
+script = ExtResource("1_pijk5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SwimmableArea3D"]
 unique_name_in_owner = true

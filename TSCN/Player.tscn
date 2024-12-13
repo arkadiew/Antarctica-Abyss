@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=15 format=3 uid="uid://wssnx1an6whd"]
 
 [ext_resource type="Texture2D" uid="uid://b1xbatblje1jm" path="res://utils/img/stamina_img/full_stamin.png" id="1_6mo7b"]
 [ext_resource type="Texture2D" uid="uid://biix3sa2uir3k" path="res://utils/img/stamina_img/stamin_no.png" id="2_k1srk"]
@@ -8,9 +8,54 @@
 [ext_resource type="Texture2D" uid="uid://bf4t0jhto3sw7" path="res://utils/img/stamina_img/stamin_4.png" id="6_wbvqo"]
 [ext_resource type="Shader" path="res://utils/psx_camera/psx_camera_shader.gdshader" id="7_vjg34"]
 
+[sub_resource type="GDScript" id="GDScript_187up"]
+script/source = "extends Node
+
+# Подключаем узлы
+@onready var player: Node = $\"../Player\"
+@onready var notifications: Node = $\"../NotificationSystem\"
+@onready var inventory_manager: Node = $\"../InventoryManager\"
+@onready var water_physics: Node = $\"../WaterPhysics\"
+
+
+func _ready() -> void:
+	# Подключаем сигналы
+	player.connect(\"on_low_stamina\", Callable(self, \"_on_low_stamina\"))
+	player.connect(\"on_jump\", Callable(self, \"_on_player_jump\"))
+	inventory_manager.connect(\"on_item_added\", Callable(self, \"_on_item_added\"))
+
+func _on_low_stamina():
+	notifications.show_notification(\"Stamina is low!\", 2.0)
+
+func _on_player_jump():
+	notifications.show_notification(\"Player jumped!\", 2.0)
+
+func _on_item_added(item_name: String):
+	notifications.show_notification(\"Added to inventory: \" + item_name, 2.0)
+"
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hq87f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4jev"]
+render_priority = 0
+shader = ExtResource("7_vjg34")
+shader_parameter/enable_fog = true
+shader_parameter/fog_color = null
+shader_parameter/noise_color = null
+shader_parameter/fog_distance = 100.0
+shader_parameter/fog_fade_range = 50.0
+shader_parameter/enable_noise = true
+shader_parameter/noise_time_fac = 4.0
+shader_parameter/enable_color_limitation = true
+shader_parameter/color_levels = 32
+shader_parameter/enable_dithering = true
+shader_parameter/dither_strength = 0.3
+
+[sub_resource type="QuadMesh" id="QuadMesh_wryk6"]
+material = SubResource("ShaderMaterial_o4jev")
+size = Vector2(300, 300)
 
 [sub_resource type="LabelSettings" id="LabelSettings_opqr3"]
 line_spacing = 9.0
@@ -36,27 +81,9 @@ frame_4/duration = 1.0
 frame_5/texture = ExtResource("2_k1srk")
 frame_5/duration = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4jev"]
-render_priority = 0
-shader = ExtResource("7_vjg34")
-shader_parameter/enable_fog = true
-shader_parameter/fog_color = null
-shader_parameter/noise_color = null
-shader_parameter/fog_distance = 100.0
-shader_parameter/fog_fade_range = 50.0
-shader_parameter/enable_noise = true
-shader_parameter/noise_time_fac = 4.0
-shader_parameter/enable_color_limitation = true
-shader_parameter/color_levels = 32
-shader_parameter/enable_dithering = true
-shader_parameter/dither_strength = 0.3
-
-[sub_resource type="QuadMesh" id="QuadMesh_wryk6"]
-material = SubResource("ShaderMaterial_o4jev")
-size = Vector2(300, 300)
-
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.724673, 0)
+script = SubResource("GDScript_187up")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1.00888, 0, 0, 0, 1, 0, 0, 0)
@@ -72,53 +99,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00115883, 1.33861, 0.181869
 keep_aspect = 0
 current = true
 fov = 120.0
-
-[node name="h2o2" type="ProgressBar" parent="Camera3D"]
-modulate = Color(0, 0, 0, 1)
-self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
-show_behind_parent = true
-top_level = true
-clip_contents = true
-custom_minimum_size = Vector2(90, 0)
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -4.0
-grow_horizontal = 0
-grow_vertical = 2
-fill_mode = 1
-show_percentage = false
-
-[node name="h2o" type="Label" parent="Camera3D"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -97.0
-offset_top = -25.0
-offset_right = 97.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "H2O"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="stamina" type="Label" parent="Camera3D"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -36.0
-offset_top = 59.0
-offset_right = 36.0
-offset_bottom = 82.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "STAMINA"
 
 [node name="Rayscary3D" type="RayCast3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.155787, -1.14258, 0, 11.8689, 0.0149971, 0, 0, -0.935285)
@@ -136,7 +116,64 @@ pixel_size = 0.006
 transform = Transform3D(2.88281, 0, 0, 0, 2.88281, 0, 0, 0, 2.88281, 0, 0, -0.858803)
 gizmo_extents = 27.45
 
-[node name="Panel" type="Panel" parent="Camera3D"]
+[node name="HandSlot" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0433952, 0.117052, -2.35171)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(0.0384652, 0, 0, 0, 0.0384652, 0, 0, 0, 0.0178821, 0, 0, -0.546126)
+visible = false
+mesh = SubResource("QuadMesh_wryk6")
+
+[node name="UI" type="Node" parent="Camera3D"]
+
+[node name="h2o2" type="ProgressBar" parent="Camera3D/UI"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
+show_behind_parent = true
+top_level = true
+clip_contents = true
+custom_minimum_size = Vector2(90, 0)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+grow_horizontal = 0
+grow_vertical = 2
+fill_mode = 1
+show_percentage = false
+
+[node name="h2o" type="Label" parent="Camera3D/UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.0
+offset_right = 97.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "H2O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="stamina" type="Label" parent="Camera3D/UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = 59.0
+offset_right = 36.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "STAMINA"
+
+[node name="Panel" type="Panel" parent="Camera3D/UI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -149,7 +186,7 @@ offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DarkenScreen" type="ColorRect" parent="Camera3D"]
+[node name="DarkenScreen" type="ColorRect" parent="Camera3D/UI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -160,10 +197,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 
-[node name="HandSlot" type="Node3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0433952, 0.117052, -2.35171)
-
-[node name="NotificationLabel" type="Label" parent="Camera3D"]
+[node name="NotificationLabel" type="Label" parent="Camera3D/UI"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 171.0
@@ -174,7 +208,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 justification_flags = 171
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Camera3D"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Camera3D/UI"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -187,10 +221,6 @@ step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
 texture_progress = SubResource("AnimatedTexture_cvq70")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
-transform = Transform3D(0.0384652, 0, 0, 0, 0.0384652, 0, 0, 0, 0.0178821, 0, 0, -0.546126)
-mesh = SubResource("QuadMesh_wryk6")
 
 [node name="GroundRay" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
