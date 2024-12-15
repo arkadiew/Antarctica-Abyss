@@ -172,5 +172,5 @@ transform = Transform3D(1, 0, 0, 0, 1.12033, 0, 0, 0, 0.266534, 0, 0.444346, -15
 mass = 10.0
 
 [node name="FishSpawner" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.09728, 0, -9.84295)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3971, -7.79171, -9.84295)
 script = ExtResource("9_wxqbo")

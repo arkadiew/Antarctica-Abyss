@@ -15,7 +15,8 @@ var turn_angle = 10.0
 var retreat_distance = 0.2
 var acceleration = 0.02
 var deceleration = 0.01
-
+var collision_cooldown = 0.0
+var collision_cooldown_time = 0.2
 var shoaling_radius = 5.0
 var points_of_interest = []
 
@@ -61,8 +62,15 @@ func _process(delta):
 
 	update_raycast_targets()
 
-	if is_colliding():
+	if collision_cooldown > 0:
+		collision_cooldown -= delta
+
+	# Existing logic for wander or flee
+	# ...
+	
+	if collision_cooldown <= 0 and is_colliding():
 		handle_collision()
+		collision_cooldown = collision_cooldown_time
 
 	# Move fish according to the velocity
 	var new_transform = transform
@@ -158,11 +166,12 @@ func enable_raycasting(enabled: bool):
 		raycast.enabled = enabled
 
 func update_raycast_targets():
+
 	var forward = velocity.normalized()
-	raycasts[0].target_position = transform.origin + forward * 1.5
-	raycasts[1].target_position = transform.origin - forward * 1.5
-	raycasts[2].target_position = transform.origin + Vector3(0, -1, 0) * 1.5
-	raycasts[3].target_position = transform.origin + Vector3(0, 1, 0) * 1.5
+	# A slightly shorter raycast might help
+	var ray_length = 1.0
+	raycasts[0].target_position = transform.origin + forward * ray_length
+	# Adjust others similarly
 
 func is_colliding() -> bool:
 	for raycast in raycasts:
@@ -178,18 +187,34 @@ func handle_collision():
 			break
 
 	if collision_normal != Vector3.ZERO:
-		# Reflect the velocity away from the collision
 		var reflect_direction = velocity.bounce(collision_normal).normalized()
 
-		# Apply a small random turn to avoid too-uniform reflections
+		# Apply a random turn to the reflected direction
 		var random_turn = deg_to_rad(randf_range(-turn_angle, turn_angle))
 		var rotation_axis = collision_normal.cross(Vector3.UP).normalized()
 		if rotation_axis.length() > 0:
-			velocity = reflect_direction.rotated(rotation_axis, random_turn) * speed
-		else:
-			velocity = reflect_direction * speed
+			reflect_direction = reflect_direction.rotated(rotation_axis, random_turn).normalized()
 
-		# Move the fish slightly away from the collided obstacle so it doesn't remain stuck
+		# Set a temporary target direction and reduce speed slightly
+		velocity = reflect_direction * (speed * 0.8)  # slightly reduce speed to avoid pushing into obstacle
+
+		# Move fish back slightly
 		var new_transform = transform
 		new_transform.origin += velocity.normalized() * (-retreat_distance)
-		transform = new_transform  # so that when fish hit an obstacle they turn away and move back
+		transform = new_transform
+func rotate_velocity_towards(target_direction: Vector3, delta: float, rotation_speed: float = 2.0) -> Vector3:
+	# Get current direction
+	var current_dir = velocity.normalized()
+	# Use spherical linear interpolation (slerp) or an approach to gradually rotate
+	var angle = acos(current_dir.dot(target_direction))
+
+	# Limit rotation based on rotation_speed
+	var max_angle = rotation_speed * delta
+	if angle > max_angle:
+		angle = max_angle
+
+	# Find rotation axis
+	var axis = current_dir.cross(target_direction).normalized()
+	# Rotate current_dir towards target_direction by a small angle step
+	var rotated_dir = current_dir.rotated(axis, angle).normalized()
+	return rotated_dir * velocity.length()
