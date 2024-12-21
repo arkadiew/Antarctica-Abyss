@@ -71,12 +71,12 @@ func _process(delta):
 		handle_collision()
 		collision_cooldown = collision_cooldown_time
 
-	# Перемещаем рыбу по вектору скорости
+
 	var new_transform = transform
 	new_transform.origin += velocity * delta
 	transform = new_transform
 
-	# Ограничиваем рыбу в пределах заданной области
+
 	if transform.origin.distance_to(start_position) > fish_bounds:
 		var direction_to_start = (start_position - transform.origin).normalized()
 		velocity = steer_towards(direction_to_start, velocity, delta)
