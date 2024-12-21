@@ -6,20 +6,20 @@ var state = State.WANDER
 var start_position = Vector3()
 var velocity = Vector3()
 var speed = 0.3
-var max_speed = 0.6  # Уменьшено для большей плавности
+var max_speed = 0.6  
 var min_speed = 0.1
 var fish_bounds = 60.0
 var wander_timer = 0.0
-var wander_interval = 10.0  # Увеличено для более редких смен направлений
+var wander_interval = 10.0  
 var turn_angle = 10.0
 var retreat_distance = 0.2
-var acceleration = 0.01  # Уменьшено для плавного набора скорости
+var acceleration = 0.01  
 var deceleration = 0.005
 var collision_cooldown = 0.0
 var collision_cooldown_time = 0.2
 var shoaling_radius = 5.0
-var avoidance_radius = 2.0  # Радиус избегания сородичей
-var avoidance_force = 0.05  # Сила избегания сородичей
+var avoidance_radius = 2.0  
+var avoidance_force = 0.05  
 var points_of_interest = []
 
 var flee_distance = 10.0
@@ -50,7 +50,6 @@ func set_random_velocity(target: Vector3 = Vector3.ZERO):
 		velocity = random_direction * speed
 
 func _process(delta):
-	# Определяем состояние рыбы
 	if predator != Vector3.ZERO and transform.origin.distance_to(predator) < flee_distance:
 		state = State.FLEE
 	else:
@@ -132,6 +131,7 @@ func align_with_neighbors(delta):
 
 	velocity = steer_towards(combined_direction, velocity, delta)
 
+@warning_ignore("unused_parameter")
 func avoid_neighbors(delta):
 	var neighbors = []
 	for neighbor in get_parent().get_children():
@@ -150,6 +150,7 @@ func avoid_neighbors(delta):
 	avoidance_direction = avoidance_direction.normalized()
 	velocity += avoidance_direction * avoidance_force
 
+@warning_ignore("unused_parameter")
 func steer_towards(target_direction: Vector3, current_velocity: Vector3, delta: float, target_speed: float = 0.0) -> Vector3:
 	if target_speed == 0.0:
 		target_speed = speed
@@ -166,6 +167,7 @@ func steer_towards(target_direction: Vector3, current_velocity: Vector3, delta: 
 
 	return new_velocity
 
+@warning_ignore("unused_parameter")
 func adjust_speed(current_velocity: Vector3, target_speed: float, delta: float) -> Vector3:
 	var current_speed = current_velocity.length()
 	if abs(current_speed - target_speed) < 0.01:
