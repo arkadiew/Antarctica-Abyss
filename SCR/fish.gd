@@ -6,15 +6,15 @@ var state = State.WANDER
 var start_position = Vector3()
 var velocity = Vector3()
 var speed = 0.3
-var max_speed = 0.8
+var max_speed = 0.6  # Уменьшено для большей плавности
 var min_speed = 0.1
 var fish_bounds = 60.0
 var wander_timer = 0.0
-var wander_interval = 6.0
+var wander_interval = 10.0  # Увеличено для более редких смен направлений
 var turn_angle = 10.0
 var retreat_distance = 0.2
-var acceleration = 0.02
-var deceleration = 0.01
+var acceleration = 0.01  # Уменьшено для плавного набора скорости
+var deceleration = 0.005
 var collision_cooldown = 0.0
 var collision_cooldown_time = 0.2
 var shoaling_radius = 5.0
@@ -48,7 +48,7 @@ func set_random_velocity(target: Vector3 = Vector3.ZERO):
 		velocity = random_direction * speed
 
 func _process(delta):
-	# Determine state
+	# Определяем состояние рыбы
 	if predator != Vector3.ZERO and transform.origin.distance_to(predator) < flee_distance:
 		state = State.FLEE
 	else:
@@ -65,19 +65,16 @@ func _process(delta):
 	if collision_cooldown > 0:
 		collision_cooldown -= delta
 
-	# Existing logic for wander or flee
-	# ...
-	
 	if collision_cooldown <= 0 and is_colliding():
 		handle_collision()
 		collision_cooldown = collision_cooldown_time
 
-	# Move fish according to the velocity
+	# Перемещаем рыбу по вектору скорости
 	var new_transform = transform
 	new_transform.origin += velocity * delta
 	transform = new_transform
 
-	# Constrain fish within defined bounds
+	# Ограничиваем рыбу в пределах заданной области
 	if transform.origin.distance_to(start_position) > fish_bounds:
 		var direction_to_start = (start_position - transform.origin).normalized()
 		velocity = steer_towards(direction_to_start, velocity, delta)
@@ -166,12 +163,9 @@ func enable_raycasting(enabled: bool):
 		raycast.enabled = enabled
 
 func update_raycast_targets():
-
 	var forward = velocity.normalized()
-	# A slightly shorter raycast might help
 	var ray_length = 1.0
 	raycasts[0].target_position = transform.origin + forward * ray_length
-	# Adjust others similarly
 
 func is_colliding() -> bool:
 	for raycast in raycasts:
@@ -188,33 +182,11 @@ func handle_collision():
 
 	if collision_normal != Vector3.ZERO:
 		var reflect_direction = velocity.bounce(collision_normal).normalized()
-
-		# Apply a random turn to the reflected direction
 		var random_turn = deg_to_rad(randf_range(-turn_angle, turn_angle))
 		var rotation_axis = collision_normal.cross(Vector3.UP).normalized()
 		if rotation_axis.length() > 0:
 			reflect_direction = reflect_direction.rotated(rotation_axis, random_turn).normalized()
-
-		# Set a temporary target direction and reduce speed slightly
-		velocity = reflect_direction * (speed * 0.8)  # slightly reduce speed to avoid pushing into obstacle
-
-		# Move fish back slightly
+		velocity = reflect_direction * (speed * 0.8)
 		var new_transform = transform
 		new_transform.origin += velocity.normalized() * (-retreat_distance)
 		transform = new_transform
-func rotate_velocity_towards(target_direction: Vector3, delta: float, rotation_speed: float = 2.0) -> Vector3:
-	# Get current direction
-	var current_dir = velocity.normalized()
-	# Use spherical linear interpolation (slerp) or an approach to gradually rotate
-	var angle = acos(current_dir.dot(target_direction))
-
-	# Limit rotation based on rotation_speed
-	var max_angle = rotation_speed * delta
-	if angle > max_angle:
-		angle = max_angle
-
-	# Find rotation axis
-	var axis = current_dir.cross(target_direction).normalized()
-	# Rotate current_dir towards target_direction by a small angle step
-	var rotated_dir = current_dir.rotated(axis, angle).normalized()
-	return rotated_dir * velocity.length()

@@ -1,10 +1,10 @@
 extends Node3D
 
 @export var fish_scene: PackedScene
-@export var fish_count: int = 20            # Сколько рыб заспавнить при старте
+@export var fish_count: int = 30            # Сколько рыб заспавнить при старте
 @export var spawn_interval: float = 3.0      # Интервал между волнами спавна
 @export var fish_per_wave: int = 5           # Сколько рыб спавнить за волну
-@export var max_total_fish: int = 100        # Максимум рыб, чтобы не заспавнить слишком много
+@export var max_total_fish: int = 60        # Максимум рыб, чтобы не заспавнить слишком много
 
 var current_fish_count = 0
 var swimmable_area: Node = null

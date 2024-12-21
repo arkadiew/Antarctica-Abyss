@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b80abwjy1x30n"]
 
 [ext_resource type="Script" path="res://SCR/flock.gd" id="1_8xjlx"]
-[ext_resource type="PackedScene" uid="uid://0pjgspw1hybq" path="res://TSCN/fish.tscn" id="1_e24ej"]
+[ext_resource type="PackedScene" uid="uid://0pjgspw1hybq" path="res://TSCN/FISh.tscn" id="1_e24ej"]
 
 [node name="Flock" type="Node3D"]
 transform = Transform3D(0.335725, 0, 0, 0, 0.335725, 0, 0, 0, 0.335725, 0, 0, 0)
