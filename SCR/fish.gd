@@ -18,6 +18,8 @@ var deceleration = 0.005
 var collision_cooldown = 0.0
 var collision_cooldown_time = 0.2
 var shoaling_radius = 5.0
+var avoidance_radius = 2.0  # Радиус избегания сородичей
+var avoidance_force = 0.05  # Сила избегания сородичей
 var points_of_interest = []
 
 var flee_distance = 10.0
@@ -82,6 +84,7 @@ func _process(delta):
 func wander_behavior(delta):
 	velocity = adjust_speed(velocity, speed, delta)
 	align_with_neighbors(delta)
+	avoid_neighbors(delta)
 
 	wander_timer += delta
 	if wander_timer > wander_interval:
@@ -128,6 +131,24 @@ func align_with_neighbors(delta):
 	var combined_direction = (direction_to_center + align_direction).normalized()
 
 	velocity = steer_towards(combined_direction, velocity, delta)
+
+func avoid_neighbors(delta):
+	var neighbors = []
+	for neighbor in get_parent().get_children():
+		if neighbor != self and neighbor is CSGBox3D and "velocity" in neighbor:
+			var dist = transform.origin.distance_to(neighbor.transform.origin)
+			if dist < avoidance_radius:
+				neighbors.append(neighbor)
+
+	if neighbors.size() == 0:
+		return
+
+	var avoidance_direction = Vector3()
+	for n in neighbors:
+		avoidance_direction += (transform.origin - n.transform.origin).normalized() / n.transform.origin.distance_to(transform.origin)
+
+	avoidance_direction = avoidance_direction.normalized()
+	velocity += avoidance_direction * avoidance_force
 
 func steer_towards(target_direction: Vector3, current_velocity: Vector3, delta: float, target_speed: float = 0.0) -> Vector3:
 	if target_speed == 0.0:
