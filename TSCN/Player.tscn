@@ -222,6 +222,10 @@ fill_mode = 4
 nine_patch_stretch = true
 texture_progress = SubResource("AnimatedTexture_cvq70")
 
+[node name="SuitNotification" type="Label" parent="Camera3D/UI"]
+offset_right = 40.0
+offset_bottom = 20.0
+
 [node name="GroundRay" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
 target_position = Vector3(0, -0.1, 0)

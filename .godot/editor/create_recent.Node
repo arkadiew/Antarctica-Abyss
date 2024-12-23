@@ -1,3 +1,4 @@
+Label
 Node3D
 Node
 MeshInstance3D
@@ -6,6 +7,5 @@ TextureProgressBar
 CollisionShape3D
 AudioStreamPlayer
 RigidBody3D
-Label
 ColorRect
 RayCast3D

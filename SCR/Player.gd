@@ -3,6 +3,8 @@ extends CharacterBody3D
 #
 # Constants
 #
+const SUIT_PICKUP_DISTANCE: float = 3.0
+const SUIT_GROUP: String = "suit_items"
 const MAX_INVENTORY_SIZE: int = 5
 const OXYGEN_CONSUMPTION_RATE: float = 0.2
 const OXYGEN_CRITICAL_LEVEL: float = 10.0
@@ -55,6 +57,7 @@ const OXYGEN_INTERACTION_DISTANCE: float = 3.0
 #
 # State Variables
 #
+var has_suit: bool = false
 var global_delta: float = 0.0
 var is_scuba_mode: bool = true
 var inventory: Array = []
@@ -107,10 +110,23 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_initialize_bars()
 	original_fov = camera.fov
+# Логика без костюма
+func _process_without_suit(delta: float) -> void:
+	check_suit_pickup()
+	update_movement(delta)
 
+# Логика с костюмом
+func _process_with_suit(delta: float) -> void:
+	handle_object_interactions(delta)
+	update_movement(delta)
+	update_stamina(delta)
+	update_h2o(delta)
 func _process(delta: float) -> void:
 	global_delta = delta
-	
+	if has_suit:
+		_process_with_suit(delta)
+	else:
+		_process_without_suit(delta)
 	# Logical update sequence
 	handle_object_interactions(delta)
 	update_movement(delta)
@@ -574,3 +590,26 @@ func toggle_mouse_mode() -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+# Проверка и активация костюма
+func check_suit_pickup() -> void:
+	if interact_ray.is_colliding():
+		var collider = interact_ray.get_collider()
+		if collider and collider.is_in_group(SUIT_GROUP):
+			var distance = global_transform.origin.distance_to(collider.global_transform.origin)
+			if distance <= SUIT_PICKUP_DISTANCE:
+				label_3d.global_transform.origin = collider.global_transform.origin + Vector3(0, 1, 0.1)
+				label_3d.text = "[E] Взять " + collider.name
+				label_3d.visible = true
+				if Input.is_action_just_pressed("interact"):
+					activate_suit(collider)
+			else:
+				label_3d.visible = false
+		else:
+			label_3d.visible = false
+
+func activate_suit(suit: Node) -> void:
+	has_suit = true
+	suit.queue_free()  # Удаляем костюм из сцены
+	show_notification("Костюм активирован! Теперь доступны кислород и выносливость.", 3.0)
+	stamina_bar.visible = true
+	h2o_bar.visible = true
