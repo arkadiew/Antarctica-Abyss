@@ -127,6 +127,7 @@ func _process_with_suit(delta: float) -> void:
 	update_stamina(delta)
 	update_h2o(delta)
 	update_oxygen_tank_interaction(delta)
+	handle_water_physics(delta)
 func _process(delta: float) -> void:
 	global_delta = delta
 	if has_suit:
