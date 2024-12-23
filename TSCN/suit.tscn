@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctwkjwrmoqokp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w860a"]
+
+[node name="suit_items" type="RigidBody3D" groups=["suit_items"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.54566, 0, -9.25156)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_w860a")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]

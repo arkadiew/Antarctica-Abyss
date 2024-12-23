@@ -112,8 +112,13 @@ func _ready() -> void:
 	original_fov = camera.fov
 # Логика без костюма
 func _process_without_suit(delta: float) -> void:
-	check_suit_pickup()
+	handle_object_interactions(delta)
 	update_movement(delta)
+	update_h2o(delta)
+	apply_camera_shake(delta)
+	apply_inertia(delta)
+	handle_jump(delta)
+	check_suit_pickup()
 
 # Логика с костюмом
 func _process_with_suit(delta: float) -> void:
@@ -121,23 +126,13 @@ func _process_with_suit(delta: float) -> void:
 	update_movement(delta)
 	update_stamina(delta)
 	update_h2o(delta)
+	update_oxygen_tank_interaction(delta)
 func _process(delta: float) -> void:
 	global_delta = delta
 	if has_suit:
 		_process_with_suit(delta)
 	else:
 		_process_without_suit(delta)
-	# Logical update sequence
-	handle_object_interactions(delta)
-	update_movement(delta)
-	update_stamina(delta)
-	update_stamina_bar(delta)
-	handle_water_physics(delta)
-	update_h2o(delta)
-	update_oxygen_tank_interaction(delta)
-	apply_camera_shake(delta)
-	apply_inertia(delta)
-	handle_jump(delta)
 
 #
 # Object Interactions & Inventory
@@ -187,6 +182,9 @@ func _try_pick_object():
 			holding_object_time = 0.0
 
 func _try_add_to_inventory():
+	if not has_suit:
+		show_notification("Инвентарь недоступен без костюма!", 2.0)
+		return
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
 		if collider is RigidBody3D and not collider in inventory and len(inventory) < MAX_INVENTORY_SIZE:
@@ -431,6 +429,9 @@ func add_to_inventory(object: RigidBody3D) -> void:
 	show_notification(object.name + " added to inventory", 2.0)
 
 func select_next_inventory_item() -> void:
+	if not has_suit:
+		show_notification("Инвентарь недоступен без костюма!", 2.0)
+		return
 	if inventory.size() == 0:
 		show_notification("Inventory is empty!", 2.0)
 		return
@@ -443,6 +444,9 @@ func select_next_inventory_item() -> void:
 	show_notification("Selected: " + selected_item.name, 2.0)
 
 func drop_selected_object() -> void:
+	if not has_suit:
+		show_notification("Инвентарь недоступен без костюма!", 2.0)
+		return
 	if not selected_item:
 		show_notification("No item to drop!", 2.0)
 		return
@@ -597,11 +601,10 @@ func check_suit_pickup() -> void:
 		if collider and collider.is_in_group(SUIT_GROUP):
 			var distance = global_transform.origin.distance_to(collider.global_transform.origin)
 			if distance <= SUIT_PICKUP_DISTANCE:
-				label_3d.global_transform.origin = collider.global_transform.origin + Vector3(0, 1, 0.1)
-				label_3d.text = "[E] Взять " + collider.name
+				activate_suit(collider)
+				label_3d.text =  collider.name
 				label_3d.visible = true
-				if Input.is_action_just_pressed("interact"):
-					activate_suit(collider)
+				
 			else:
 				label_3d.visible = false
 		else:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bj3l75816anov"]
+[gd_scene load_steps=26 format=3 uid="uid://bj3l75816anov"]
 
 [ext_resource type="PackedScene" uid="uid://wssnx1an6whd" path="res://TSCN/Player.tscn" id="1_s72jo"]
 [ext_resource type="Script" path="res://SCR/Player.gd" id="2_kg5ig"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://5v2ic1cxc6l8" path="res://bool.tscn" id="6_1v1di"]
 [ext_resource type="PackedScene" uid="uid://nbwwfl61lklx" path="res://TSCN/oxygen_tank.tscn" id="8_r3o46"]
 [ext_resource type="Script" path="res://SCR/fish_spawner.gd" id="9_wxqbo"]
+[ext_resource type="PackedScene" uid="uid://ctwkjwrmoqokp" path="res://TSCN/suit.tscn" id="10_onwfj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmxq2"]
 albedo_texture = ExtResource("3_1qqei")
@@ -174,3 +175,5 @@ mass = 10.0
 [node name="FishSpawner" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3971, -7.79171, -9.84295)
 script = ExtResource("9_wxqbo")
+
+[node name="suit_items" parent="." instance=ExtResource("10_onwfj")]
