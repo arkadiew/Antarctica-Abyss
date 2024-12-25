@@ -110,6 +110,14 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_initialize_bars()
 	original_fov = camera.fov
+	if has_suit:
+		stamina_bar.visible = true
+		h2o_bar.visible = true
+		stamina_bar.modulate.a = 1.0
+		h2o_bar.modulate.a = 1.0
+	else:
+		stamina_bar.visible = false
+		h2o_bar.visible = false
 # Логика без костюма
 func _process_without_suit(delta: float) -> void:
 	handle_object_interactions(delta)
@@ -128,13 +136,21 @@ func _process_with_suit(delta: float) -> void:
 	update_h2o(delta)
 	update_oxygen_tank_interaction(delta)
 	handle_water_physics(delta)
+	_initialize_bars()
 func _process(delta: float) -> void:
 	global_delta = delta
 	if has_suit:
 		_process_with_suit(delta)
+
+		# Принудительно устанавливаем интерфейс видимым
+		if not stamina_bar.visible or stamina_bar.modulate.a < 1.0:
+			stamina_bar.visible = true
+			stamina_bar.modulate.a = 1.0
+		if not h2o_bar.visible or h2o_bar.modulate.a < 1.0:
+			h2o_bar.visible = true
+			h2o_bar.modulate.a = 1.0
 	else:
 		_process_without_suit(delta)
-
 #
 # Object Interactions & Inventory
 #
@@ -480,7 +496,11 @@ func _initialize_bars() -> void:
 	h2o_bar.value = h2o
 	h2o_bar.modulate.a = 0.0
 	h2o_label.modulate.a = 0.0
-
+	
+	stamina_bar.visible = false
+	h2o_bar.visible = false
+	bar_visible = false
+	
 func get_input_direction() -> Vector3:
 	var input_dir = Vector3(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -615,5 +635,11 @@ func activate_suit(suit: Node) -> void:
 	has_suit = true
 	suit.queue_free()  # Удаляем костюм из сцены
 	show_notification("Костюм активирован! Теперь доступны кислород и выносливость.", 3.0)
+# Устанавливаем видимость интерфейса
+	stamina_bar.modulate.a = 1.0
+	stamina_label.modulate.a = 1.0
+	h2o_bar.modulate.a = 1.0
+	h2o_label.modulate.a = 1.0
 	stamina_bar.visible = true
 	h2o_bar.visible = true
+	bar_visible = true  # Глобальный флаг видимости интерфейса
