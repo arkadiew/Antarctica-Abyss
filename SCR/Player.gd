@@ -363,7 +363,7 @@ func update_h2o(delta: float) -> void:
 		restart_timer = 0.0
 
 	update_h2o_bar()
-	update_h2o_label_and_bar_visibility(delta)
+
 
 func _handle_underwater_effects(delta: float):
 	if h2o <= MIN_H2O_THRESHOLD and not is_shaking:
@@ -390,14 +390,6 @@ func increase_h2o(amount: float) -> void:
 
 func update_h2o_bar() -> void:
 	h2o_bar.value = h2o
-
-func update_h2o_label_and_bar_visibility(delta: float) -> void:
-	if is_underwater and h2o < MAX_H2O:
-		h2o_bar.modulate.a = lerp(h2o_bar.modulate.a, 1.0, delta * 3)
-		h2o_label.modulate.a = lerp(h2o_label.modulate.a, 1.0, delta * 3)
-	else:
-		h2o_bar.modulate.a = lerp(h2o_bar.modulate.a, 0.0, delta * 3)
-		h2o_label.modulate.a = lerp(h2o_label.modulate.a, 0.0, delta * 3)
 
 #
 # Oxygen Tank Interaction
