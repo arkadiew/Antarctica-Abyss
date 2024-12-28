@@ -12,3 +12,4 @@ res://TSCN/oxygen_tank.tscn
 res://TSCN/suit.tscn
 res://SCR/Player.gd
 res://TSCN/player_cpu_particles_3d.tscn
+res://SCR/audio_manager.gd

@@ -92,6 +92,7 @@ var jump_charge_rate: float = 0.5
 #
 # Onready References
 #
+@onready var AudioManager: Node = $AudioManager
 @onready var camera: Camera3D = $CameraPivot/Camera3D
 @onready var interact_ray: RayCast3D = $CameraPivot/Camera3D/InteractRay
 @onready var stamina_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/TextureProgressBar
@@ -683,3 +684,8 @@ func activate_suit(suit: Node) -> void:
 	stamina_bar.visible = true
 	h2o_bar.visible = true
 	bar_visible = true  # Глобальный флаг видимости интерфейса
+	var sound_path = "res://voice/voice.mp3"
+	if AudioManager:
+		AudioManager.play_sound(sound_path)
+	else:
+		print("AudioManager not found!")

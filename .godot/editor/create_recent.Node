@@ -1,13 +1,14 @@
+AudioStreamPlayer
+Node
 Node3D
+AudioStreamPlayer3D
 CPUParticles3D
 Area3D
 CSGBox3D
 CollisionShape3D
 RigidBody3D
 Label
-Node
 MeshInstance3D
 TextureProgressBar
-AudioStreamPlayer
 ColorRect
 RayCast3D

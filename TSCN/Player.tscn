@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=16 format=3 uid="uid://wssnx1an6whd"]
 
 [ext_resource type="Texture2D" uid="uid://b1xbatblje1jm" path="res://utils/img/stamina_img/full_stamin.png" id="1_6mo7b"]
 [ext_resource type="Texture2D" uid="uid://biix3sa2uir3k" path="res://utils/img/stamina_img/stamin_no.png" id="2_k1srk"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bkflhwasqhit4" path="res://utils/img/stamina_img/stamin_3.png" id="5_1tyxv"]
 [ext_resource type="Texture2D" uid="uid://bf4t0jhto3sw7" path="res://utils/img/stamina_img/stamin_4.png" id="6_wbvqo"]
 [ext_resource type="Shader" path="res://utils/psx_camera/psx_camera_shader.gdshader" id="7_vjg34"]
+[ext_resource type="Script" path="res://SCR/audio_manager.gd" id="8_3vx6c"]
 
 [sub_resource type="GDScript" id="GDScript_187up"]
 script/source = "extends Node
@@ -231,3 +232,8 @@ offset_bottom = 20.0
 [node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
 target_position = Vector3(0, -0.1, 0)
+
+[node name="AudioManager" type="Node" parent="."]
+script = ExtResource("8_3vx6c")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AudioManager"]
