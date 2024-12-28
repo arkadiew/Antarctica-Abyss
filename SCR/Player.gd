@@ -18,6 +18,7 @@ const MIN_VERTICAL_SPEED: float = -0.5
 const SWIM_DOWN_SPEED: float = 6.0
 const STAMINA_DOWN_COST: float = 2.0
 
+const MAX_VERTICAL_ANGLE: float = 89.0  # Ограничение вертикального угла камеры
 const RUN_MULTIPLIER: float = 2.0
 const SENSITIVITY: float = 0.01
 const GRAVITY: float = -9.8
@@ -91,17 +92,22 @@ var jump_charge_rate: float = 0.5
 #
 # Onready References
 #
-@onready var camera: Camera3D = $Camera3D
-@onready var interact_ray: RayCast3D = $Camera3D/InteractRay
-@onready var stamina_bar: TextureProgressBar = $Camera3D/UI/TextureProgressBar
-@onready var stamina_label: Label = $Camera3D/UI/stamina
-@onready var h2o_bar: ProgressBar = $Camera3D/UI/h2o2
-@onready var h2o_label: Label = $Camera3D/UI/h2o
-@onready var label_3d: Label3D = $Camera3D/Label3D
-@onready var darken_screen: ColorRect = $Camera3D/UI/DarkenScreen
-@onready var NotificationLabel: Label = $Camera3D/UI/NotificationLabel
-
+@onready var camera: Camera3D = $CameraPivot/Camera3D
+@onready var interact_ray: RayCast3D = $CameraPivot/Camera3D/InteractRay
+@onready var stamina_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/TextureProgressBar
+@onready var stamina_label: Label = $CameraPivot/Camera3D/UI/stamina
+@onready var h2o_bar: ProgressBar = $CameraPivot/Camera3D/UI/h2o2
+@onready var h2o_label: Label = $CameraPivot/Camera3D/UI/h2o
+@onready var label_3d: Label3D = $CameraPivot/Camera3D/Label3D
+@onready var darken_screen: ColorRect = $CameraPivot/Camera3D/UI/DarkenScreen
+@onready var NotificationLabel: Label = $CameraPivot/Camera3D/UI/NotificationLabel
+@onready var camera_pivot: Node3D =$CameraPivot
 var shake_randomizer: RandomNumberGenerator = RandomNumberGenerator.new()
+const SMOOTH_ROTATION_SPEED: float = 5.0  # Скорость сглаживания вращения
+
+var rotation_y: float = 0.0  # Горизонтальное вращение тела
+var rotation_x: float = 0.0  # Вертикальное вращение камеры
+var target_rotation_y: float = 0.0  # Целевой угол горизонтального вращения тела
 
 #
 # Lifecycle
@@ -125,7 +131,6 @@ func _process_without_suit(delta: float) -> void:
 	update_h2o(delta)
 	apply_camera_shake(delta)
 	apply_inertia(delta)
-	handle_jump(delta)
 	check_suit_pickup()
 
 # Логика с костюмом
@@ -138,6 +143,12 @@ func _process_with_suit(delta: float) -> void:
 	handle_water_physics(delta)
 	_initialize_bars()
 func _process(delta: float) -> void:
+	rotation_y = lerp_angle(rotation_y, target_rotation_y, delta * SMOOTH_ROTATION_SPEED)
+	rotation.y = rotation_y
+
+	# Ограничение вертикального вращения камеры
+	rotation_x = clamp(rotation_x, -MAX_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE)
+	camera_pivot.rotation_degrees.x = rotation_x
 	global_delta = delta
 	if has_suit:
 		_process_with_suit(delta)
@@ -214,65 +225,125 @@ func apply_stamina_penalty_for_holding(delta: float):
 		decrease_stamina(10.0 * drain_factor * delta)
 
 #
-# Player Movement & Control
+# Player Movement & Control NEW!!!
 #
 func update_movement(delta: float) -> void:
-	move_vector = get_input_direction()
-	var target_speed = determine_speed() * move_vector.length()
+	var move_vector = get_input_direction()
+	var target_speed = calculate_target_speed(move_vector)
+
+	target_speed = apply_run_speed(target_speed)
+
 	var current_speed = velocity.length()
-	var speed_difference = target_speed - current_speed
-	var acceleration = 20.0 if speed_difference > 0 else 10.0
-	var adjusted_speed = current_speed + sign(speed_difference) * min(abs(speed_difference), acceleration * delta)
+	var adjusted_speed = adjust_speed(current_speed, target_speed, delta)
 
 	if move_vector.length() > 0:
-		move_vector = move_vector.normalized() * adjusted_speed
+		move_vector = apply_movement_adjustment(move_vector, adjusted_speed)
+		create_impact_effect(move_vector)
 	else:
-		move_vector *= max(0, current_speed - 10.0 * delta)
+		move_vector = apply_deceleration(move_vector, current_speed, delta)
 
+	update_velocity(move_vector, delta)
+
+	if is_on_floor():
+		handle_jump(delta)
+
+	apply_gravity(delta)
+	move_and_slide()
+
+func calculate_target_speed(move_vector: Vector3) -> float:
+	return determine_speed() * move_vector.length()
+
+func adjust_speed(current_speed: float, target_speed: float, delta: float) -> float:
+	var speed_difference = target_speed - current_speed
+	var acceleration = 20.0 if speed_difference > 0 else 10.0
+	return current_speed + sign(speed_difference) * min(abs(speed_difference), acceleration * delta)
+
+func apply_movement_adjustment(move_vector: Vector3, adjusted_speed: float) -> Vector3:
+	return move_vector.normalized() * adjusted_speed
+
+func apply_deceleration(move_vector: Vector3, current_speed: float, delta: float) -> Vector3:
+	return move_vector * max(0, current_speed - 10.0 * delta)
+	
+func apply_run_speed(target_speed: float) -> float:
+	if can_run and Input.is_action_pressed("run") and stamina > 0:
+		return target_speed * RUN_SPEED_MULTIPLIER
+	return target_speed
+
+func update_velocity(move_vector: Vector3, delta: float) -> void:
 	velocity.x = move_vector.x
 	velocity.z = move_vector.z
 
 	if not is_on_floor():
 		velocity.x = lerp(velocity.x, move_vector.x, delta * 2.0)
 		velocity.z = lerp(velocity.z, move_vector.z, delta * 2.0)
-		velocity.y += GRAVITY * delta
-	else:
-		if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
-			velocity.y = JUMP_FORCE
-			decrease_stamina(JUMP_STAMINA_COST)
 
-	move_and_slide()
+func apply_gravity(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y += GRAVITY * delta
 
 func handle_jump(delta: float) -> void:
-	if Input.is_action_pressed("jump") and is_on_floor():
-		jump_charge = clamp(jump_charge + jump_charge_rate * delta, 0, max_jump_charge)
-	elif Input.is_action_just_released("jump") and jump_charge > 0.0:
-		velocity.y = JUMP_FORCE + jump_charge * JUMP_FORCE
-		jump_charge = 0.0
+	if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
+		velocity.y = JUMP_FORCE
 		decrease_stamina(JUMP_STAMINA_COST)
 
-#
-# Stamina Management
-#
+func create_impact_effect(move_vector: Vector3) -> void:
+	return
+	#if move_vector.length() > 0:
+		#var impact_strength = move_vector.length()
+	   # spawn_particles(impact_strength)
+	 #   play_impact_sound(impact_strength)
+		#apply_screen_shake(impact_strength)
+
+func spawn_particles(impact_strength: float) -> void:
+	return
+	#var particle = preload("res://path_to_particles.tres").instance()
+   # particle.global_transform = global_transform
+   # particle.scale *= impact_strength * 0.1
+   # add_child(particle)
+  #  particle.emitting = true
+
+func play_impact_sound(impact_strength: float) -> void:
+	return
+	#var sound_player = preload("res://path_to_sound.tres").instance()
+	#sound_player.global_transform = global_transform
+	#add_child(sound_player)
+	#sound_player.volume_db = -10 + impact_strength * 2
+	#sound_player.play()
+
+#func apply_screen_shake(impact_strength: float) -> void:
+	
+	#var body_position = global_transform.origin
+	#var shake_intensity = impact_strength * 0.05
+
+	#var random_offset = Vector3(randf() - 0.5, randf() - 0.5, 0).normalized() * shake_intensity
+	#camera.global_transform.origin = body_position + Vector3(0, 2.0, 0) + random_offset
+	
+	#await get_tree().create_timer(0.1).timeout
+	#camera.global_transform.origin = body_position + Vector3(0, 2.0, 0) + Vector3(randf() * shake_intensity, randf() * shake_intensity, 0)
+	#await get_tree().create_timer(0.1).timeout
+	#camera.global_transform.origin = body_position
+
+
 func update_stamina(delta: float) -> void:
 	var in_water = is_in_water()
+	var move_vector = get_input_direction()
 	var is_moving = move_vector.length() > 0
-	is_running = can_run and stamina > 0 and Input.is_action_pressed("run") and is_moving and not in_water
 
-	if is_running:
+	if can_run and stamina > 0 and Input.is_action_pressed("run") and is_moving and not in_water:
 		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta)
 		stamina_recovery_timer = 0.0
 		if stamina <= 0:
 			can_run = false
 	else:
 		stamina_recovery_timer += delta
-		if not Input.is_action_pressed("run"):
-			if stamina_recovery_timer >= STAMINA_RECOVERY_DELAY:
-				increase_stamina(STAMINA_RECOVERY_RATE * delta * (1 - stamina / MAX_STAMINA))
+		if stamina_recovery_timer >= STAMINA_RECOVERY_DELAY:
+			var recovery_rate = STAMINA_RECOVERY_RATE * delta * (1 - stamina / MAX_STAMINA)
+			increase_stamina(recovery_rate)
 			if stamina > 0:
 				can_run = true
+
 	if stamina <= 0 and is_moving:
-		stamina_recovery_timer += delta
+		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta * 0.5)  # Apply slower depletion when exhausted
 
 func decrease_stamina(amount: float) -> void:
 	stamina = clamp(stamina - amount, 0, MAX_STAMINA)
@@ -280,30 +351,6 @@ func decrease_stamina(amount: float) -> void:
 func increase_stamina(amount: float) -> void:
 	stamina = clamp(stamina + amount, 0, MAX_STAMINA)
 
-func update_stamina_bar(delta: float) -> void:
-	stamina_bar.value = stamina
-	if stamina < MAX_STAMINA and not bar_visible:
-		show_stamina_bar(delta)
-	elif stamina >= MAX_STAMINA and bar_visible:
-		hide_stamina_bar(delta)
-
-func show_stamina_bar(delta: float) -> void:
-	stamina_bar.modulate.a = lerp(stamina_bar.modulate.a, 1.0, delta * 5)
-	stamina_label.modulate.a = stamina_bar.modulate.a
-	if stamina_bar.modulate.a >= 0.99:
-		stamina_bar.modulate.a = 1.0
-		stamina_label.modulate.a = 1.0
-		bar_visible = true
-
-func hide_stamina_bar(delta: float) -> void:
-	stamina_bar.modulate.a = lerp(stamina_bar.modulate.a, 0.0, delta * 5)
-	stamina_label.modulate.a = stamina_bar.modulate.a
-	if stamina_bar.modulate.a <= 0.01:
-		stamina_bar.modulate.a = 0.0
-		stamina_label.modulate.a = 0.0
-		bar_visible = false
-
-#
 # Water & Swimming
 #
 func handle_water_physics(delta: float) -> void:
@@ -589,20 +636,21 @@ func show_notification(text: String, delay: float = 2.0) -> void:
 #
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		handle_mouse_motion(event)
-	elif event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
-		toggle_mouse_mode()
+		_handle_mouse_motion(event)
 
-func handle_mouse_motion(event: InputEventMouseMotion) -> void:
-	var sensitivity_factor = 0.1
-	rotation.y -= event.relative.x * SENSITIVITY * sensitivity_factor
-	rotation.x = clamp(rotation.x - event.relative.y * SENSITIVITY * sensitivity_factor, -1.5, 1.5)
-	global_transform.basis = global_transform.basis.slerp(
-		Basis().rotated(Vector3(1, 0, 0), rotation.x).rotated(Vector3(0, 1, 0), rotation.y), 
-		global_delta * 5.0
-	)
+	if event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
+		_toggle_mouse_mode()
+func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
+	# Горизонтальное вращение тела: изменение целевого угла
+	target_rotation_y -= event.relative.x * SENSITIVITY * 0.1
 
-func toggle_mouse_mode() -> void:
+	# Вертикальное вращение камеры: мгновенное изменение угла
+	rotation_x -= event.relative.y * SENSITIVITY* 5
+	
+
+
+
+func _toggle_mouse_mode() -> void:
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:

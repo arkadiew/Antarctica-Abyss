@@ -94,39 +94,41 @@ mesh = SubResource("CapsuleMesh_hq87f")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0301087, 0)
 shape = SubResource("CapsuleShape3D_4q6bg")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00115883, 1.33861, 0.181869)
 keep_aspect = 0
 current = true
 fov = 120.0
 
-[node name="Rayscary3D" type="RayCast3D" parent="Camera3D"]
+[node name="Rayscary3D" type="RayCast3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.155787, -1.14258, 0, 11.8689, 0.0149971, 0, 0, -0.935285)
 
-[node name="InteractRay" type="RayCast3D" parent="Camera3D"]
+[node name="InteractRay" type="RayCast3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1.34086, 0, 0, 0, 1.07764, -0.129825, 0, 0.336805, 0.415392, -0.0749416, -0.433537, -0.928925)
 target_position = Vector3(0, 0, -3)
 collide_with_areas = true
 
-[node name="Label3D" type="Label3D" parent="Camera3D"]
+[node name="Label3D" type="Label3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.883044)
 pixel_size = 0.006
 
-[node name="Marker3D" type="Marker3D" parent="Camera3D"]
+[node name="Marker3D" type="Marker3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(2.88281, 0, 0, 0, 2.88281, 0, 0, 0, 2.88281, 0, 0, -0.858803)
 gizmo_extents = 27.45
 
-[node name="HandSlot" type="Node3D" parent="Camera3D"]
+[node name="HandSlot" type="Node3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0433952, 0.117052, -2.35171)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(0.0384652, 0, 0, 0, 0.0384652, 0, 0, 0, 0.0178821, 0, 0, -0.546126)
 visible = false
 mesh = SubResource("QuadMesh_wryk6")
 
-[node name="UI" type="Node" parent="Camera3D"]
+[node name="UI" type="Node" parent="CameraPivot/Camera3D"]
 
-[node name="h2o2" type="ProgressBar" parent="Camera3D/UI"]
+[node name="h2o2" type="ProgressBar" parent="CameraPivot/Camera3D/UI"]
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
 show_behind_parent = true
@@ -143,7 +145,7 @@ grow_vertical = 2
 fill_mode = 1
 show_percentage = false
 
-[node name="h2o" type="Label" parent="Camera3D/UI"]
+[node name="h2o" type="Label" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -159,7 +161,7 @@ text = "H2O"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="stamina" type="Label" parent="Camera3D/UI"]
+[node name="stamina" type="Label" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -173,7 +175,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "STAMINA"
 
-[node name="Panel" type="Panel" parent="Camera3D/UI"]
+[node name="Panel" type="Panel" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -186,7 +188,7 @@ offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DarkenScreen" type="ColorRect" parent="Camera3D/UI"]
+[node name="DarkenScreen" type="ColorRect" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -197,7 +199,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 
-[node name="NotificationLabel" type="Label" parent="Camera3D/UI"]
+[node name="NotificationLabel" type="Label" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 171.0
@@ -208,7 +210,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 justification_flags = 171
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Camera3D/UI"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -222,10 +224,10 @@ fill_mode = 4
 nine_patch_stretch = true
 texture_progress = SubResource("AnimatedTexture_cvq70")
 
-[node name="SuitNotification" type="Label" parent="Camera3D/UI"]
+[node name="SuitNotification" type="Label" parent="CameraPivot/Camera3D/UI"]
 offset_right = 40.0
 offset_bottom = 20.0
 
-[node name="GroundRay" type="RayCast3D" parent="."]
+[node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
 target_position = Vector3(0, -0.1, 0)

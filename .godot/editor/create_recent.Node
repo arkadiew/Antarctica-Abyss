@@ -1,9 +1,10 @@
+Node3D
+CPUParticles3D
 Area3D
 CSGBox3D
 CollisionShape3D
 RigidBody3D
 Label
-Node3D
 Node
 MeshInstance3D
 TextureProgressBar

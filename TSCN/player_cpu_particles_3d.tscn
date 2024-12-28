@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdb5nxhuy678e"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cb7ki"]
+uv2_padding = 1.2
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="CPUParticles3D" type="CPUParticles3D"]
+transform = Transform3D(-0.98908, 0.147378, 0, -0.147378, -0.98908, 0, 0, 0, 1, 0, 0, 0)
+amount = 7
+lifetime = 0.8
+mesh = SubResource("BoxMesh_cb7ki")
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(-6, 0, 0)
