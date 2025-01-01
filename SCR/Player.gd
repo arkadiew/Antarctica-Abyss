@@ -133,6 +133,7 @@ func _process_without_suit(delta: float) -> void:
 	apply_camera_shake(delta)
 	apply_inertia(delta)
 	check_suit_pickup()
+	handle_water_physics_without_suit(delta)
 
 # Логика с костюмом
 func _process_with_suit(delta: float) -> void:
@@ -689,3 +690,62 @@ func activate_suit(suit: Node) -> void:
 		AudioManager.play_sound(sound_path)
 	else:
 		print("AudioManager not found!")
+
+# Обработка физики в воде
+func handle_water_physics_without_suit(delta: float) -> void:
+	if is_in_water():
+		update_current_flow()
+		apply_water_physics(delta)
+	
+
+
+
+func update_current_flow() -> void:
+	# Пример изменения направления течения
+	if global_transform.origin.x > 50:
+		current_flow = Vector3(-1, 0, 0)  # Течение влево
+	elif global_transform.origin.z < -50:
+		current_flow = Vector3(0, 0, 1)  # Течение вперед
+	else:
+		current_flow = Vector3(1, 0, 0)  # Течение вправо
+
+func apply_water_physics(delta: float) -> void:
+	var water_gravity = GRAVITY * 0.2
+	var water_drag_horizontal = 1.5
+	var water_drag_vertical = 1.2
+	var swim_up_force = 13.0
+	var input_dir = Vector3.ZERO
+	var is_moving_in_water = false
+
+
+	# Если есть движение, игрок сопротивляется течению
+	if input_dir != Vector3.ZERO:
+		input_dir = input_dir.normalized()
+		resisting_flow = true
+		velocity.x = input_dir.x * (WALK_SPEED * 0.5)
+		velocity.z = input_dir.z * (WALK_SPEED * 0.5)
+	else:
+		resisting_flow = false
+
+	# Плавание вверх
+	if Input.is_action_pressed("jump") and stamina > 1:
+		velocity.y += swim_up_force * delta
+		is_moving_in_water = true
+		decrease_stamina(0.9)
+	else:
+		velocity.y -= water_gravity * delta
+
+	# Применяем течение, если игрок не сопротивляется
+	if not resisting_flow:
+		velocity += current_flow * flow_strength * delta
+		decrease_stamina(0.3 * delta)
+	else:
+		velocity += current_flow * flow_strength * 0.5 * delta
+
+	# Применяем водное сопротивление
+	velocity.x = lerp(velocity.x, 0.0, water_drag_horizontal * delta)
+	velocity.z = lerp(velocity.z, 0.0, water_drag_horizontal * delta)
+	velocity.y = lerp(velocity.y, 0.0, water_drag_vertical * delta)
+
+	# Ограничиваем бег в воде
+	is_running = false
