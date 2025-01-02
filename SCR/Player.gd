@@ -131,6 +131,7 @@ func _process_without_suit(delta):
 	handle_object_interactions(delta)
 	update_movement(delta)
 	update_h2o(delta)
+	update_stamina(delta)
 	apply_camera_shake(delta)
 	apply_inertia(delta)
 	check_suit_pickup()
@@ -340,7 +341,8 @@ func update_h2o_bar():
 	h2o_bar.value = h2o
 
 func update_oxygen_tank_interaction(delta):
-	if get_tree() == null: return
+	if not is_instance_valid(self) or not get_tree():
+		return
 	for tank in get_tree().get_nodes_in_group("oxygen_source"):
 		if tank.global_transform.origin.distance_to(global_transform.origin) <= OXYGEN_INTERACTION_DISTANCE:
 			increase_h2o(OXYGEN_REPLENISH_RATE * delta)
@@ -428,6 +430,8 @@ func get_input_direction() -> Vector3:
 	return w.normalized()
 
 func is_in_water() -> bool:
+	if not is_instance_valid(self) or not get_tree():
+		return false
 	for area in get_tree().get_nodes_in_group("water_area"):
 		if area.overlaps_body(self):
 			return true

@@ -1,35 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://0pjgspw1hybq"]
+[gd_scene load_steps=3 format=3 uid="uid://bkrbjxq3j0das"]
 
-[ext_resource type="Texture2D" uid="uid://ch4wa78x2sfj2" path="res://addons/devblocks/textures/light/texture_01.png" id="1_u5lgn"]
-[ext_resource type="Shader" uid="uid://bg0s74rfgn7qx" path="res://gridmaterial.tres" id="2_eaeri"]
-[ext_resource type="Script" path="res://SCR/fish.gd" id="3_8q3pq"]
+[ext_resource type="Script" path="res://SCR/fish_new.gd" id="1_8b5ia"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g3rpc"]
-albedo_texture = ExtResource("1_u5lgn")
+[sub_resource type="BoxShape3D" id="BoxShape3D_pcmio"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7ash"]
-render_priority = 12
-shader = ExtResource("2_eaeri")
-shader_parameter/grid_size = null
-shader_parameter/Color_1 = null
-shader_parameter/Color_2 = null
+[node name="fish" type="Node3D"]
 
-[node name="CSGBox3D" type="CSGBox3D"]
-transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, 0.419589)
-material_override = SubResource("StandardMaterial3D_g3rpc")
-collision_layer = 6
-size = Vector3(1, 1, 1.90381)
-material = SubResource("ShaderMaterial_a7ash")
-script = ExtResource("3_8q3pq")
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("1_8b5ia")
 
-[node name="RayCast3D3" type="RayCast3D" parent="."]
-transform = Transform3D(0.155687, 0, 0, 0, 1.03257, 0.00260445, 0, -0.0066882, 1.03258, -0.0397558, -0.562957, -0.149191)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
 
-[node name="RayCast3D2" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.781236, -0.00324056, 0, 0.00253011, -2.56956, 0.030257, 0.572892, 0.0653667)
+[node name="CSGBox3D" type="CSGBox3D" parent="CharacterBody3D"]
 
-[node name="RayCast3D4" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.000970054, 1.001, 0, -0.769204, -0.00324175, 0.00255278, 0.159469, 0.886229)
-
-[node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(0.770484, 0, 0, 0, 0.00218957, -0.771739, 0, 2.41229, 0.000700492, 0, 0, -0.958802)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("BoxShape3D_pcmio")
