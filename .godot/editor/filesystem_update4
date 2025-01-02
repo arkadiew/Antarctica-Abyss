@@ -13,3 +13,4 @@ res://utils/WaterMaker3D/WaterMaker3D.tscn
 res://TSCN/oxygen_tank.tscn
 res://TSCN/suit.tscn
 res://TSCN/player_cpu_particles_3d.tscn
+res://SCR/fish.gd

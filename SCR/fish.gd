@@ -9,23 +9,35 @@ var speed = 0.3
 var max_speed = 0.6
 var min_speed = 0.1
 var fish_bounds = 60.0
+
+# Таймер и интервалы
 var wander_timer = 0.0
-var wander_interval = 10.0
-var turn_angle = 10.0
+var wander_interval = 15.0  # Реже меняем направление
+var turn_angle = 5.0        # Меньше угол внезапного разворота
 var retreat_distance = 0.2
 var acceleration = 0.01
 var deceleration = 0.005
 var collision_cooldown = 0.0
 var collision_cooldown_time = 0.2
+
+# Параметры стайного поведения (понижены)
 var shoaling_radius = 5.0
 var avoidance_radius = 2.0
-var avoidance_force = 0.1
-var cohesion_force = 0.05
-var alignment_force = 0.03
+var avoidance_force = 0.05
+var cohesion_force = 0.02
+var alignment_force = 0.02
 var points_of_interest = []
 
+# Параметры для бега от хищника
 var flee_distance = 10.0
 var predator = Vector3.ZERO
+
+# "Майнкрафтовские" переменные
+var water_drag = 0.02
+var inertia = 0.05        # Чем меньше, тем менее резкие повороты
+var bob_amplitude = 0.02  # Очень маленькая амплитуда покачивания
+var bob_speed = 1.0
+var bob_timer = 0.0
 
 @onready var raycasts = [
 	$RayCast3D,
@@ -40,18 +52,11 @@ func _ready():
 	set_random_velocity()
 	enable_raycasting(true)
 
-func set_random_velocity(target: Vector3 = Vector3.ZERO):
-	if target != Vector3.ZERO:
-		velocity = (target - transform.origin).normalized() * speed
-	else:
-		var random_direction = Vector3(
-			randf_range(-1, 1),
-			randf_range(-1, 1),
-			randf_range(-1, 1)
-		).normalized()
-		velocity = random_direction * speed
-
 func _process(delta):
+	bob_timer += delta * bob_speed
+	var bob_offset = sin(bob_timer) * bob_amplitude
+
+	# Определяем состояние
 	if predator != Vector3.ZERO and transform.origin.distance_to(predator) < flee_distance:
 		state = State.FLEE
 	else:
@@ -63,19 +68,29 @@ func _process(delta):
 		State.WANDER:
 			wander_behavior(delta)
 
+	# Обновляем рейкасты
 	update_raycast_targets()
 
+	# Проверка коллизий
 	if collision_cooldown > 0:
 		collision_cooldown -= delta
-
 	if collision_cooldown <= 0 and is_colliding():
 		handle_collision()
 		collision_cooldown = collision_cooldown_time
 
+	# "Физика" — сопротивление и ограничение скорости
+	apply_minecraft_physics(delta)
+
+	# Двигаем рыбу
 	var new_transform = transform
 	new_transform.origin += velocity * delta
+
+	# Небольшой вертикальный "боббинг"
+	new_transform.origin.y += bob_offset
+
 	transform = new_transform
 
+	# Если рыба вышла за границы — возвращаем к стартовой точке
 	if transform.origin.distance_to(start_position) > fish_bounds:
 		var direction_to_start = (start_position - transform.origin).normalized()
 		velocity = steer_towards(direction_to_start, velocity, delta)
@@ -91,10 +106,11 @@ func wander_behavior(delta):
 			var poi = points_of_interest[randi() % points_of_interest.size()]
 			velocity = steer_towards((poi - transform.origin).normalized(), velocity, delta)
 		else:
+			# Слегка варьируем направление (не -1..1, а меньше)
 			var random_dir = Vector3(
-				randf_range(-1, 1),
-				randf_range(-1, 1),
-				randf_range(-1, 1)
+				randf_range(-0.3, 0.3),
+				randf_range(-0.1, 0.1),
+				randf_range(-0.3, 0.3)
 			).normalized()
 			velocity = steer_towards(random_dir, velocity, delta)
 
@@ -143,10 +159,10 @@ func steer_towards(target_direction: Vector3, current_velocity: Vector3, delta: 
 		target_speed = speed
 
 	var desired_velocity = target_direction * target_speed
-	var steering = desired_velocity - current_velocity
-	var new_velocity = current_velocity + steering * acceleration
-	var new_speed = new_velocity.length()
+	# Плавно поворачиваем (linear_interpolate)
+	var new_velocity = current_velocity.lerp(desired_velocity, inertia)
 
+	var new_speed = new_velocity.length()
 	if new_speed > max_speed:
 		new_velocity = new_velocity.normalized() * max_speed
 	if new_speed < min_speed:
@@ -166,6 +182,17 @@ func adjust_speed(current_velocity: Vector3, target_speed: float, delta: float) 
 
 	current_speed = clamp(current_speed, min_speed, max_speed)
 	return current_velocity.normalized() * current_speed
+
+func apply_minecraft_physics(delta: float):
+	# «Сопротивление воды» (drag)
+	velocity -= velocity * water_drag * delta
+
+	# Ограничиваем скорость
+	var current_speed = velocity.length()
+	if current_speed > max_speed:
+		velocity = velocity.normalized() * max_speed
+	if current_speed < min_speed:
+		velocity = velocity.normalized() * min_speed
 
 func enable_raycasting(enabled: bool):
 	for raycast in raycasts:
@@ -199,3 +226,14 @@ func handle_collision():
 		var new_transform = transform
 		new_transform.origin += velocity.normalized() * (-retreat_distance)
 		transform = new_transform
+
+func set_random_velocity(target: Vector3 = Vector3.ZERO):
+	if target != Vector3.ZERO:
+		velocity = (target - transform.origin).normalized() * speed
+	else:
+		var random_direction = Vector3(
+			randf_range(-0.3, 0.3),
+			randf_range(-0.1, 0.1),
+			randf_range(-0.3, 0.3)
+		).normalized()
+		velocity = random_direction * speed
