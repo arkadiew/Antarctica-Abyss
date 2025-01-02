@@ -134,6 +134,9 @@ func _process_without_suit(delta: float) -> void:
 	apply_inertia(delta)
 	check_suit_pickup()
 	handle_water_physics_without_suit(delta)
+	# Restart scene if H2O is depleted
+	if h2o <= 0:
+		restart_scene()
 
 # Логика с костюмом
 func _process_with_suit(delta: float) -> void:
@@ -625,6 +628,14 @@ func get_object_height(obj):
 	return 0.5
 
 func restart_scene() -> void:
+	if get_tree() == null:
+		print("Error: Scene tree is null. Cannot restart scene.")
+		return
+	
+	# Show some effect or transition if needed
+	show_notification("H2O Depleted! Restarting...", 2.0)
+
+	# Use a delay or directly reload the scene
 	get_tree().reload_current_scene()
 
 func show_notification(text: String, delay: float = 2.0) -> void:
@@ -693,10 +704,18 @@ func activate_suit(suit: Node) -> void:
 
 # Обработка физики в воде
 func handle_water_physics_without_suit(delta: float) -> void:
-	if is_in_water():
-		update_current_flow()
-		apply_water_physics(delta)
-	
+		if is_in_water():
+			update_current_flow()
+			apply_water_physics(delta)
+			
+			# Accelerate H2O depletion when underwater without a suit
+			var accelerated_h2o_depletion_rate = H2O_DEPLETION_RATE * 3.0  # Increase rate as needed
+			decrease_h2o(accelerated_h2o_depletion_rate * delta)
+			
+			# Check for H2O depletion and restart the scene
+			if h2o <= 0:
+				restart_scene()
+
 
 
 
