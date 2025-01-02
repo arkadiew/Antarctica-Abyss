@@ -18,7 +18,7 @@ const MIN_VERTICAL_SPEED: float = -0.5
 const SWIM_DOWN_SPEED: float = 6.0
 const STAMINA_DOWN_COST: float = 2.0
 
-const MAX_VERTICAL_ANGLE: float = 89.0  # Ограничение вертикального угла камеры
+const MAX_VERTICAL_ANGLE: float = 89.0  # Camera vertical angle limit
 const RUN_MULTIPLIER: float = 2.0
 const SENSITIVITY: float = 0.01
 const GRAVITY: float = -9.8
@@ -102,13 +102,13 @@ var jump_charge_rate: float = 0.5
 @onready var label_3d: Label3D = $CameraPivot/Camera3D/Label3D
 @onready var darken_screen: ColorRect = $CameraPivot/Camera3D/UI/DarkenScreen
 @onready var NotificationLabel: Label = $CameraPivot/Camera3D/UI/NotificationLabel
-@onready var camera_pivot: Node3D =$CameraPivot
+@onready var camera_pivot: Node3D = $CameraPivot
 var shake_randomizer: RandomNumberGenerator = RandomNumberGenerator.new()
-const SMOOTH_ROTATION_SPEED: float = 5.0  # Скорость сглаживания вращения
+const SMOOTH_ROTATION_SPEED: float = 5.0  # Smoothing speed for body rotation
 
-var rotation_y: float = 0.0  # Горизонтальное вращение тела
-var rotation_x: float = 0.0  # Вертикальное вращение камеры
-var target_rotation_y: float = 0.0  # Целевой угол горизонтального вращения тела
+var rotation_y: float = 0.0  # Horizontal body rotation
+var rotation_x: float = 0.0  # Vertical camera rotation
+var target_rotation_y: float = 0.0  # Target angle for horizontal body rotation
 
 #
 # Lifecycle
@@ -117,6 +117,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_initialize_bars()
 	original_fov = camera.fov
+
 	if has_suit:
 		stamina_bar.visible = true
 		h2o_bar.visible = true
@@ -125,7 +126,8 @@ func _ready() -> void:
 	else:
 		stamina_bar.visible = false
 		h2o_bar.visible = false
-# Логика без костюма
+
+
 func _process_without_suit(delta: float) -> void:
 	handle_object_interactions(delta)
 	update_movement(delta)
@@ -138,7 +140,7 @@ func _process_without_suit(delta: float) -> void:
 	if h2o <= 0:
 		restart_scene()
 
-# Логика с костюмом
+
 func _process_with_suit(delta: float) -> void:
 	handle_object_interactions(delta)
 	update_movement(delta)
@@ -147,18 +149,22 @@ func _process_with_suit(delta: float) -> void:
 	update_oxygen_tank_interaction(delta)
 	handle_water_physics(delta)
 	_initialize_bars()
+
+
 func _process(delta: float) -> void:
 	rotation_y = lerp_angle(rotation_y, target_rotation_y, delta * SMOOTH_ROTATION_SPEED)
 	rotation.y = rotation_y
 
-	# Ограничение вертикального вращения камеры
+	# Clamp the vertical camera rotation
 	rotation_x = clamp(rotation_x, -MAX_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE)
 	camera_pivot.rotation_degrees.x = rotation_x
+
 	global_delta = delta
+
 	if has_suit:
 		_process_with_suit(delta)
 
-		# Принудительно устанавливаем интерфейс видимым
+		# Force interface visibility
 		if not stamina_bar.visible or stamina_bar.modulate.a < 1.0:
 			stamina_bar.visible = true
 			stamina_bar.modulate.a = 1.0
@@ -167,6 +173,7 @@ func _process(delta: float) -> void:
 			h2o_bar.modulate.a = 1.0
 	else:
 		_process_without_suit(delta)
+
 #
 # Object Interactions & Inventory
 #
@@ -207,6 +214,7 @@ func handle_object_interactions(delta: float) -> void:
 	else:
 		drop_held_object()
 
+
 func _try_pick_object():
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
@@ -214,14 +222,17 @@ func _try_pick_object():
 			set_held_object(collider)
 			holding_object_time = 0.0
 
+
 func _try_add_to_inventory():
 	if not has_suit:
-		show_notification("Инвентарь недоступен без костюма!", 2.0)
+		show_notification("Inventory not available without suit!", 2.0)
 		return
+
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
 		if collider is RigidBody3D and not collider in inventory and len(inventory) < MAX_INVENTORY_SIZE:
 			add_to_inventory(collider)
+
 
 func apply_stamina_penalty_for_holding(delta: float):
 	var mass = held_object.mass
@@ -230,7 +241,7 @@ func apply_stamina_penalty_for_holding(delta: float):
 		decrease_stamina(10.0 * drain_factor * delta)
 
 #
-# Player Movement & Control NEW!!!
+# Player Movement & Control
 #
 func update_movement(delta: float) -> void:
 	var move_vector = get_input_direction()
@@ -243,7 +254,6 @@ func update_movement(delta: float) -> void:
 
 	if move_vector.length() > 0:
 		move_vector = apply_movement_adjustment(move_vector, adjusted_speed)
-		create_impact_effect(move_vector)
 	else:
 		move_vector = apply_deceleration(move_vector, current_speed, delta)
 
@@ -255,24 +265,30 @@ func update_movement(delta: float) -> void:
 	apply_gravity(delta)
 	move_and_slide()
 
+
 func calculate_target_speed(move_vector: Vector3) -> float:
 	return determine_speed() * move_vector.length()
+
 
 func adjust_speed(current_speed: float, target_speed: float, delta: float) -> float:
 	var speed_difference = target_speed - current_speed
 	var acceleration = 20.0 if speed_difference > 0 else 10.0
 	return current_speed + sign(speed_difference) * min(abs(speed_difference), acceleration * delta)
 
+
 func apply_movement_adjustment(move_vector: Vector3, adjusted_speed: float) -> Vector3:
 	return move_vector.normalized() * adjusted_speed
 
+
 func apply_deceleration(move_vector: Vector3, current_speed: float, delta: float) -> Vector3:
 	return move_vector * max(0, current_speed - 10.0 * delta)
-	
+
+
 func apply_run_speed(target_speed: float) -> float:
 	if can_run and Input.is_action_pressed("run") and stamina > 0:
 		return target_speed * RUN_SPEED_MULTIPLIER
 	return target_speed
+
 
 func update_velocity(move_vector: Vector3, delta: float) -> void:
 	velocity.x = move_vector.x
@@ -282,53 +298,20 @@ func update_velocity(move_vector: Vector3, delta: float) -> void:
 		velocity.x = lerp(velocity.x, move_vector.x, delta * 2.0)
 		velocity.z = lerp(velocity.z, move_vector.z, delta * 2.0)
 
+
 func apply_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += GRAVITY * delta
+
 
 func handle_jump(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
 		velocity.y = JUMP_FORCE
 		decrease_stamina(JUMP_STAMINA_COST)
 
-func create_impact_effect(move_vector: Vector3) -> void:
-	return
-	#if move_vector.length() > 0:
-		#var impact_strength = move_vector.length()
-	   # spawn_particles(impact_strength)
-	 #   play_impact_sound(impact_strength)
-		#apply_screen_shake(impact_strength)
-
-func spawn_particles(impact_strength: float) -> void:
-	return
-	#var particle = preload("res://path_to_particles.tres").instance()
-   # particle.global_transform = global_transform
-   # particle.scale *= impact_strength * 0.1
-   # add_child(particle)
-  #  particle.emitting = true
-
-func play_impact_sound(impact_strength: float) -> void:
-	return
-	#var sound_player = preload("res://path_to_sound.tres").instance()
-	#sound_player.global_transform = global_transform
-	#add_child(sound_player)
-	#sound_player.volume_db = -10 + impact_strength * 2
-	#sound_player.play()
-
-#func apply_screen_shake(impact_strength: float) -> void:
-	
-	#var body_position = global_transform.origin
-	#var shake_intensity = impact_strength * 0.05
-
-	#var random_offset = Vector3(randf() - 0.5, randf() - 0.5, 0).normalized() * shake_intensity
-	#camera.global_transform.origin = body_position + Vector3(0, 2.0, 0) + random_offset
-	
-	#await get_tree().create_timer(0.1).timeout
-	#camera.global_transform.origin = body_position + Vector3(0, 2.0, 0) + Vector3(randf() * shake_intensity, randf() * shake_intensity, 0)
-	#await get_tree().create_timer(0.1).timeout
-	#camera.global_transform.origin = body_position
-
-
+#
+# Stamina
+#
 func update_stamina(delta: float) -> void:
 	var in_water = is_in_water()
 	var move_vector = get_input_direction()
@@ -348,15 +331,19 @@ func update_stamina(delta: float) -> void:
 				can_run = true
 
 	if stamina <= 0 and is_moving:
-		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta * 0.5)  # Apply slower depletion when exhausted
+		# Slower depletion while exhausted
+		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta * 0.5)
+
 
 func decrease_stamina(amount: float) -> void:
 	stamina = clamp(stamina - amount, 0, MAX_STAMINA)
 
+
 func increase_stamina(amount: float) -> void:
 	stamina = clamp(stamina + amount, 0, MAX_STAMINA)
 
-# Water & Swimming
+#
+# Water & Swimming (With Suit)
 #
 func handle_water_physics(delta: float) -> void:
 	if is_in_water():
@@ -366,18 +353,23 @@ func handle_water_physics(delta: float) -> void:
 		if velocity.y < 0:
 			velocity.y += GRAVITY * delta
 
+
 func apply_buoyancy_and_drag_scuba(delta: float) -> void:
 	var buoyant_force = -GRAVITY * WATER_DENSITY * PLAYER_VOLUME * BUOYANCY_FACTOR
 	velocity.y = lerp(velocity.y, buoyant_force, delta * 2.0)
+
 	var drag_horizontal = 1.0
 	var drag_vertical = 0.7
+
 	velocity.x = lerp(velocity.x, 0.0, drag_horizontal * delta)
 	velocity.z = lerp(velocity.z, 0.0, drag_horizontal * delta)
 	velocity.y = lerp(velocity.y, 0.0, drag_vertical * delta * 0.5)
 
+
 func handle_swimming_input_scuba(delta: float) -> void:
 	var input_dir = get_input_direction()
 	var current_swim_speed = SWIM_SPEED
+
 	if h2o < OXYGEN_CRITICAL_LEVEL:
 		current_swim_speed *= OXYGEN_LOW_MOVEMENT_PENALTY
 
@@ -434,11 +426,14 @@ func _handle_underwater_effects(delta: float):
 		if restart_timer >= RESTART_DELAY:
 			restart_scene()
 
+
 func decrease_h2o(amount: float) -> void:
 	h2o = clamp(h2o - amount, 0, MAX_H2O)
 
+
 func increase_h2o(amount: float) -> void:
 	h2o = clamp(h2o + amount, 0, MAX_H2O)
+
 
 func update_h2o_bar() -> void:
 	h2o_bar.value = h2o
@@ -449,6 +444,7 @@ func update_h2o_bar() -> void:
 func update_oxygen_tank_interaction(delta: float) -> void:
 	if get_tree() == null:
 		return
+
 	for oxygen_tank in get_tree().get_nodes_in_group("oxygen_source"):
 		if oxygen_tank.global_transform.origin.distance_to(global_transform.origin) <= OXYGEN_INTERACTION_DISTANCE:
 			increase_h2o(OXYGEN_REPLENISH_RATE * delta)
@@ -489,9 +485,10 @@ func add_to_inventory(object: RigidBody3D) -> void:
 	object.get_parent().remove_child(object)
 	show_notification(object.name + " added to inventory", 2.0)
 
+
 func select_next_inventory_item() -> void:
 	if not has_suit:
-		show_notification("Инвентарь недоступен без костюма!", 2.0)
+		show_notification("Inventory not available without suit!", 2.0)
 		return
 	if inventory.size() == 0:
 		show_notification("Inventory is empty!", 2.0)
@@ -504,9 +501,10 @@ func select_next_inventory_item() -> void:
 	selected_item = inventory[selected_item_index]
 	show_notification("Selected: " + selected_item.name, 2.0)
 
+
 func drop_selected_object() -> void:
 	if not has_suit:
-		show_notification("Инвентарь недоступен без костюма!", 2.0)
+		show_notification("Inventory not available without suit!", 2.0)
 		return
 	if not selected_item:
 		show_notification("No item to drop!", 2.0)
@@ -540,11 +538,12 @@ func _initialize_bars() -> void:
 	h2o_bar.value = h2o
 	h2o_bar.modulate.a = 0.0
 	h2o_label.modulate.a = 0.0
-	
+
 	stamina_bar.visible = false
 	h2o_bar.visible = false
 	bar_visible = false
-	
+
+
 func get_input_direction() -> Vector3:
 	var input_dir = Vector3(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -554,33 +553,42 @@ func get_input_direction() -> Vector3:
 	var world_dir = (transform.basis.x * input_dir.x + transform.basis.z * input_dir.z)
 	return world_dir.normalized()
 
+
 func is_in_water() -> bool:
 	for area in get_tree().get_nodes_in_group("water_area"):
 		if area.overlaps_body(self):
 			return true
 	return false
 
+
 func determine_speed() -> float:
 	var reduction_factor = 1.0 - (elapsed_time / 10.0) * 0.01
 	if reduction_factor < 0.5:
 		reduction_factor = 0.5
+
 	var effective_walk_speed = WALK_SPEED * reduction_factor
+
 	if is_running and stamina > 0:
 		return effective_walk_speed * RUN_SPEED_MULTIPLIER
 	elif stamina == 0:
 		return LOW_STAMINA_SPEED * reduction_factor
+
 	return effective_walk_speed
+
 
 func apply_inertia(delta: float) -> void:
 	if move_vector.length() == 0.0:
-		velocity.x = lerp(velocity.x,0.0, delta * 5.0)
+		velocity.x = lerp(velocity.x, 0.0, delta * 5.0)
 		velocity.z = lerp(velocity.z, 0.0, delta * 5.0)
+
 
 func set_held_object(body: RigidBody3D) -> void:
 	held_object = body
 
+
 func drop_held_object() -> void:
 	held_object = null
+
 
 func follow_player_with_object() -> void:
 	var target_pos = camera.global_transform.origin + (camera.global_basis * Vector3(0, 0, -follow_distance))
@@ -592,19 +600,26 @@ func follow_player_with_object() -> void:
 	elif drop_below_player and ground_ray.is_colliding() and ground_ray.get_collider() == held_object:
 		drop_held_object()
 
+
 func update_label_position() -> void:
 	if held_object:
 		update_label_for_held_object(held_object)
 	else:
 		update_label_for_nearby_object()
 
+
 func update_label_for_held_object(object):
 	var object_position = object.global_transform.origin
 	var object_height = get_object_height(object)
 	var target_position = object_position + Vector3(0, object_height + 0.1, 0)
-	label_3d.global_transform.origin = label_3d.global_transform.origin.lerp(target_position, LERP_SPEED * get_process_delta_time())
+
+	label_3d.global_transform.origin = label_3d.global_transform.origin.lerp(
+		target_position,
+		LERP_SPEED * get_process_delta_time()
+	)
 	label_3d.text = "[R] Drop " + object.name
 	label_3d.visible = true
+
 
 func update_label_for_nearby_object():
 	if interact_ray.is_colliding():
@@ -615,11 +630,15 @@ func update_label_for_nearby_object():
 				var object_position = collider.global_transform.origin
 				var object_height = get_object_height(collider)
 				var target_position = object_position + Vector3(0, object_height + 0.1, 0)
-				label_3d.global_transform.origin = label_3d.global_transform.origin.lerp(target_position, LERP_SPEED * get_process_delta_time())
+				label_3d.global_transform.origin = label_3d.global_transform.origin.lerp(
+					target_position,
+					LERP_SPEED * get_process_delta_time()
+				)
 				label_3d.text = "[R] Interact with " + collider.name
 				label_3d.visible = true
 				return
 	label_3d.visible = false
+
 
 func get_object_height(obj):
 	var shape_node = obj.get_node_or_null("CollisionShape3D")
@@ -627,16 +646,18 @@ func get_object_height(obj):
 		return shape_node.shape.extents.y
 	return 0.5
 
+
 func restart_scene() -> void:
 	if get_tree() == null:
 		print("Error: Scene tree is null. Cannot restart scene.")
 		return
-	
-	# Show some effect or transition if needed
+
+	# Display an effect or transition if needed
 	show_notification("H2O Depleted! Restarting...", 2.0)
 
 	# Use a delay or directly reload the scene
 	get_tree().reload_current_scene()
+
 
 func show_notification(text: String, delay: float = 2.0) -> void:
 	NotificationLabel.text = text
@@ -653,14 +674,14 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
 		_toggle_mouse_mode()
+
+
 func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
-	# Горизонтальное вращение тела: изменение целевого угла
+	# Horizontal body rotation: modify the target angle
 	target_rotation_y -= event.relative.x * SENSITIVITY * 0.1
 
-	# Вертикальное вращение камеры: мгновенное изменение угла
-	rotation_x -= event.relative.y * SENSITIVITY* 5
-	
-
+	# Vertical camera rotation: apply instantly
+	rotation_x -= event.relative.y * SENSITIVITY * 5
 
 
 func _toggle_mouse_mode() -> void:
@@ -668,7 +689,10 @@ func _toggle_mouse_mode() -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-# Проверка и активация костюма
+
+#
+# Suit check and activation
+#
 func check_suit_pickup() -> void:
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
@@ -676,57 +700,60 @@ func check_suit_pickup() -> void:
 			var distance = global_transform.origin.distance_to(collider.global_transform.origin)
 			if distance <= SUIT_PICKUP_DISTANCE:
 				activate_suit(collider)
-				label_3d.text =  collider.name
+				label_3d.text = collider.name
 				label_3d.visible = true
-				
 			else:
 				label_3d.visible = false
 		else:
 			label_3d.visible = false
 
+
 func activate_suit(suit: Node) -> void:
 	has_suit = true
-	suit.queue_free()  # Удаляем костюм из сцены
-	show_notification("Костюм активирован! Теперь доступны кислород и выносливость.", 3.0)
-# Устанавливаем видимость интерфейса
+	suit.queue_free()  # Remove suit from the scene
+	show_notification("Suit activated! Oxygen and stamina are now available.", 3.0)
+
+	# Make the interface visible
 	stamina_bar.modulate.a = 1.0
 	stamina_label.modulate.a = 1.0
 	h2o_bar.modulate.a = 1.0
 	h2o_label.modulate.a = 1.0
 	stamina_bar.visible = true
 	h2o_bar.visible = true
-	bar_visible = true  # Глобальный флаг видимости интерфейса
+	bar_visible = true  # Global UI visibility flag
+
 	var sound_path = "res://voice/voice.mp3"
 	if AudioManager:
 		AudioManager.play_sound(sound_path)
 	else:
 		print("AudioManager not found!")
 
-# Обработка физики в воде
+#
+# Water physics without suit
+#
 func handle_water_physics_without_suit(delta: float) -> void:
-		if is_in_water():
-			update_current_flow()
-			apply_water_physics(delta)
-			
-			# Accelerate H2O depletion when underwater without a suit
-			var accelerated_h2o_depletion_rate = H2O_DEPLETION_RATE * 3.0  # Increase rate as needed
-			decrease_h2o(accelerated_h2o_depletion_rate * delta)
-			
-			# Check for H2O depletion and restart the scene
-			if h2o <= 0:
-				restart_scene()
+	if is_in_water():
+		update_current_flow()
+		apply_water_physics(delta)
 
+		# Accelerate H2O depletion when underwater without a suit
+		var accelerated_h2o_depletion_rate = H2O_DEPLETION_RATE * 3.0
+		decrease_h2o(accelerated_h2o_depletion_rate * delta)
 
+		# Check for H2O depletion and restart the scene
+		if h2o <= 0:
+			restart_scene()
 
 
 func update_current_flow() -> void:
-	# Пример изменения направления течения
+	# Example of changing flow direction
 	if global_transform.origin.x > 50:
-		current_flow = Vector3(-1, 0, 0)  # Течение влево
+		current_flow = Vector3(-1, 0, 0)  # Flow to the left
 	elif global_transform.origin.z < -50:
-		current_flow = Vector3(0, 0, 1)  # Течение вперед
+		current_flow = Vector3(0, 0, 1)   # Flow forward
 	else:
-		current_flow = Vector3(1, 0, 0)  # Течение вправо
+		current_flow = Vector3(1, 0, 0)   # Flow to the right
+
 
 func apply_water_physics(delta: float) -> void:
 	var water_gravity = GRAVITY * 0.2
@@ -736,8 +763,7 @@ func apply_water_physics(delta: float) -> void:
 	var input_dir = Vector3.ZERO
 	var is_moving_in_water = false
 
-
-	# Если есть движение, игрок сопротивляется течению
+	# If there is movement, the player is resisting flow
 	if input_dir != Vector3.ZERO:
 		input_dir = input_dir.normalized()
 		resisting_flow = true
@@ -746,7 +772,7 @@ func apply_water_physics(delta: float) -> void:
 	else:
 		resisting_flow = false
 
-	# Плавание вверх
+	# Swim up
 	if Input.is_action_pressed("jump") and stamina > 1:
 		velocity.y += swim_up_force * delta
 		is_moving_in_water = true
@@ -754,17 +780,17 @@ func apply_water_physics(delta: float) -> void:
 	else:
 		velocity.y -= water_gravity * delta
 
-	# Применяем течение, если игрок не сопротивляется
+	# Apply current flow if player is not resisting
 	if not resisting_flow:
 		velocity += current_flow * flow_strength * delta
 		decrease_stamina(0.3 * delta)
 	else:
 		velocity += current_flow * flow_strength * 0.5 * delta
 
-	# Применяем водное сопротивление
+	# Apply water drag
 	velocity.x = lerp(velocity.x, 0.0, water_drag_horizontal * delta)
 	velocity.z = lerp(velocity.z, 0.0, water_drag_horizontal * delta)
 	velocity.y = lerp(velocity.y, 0.0, water_drag_vertical * delta)
 
-	# Ограничиваем бег в воде
+	# Disable running in water
 	is_running = false
