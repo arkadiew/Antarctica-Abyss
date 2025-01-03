@@ -1,5 +1,6 @@
 extends CharacterBody3D
-
+var fear_death_timer = 0.0
+const FEAR_DEATH_DELAY = 3.0  # Сколько секунд ждём после достижения 100 страха
 const SUIT_PICKUP_DISTANCE = 3.0
 const SUIT_GROUP = "suit_items"
 const MAX_INVENTORY_SIZE = 5
@@ -166,6 +167,7 @@ func _process_with_suit(delta):
 	handle_water_physics(delta)
 	_initialize_bars()
 	handle_fear_mechanics(delta)
+	handle_fear_death(delta)
 
 func handle_object_interactions(delta):
 	last_interaction_time += delta
@@ -666,3 +668,19 @@ func update_fear_sprite():
 		fear_sprite.visible = false
 	else:
 		fear_sprite.visible = true
+func handle_fear_death(delta):
+	# Если страх достиг или превысил 100
+	if fear_level >= 100:
+		# Постепенно «черним» экран. 
+		# Предположим, darken_screen — это ColorRect, уже используемый в коде.
+		darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
+		# Ведём таймер
+		fear_death_timer += delta
+		# Если таймер «набежал», перезагружаем сцену
+		if fear_death_timer >= FEAR_DEATH_DELAY:
+			show_notification("You died of fear!", 2.0)
+			restart_scene()
+	else:
+		# Если страх опустился ниже 100, сбрасываем таймер и возвращаем экран к норме
+		fear_death_timer = 0.0
+		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 9)
