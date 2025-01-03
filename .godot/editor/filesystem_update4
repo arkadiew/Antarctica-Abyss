@@ -17,3 +17,12 @@ res://SCR/rayscary_3d.gd
 res://TSCN/fish.tscn
 res://SCR/fish_spawner.gd
 res://SCR/fish_new.gd
+res://SCR/player/Inventory.gd
+res://SCR/player/Player.gd
+res://SCR/player/SuitSystem.gd
+res://SCR/player/UIManager.gd
+res://SCR/player/WaterSystem.gd
+res://SCR/player/InventoryManager.gd
+res://SCR/player/SuitManager.gd
+res://SCR/player/WaterPhysics.gd
+res://SCR/player/SuitLogic.gd

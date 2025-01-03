@@ -78,6 +78,23 @@ var elapsed_time = 0.0
 var jump_charge = 0.0
 var max_jump_charge = 1.0
 var jump_charge_rate = 0.5
+# ---------------------
+# Переменные для "шкалы страха"
+# ---------------------
+@onready var Rayscary3D: RayCast3D = $CameraPivot/Camera3D/Rayscary3D
+var fear_level = 0.0
+# Подставьте ваши реальные пути к иконкам:
+var fear_images = [
+	preload("res://utils/png_scary/fear_0.png"),    # 0%
+	preload("res://utils/png_scary/fear_25.png"),   # 25%
+	preload("res://utils/png_scary/fear_50.png"),   # 50%
+	preload("res://utils/png_scary/fear_75.png"),   # 75%
+	preload("res://utils/png_scary/fear_100.png")   # 100%
+]
+# Список «страшных» объектов (по имени):
+var scary_list = ["fish", "shark", "barracuda"]
+
+@onready var fear_sprite: Sprite2D = $CameraPivot/Camera3D/UI/FearSprite
 
 @onready var AudioManager: Node = $AudioManager
 @onready var camera: Camera3D = $CameraPivot/Camera3D
@@ -100,6 +117,7 @@ var target_rotation_y = 0.0
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_initialize_bars()
+
 	original_fov = camera.fov
 	if has_suit:
 		stamina_bar.visible = true
@@ -147,6 +165,7 @@ func _process_with_suit(delta):
 	update_oxygen_tank_interaction(delta)
 	handle_water_physics(delta)
 	_initialize_bars()
+	handle_fear_mechanics(delta)
 
 func handle_object_interactions(delta):
 	last_interaction_time += delta
@@ -611,3 +630,39 @@ func apply_water_physics(delta):
 	velocity.z = lerp(velocity.z, 0.0, wh * delta)
 	velocity.y = lerp(velocity.y, 0.0, wv * delta)
 	is_running = false
+# ------------------------------------------------------------------------------
+# Новая функция и вспомогательные методы для обработки «уровня страха»
+func handle_fear_mechanics(delta):
+	if Rayscary3D.is_colliding():
+		var collider = Rayscary3D.get_collider()
+		if collider is CharacterBody3D and collider.name in scary_list:
+			# Повышаем страх более плавно, например на 10 вместо 40
+			fear_level = clamp(fear_level + 10.0 * delta, 0, 100)
+		else:
+			# Понижаем страх медленнее, например на 5 вместо 20
+			fear_level = clamp(fear_level - 5.0 * delta, 0, 100)
+	else:
+		# Если луч никуда не попал, плавно снижаем ещё медленнее, к примеру 3
+		fear_level = clamp(fear_level - 3.0 * delta, 0, 100)
+
+	update_fear_sprite()
+
+
+func update_fear_sprite():
+	# Выбираем текстуру на основе текущего fear_level
+	if fear_level < 25:
+		fear_sprite.texture = fear_images[0]  # 0%
+	elif fear_level < 50:
+		fear_sprite.texture = fear_images[1]  # 25%
+	elif fear_level < 75:
+		fear_sprite.texture = fear_images[2]  # 50%
+	elif fear_level < 100:
+		fear_sprite.texture = fear_images[3]  # 75%
+	else:
+		fear_sprite.texture = fear_images[4]  # 100%
+
+	# При желании можно показывать/скрывать спрайт:
+	if fear_level <= 0:
+		fear_sprite.visible = false
+	else:
+		fear_sprite.visible = true

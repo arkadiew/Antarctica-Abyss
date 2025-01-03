@@ -1,8 +1,9 @@
 CollisionShape3D
-CollisionPolygon3D
 CSGBox3D
-MeshInstance3D
 CharacterBody3D
+Sprite2D
+CollisionPolygon3D
+MeshInstance3D
 AudioStreamPlayer
 Node
 Node3D
@@ -11,4 +12,3 @@ CPUParticles3D
 Area3D
 RigidBody3D
 Label
-TextureProgressBar

@@ -6,12 +6,12 @@
 
 [node name="fish" type="Node3D"]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="fish" type="CharacterBody3D" parent="."]
 script = ExtResource("1_8b5ia")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="fish"]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CharacterBody3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="fish"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="fish"]
 shape = SubResource("BoxShape3D_pcmio")
