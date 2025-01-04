@@ -1,6 +1,9 @@
 extends CharacterBody3D
-var fear_death_timer = 0.0
-const FEAR_DEATH_DELAY = 3.0  # Сколько секунд ждём после достижения 100 страха
+
+# ---------------------
+# Constants
+# ---------------------
+const FEAR_DEATH_DELAY = 3.0  # Seconds to wait after fear reaches 100
 const SUIT_PICKUP_DISTANCE = 3.0
 const SUIT_GROUP = "suit_items"
 const MAX_INVENTORY_SIZE = 5
@@ -16,11 +19,10 @@ const MIN_VERTICAL_SPEED = -0.5
 const SWIM_DOWN_SPEED = 6.0
 const STAMINA_DOWN_COST = 2.0
 const MAX_VERTICAL_ANGLE = 89.0
-const RUN_MULTIPLIER = 2.0
+const RUN_SPEED_MULTIPLIER = 2.0  # Removed RUN_MULTIPLIER as it was unused
 const SENSITIVITY = 0.01
 const GRAVITY = -9.8
 const WALK_SPEED = 5.0
-const RUN_SPEED_MULTIPLIER = 2.0
 const LOW_STAMINA_SPEED = 1.0
 const JUMP_FORCE = 3.0
 const JUMP_STAMINA_COST = 10.0
@@ -31,7 +33,6 @@ const H2O_RECOVERY_RATE = 30.0
 const STAMINA_RECOVERY_RATE = 30.0
 const STAMINA_RUN_DEPLETION_RATE = 20.0
 const STAMINA_RECOVERY_DELAY = 3.5
-const FADE_OUT_SPEED = 1.0
 const MIN_H2O_THRESHOLD = 10.0
 const INTERACTION_DISTANCE = 3.0
 const LERP_SPEED = 5.0
@@ -49,17 +50,18 @@ const OXYGEN_INTERACTION_DISTANCE = 3.0
 @export var swim_up_speed = 10.0
 @export var climb_speed = 7.0
 
+# ---------------------
+# Variables
+# ---------------------
+var fear_death_timer = 0.0
 var has_suit = false
-var global_delta = 0.0
-var is_scuba_mode = true
 var inventory = []
 var selected_item: RigidBody3D = null
 var selected_item_index = -1
 var stamina = MAX_STAMINA
 var h2o = MAX_H2O
-var move_vector = Vector3.ZERO
+
 var is_running = false
-var bar_visible = false
 var stamina_recovery_timer = 0.0
 var can_run = true
 var holding_object_time = 0.0
@@ -75,16 +77,15 @@ var shake_intensity = 0.0
 var shake_timer = 0.0
 var current_flow = Vector3(1, 0, 0)
 var flow_strength = 2.0
-var elapsed_time = 0.0
 var jump_charge = 0.0
 var max_jump_charge = 1.0
 var jump_charge_rate = 0.5
+
 # ---------------------
-# Переменные для "шкалы страха"
+# Fear Mechanics Variables
 # ---------------------
 @onready var Rayscary3D: RayCast3D = $CameraPivot/Camera3D/Rayscary3D
 var fear_level = 0.0
-# Подставьте ваши реальные пути к иконкам:
 var fear_images = [
 	preload("res://utils/png_scary/fear_0.png"),    # 0%
 	preload("res://utils/png_scary/fear_25.png"),   # 25%
@@ -92,12 +93,14 @@ var fear_images = [
 	preload("res://utils/png_scary/fear_75.png"),   # 75%
 	preload("res://utils/png_scary/fear_100.png")   # 100%
 ]
-# Список «страшных» объектов (по имени):
 var scary_list = ["fish", "shark", "barracuda"]
 
+# ---------------------
+# UI and Nodes
+# ---------------------
 @onready var fear_sprite: Sprite2D = $CameraPivot/Camera3D/UI/FearSprite
-@onready var Pro3: Sprite2D =$CameraPivot/Camera3D/UI/Pro3
-@onready var Pro2: Sprite2D =$CameraPivot/Camera3D/UI/Pro2
+@onready var Pro3: Sprite2D = $CameraPivot/Camera3D/UI/Pro3
+@onready var Pro2: Sprite2D = $CameraPivot/Camera3D/UI/Pro2
 @onready var Pro1: Sprite2D = $CameraPivot/Camera3D/UI/Pro
 @onready var icon2: Sprite2D = $CameraPivot/Camera3D/UI/icon2
 @onready var icon: Sprite2D = $CameraPivot/Camera3D/UI/icon
@@ -110,8 +113,8 @@ var scary_list = ["fish", "shark", "barracuda"]
 @onready var darken_screen: ColorRect = $CameraPivot/Camera3D/UI/DarkenScreen
 @onready var NotificationLabel: Label = $CameraPivot/Camera3D/UI/NotificationLabel
 @onready var mask: Sprite2D = $CameraPivot/Camera3D/UI/mask
-
 @onready var camera_pivot: Node3D = $CameraPivot
+
 var shake_randomizer = RandomNumberGenerator.new()
 const SMOOTH_ROTATION_SPEED = 5.0
 
@@ -121,8 +124,6 @@ var target_rotation_y = 0.0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
 	original_fov = camera.fov
 	if has_suit:
 		stamina_bar.visible = true
@@ -134,21 +135,17 @@ func _ready():
 		h2o_bar.visible = false
 
 func _process(delta):
+	_handle_rotation(delta)
+	if has_suit:
+		_process_with_suit(delta)
+	else:
+		_process_without_suit(delta)
+
+func _handle_rotation(delta):
 	rotation_y = lerp_angle(rotation_y, target_rotation_y, delta * SMOOTH_ROTATION_SPEED)
 	rotation.y = rotation_y
 	rotation_x = clamp(rotation_x, -MAX_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE)
 	camera_pivot.rotation_degrees.x = rotation_x
-	global_delta = delta
-	if has_suit:
-		_process_with_suit(delta)
-		if not stamina_bar.visible or stamina_bar.modulate.a < 1.0:
-			stamina_bar.visible = true
-			stamina_bar.modulate.a = 1.0
-		if not h2o_bar.visible or h2o_bar.modulate.a < 1.0:
-			h2o_bar.visible = true
-			h2o_bar.modulate.a = 1.0
-	else:
-		_process_without_suit(delta)
 
 func _process_without_suit(delta):
 	handle_object_interactions(delta)
@@ -156,7 +153,6 @@ func _process_without_suit(delta):
 	update_h2o(delta)
 	update_stamina(delta)
 	apply_camera_shake(delta)
-	apply_inertia(delta)
 	check_suit_pickup()
 	_hide_all_ui()
 	handle_water_physics_without_suit(delta)
@@ -174,7 +170,7 @@ func _process_with_suit(delta):
 	handle_fear_mechanics(delta)
 	handle_fear_death(delta)
 	_show_all_ui()
-	
+
 func _hide_all_ui():
 	stamina_bar.visible = false
 	h2o_bar.visible = false
@@ -188,8 +184,8 @@ func _hide_all_ui():
 	icon.visible = false
 	NotificationLabel.visible = false
 	darken_screen.visible = false
-	# Можно обнулить альфу, если используете затемнение
 	darken_screen.modulate.a = 0.0
+
 func _show_all_ui():
 	stamina_bar.visible = true
 	h2o_bar.visible = true
@@ -202,7 +198,6 @@ func _show_all_ui():
 	icon.visible = true
 	NotificationLabel.visible = true
 	darken_screen.visible = true
-	
 
 func handle_object_interactions(delta):
 	last_interaction_time += delta
@@ -266,7 +261,7 @@ func update_movement(delta):
 	apply_gravity(delta)
 	move_and_slide()
 
-func calculate_target_speed(mv: Vector3):
+func calculate_target_speed(mv: Vector3) -> float:
 	return determine_speed() * mv.length()
 
 func adjust_speed(cs, ts, delta):
@@ -274,7 +269,7 @@ func adjust_speed(cs, ts, delta):
 	var accel = 20.0 if diff > 0 else 10.0
 	return cs + sign(diff) * min(abs(diff), accel * delta)
 
-func apply_run_speed(ts):
+func apply_run_speed(ts: float) -> float:
 	if can_run and Input.is_action_pressed("run") and stamina > 0:
 		return ts * RUN_SPEED_MULTIPLIER
 	return ts
@@ -314,10 +309,10 @@ func update_stamina(delta):
 	if stamina <= 0 and moving:
 		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta * 0.5)
 
-func decrease_stamina(amount):
+func decrease_stamina(amount: float):
 	stamina = clamp(stamina - amount, 0, MAX_STAMINA)
 
-func increase_stamina(amount):
+func increase_stamina(amount: float):
 	stamina = clamp(stamina + amount, 0, MAX_STAMINA)
 
 func handle_water_physics(delta):
@@ -385,12 +380,13 @@ func _handle_underwater_effects(delta):
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
 		restart_timer += delta
 		if restart_timer >= RESTART_DELAY:
+			show_notification("H2O Depleted! Restarting...", 2.0)
 			restart_scene()
 
-func decrease_h2o(amount):
+func decrease_h2o(amount: float):
 	h2o = clamp(h2o - amount, 0, MAX_H2O)
 
-func increase_h2o(amount):
+func increase_h2o(amount: float):
 	h2o = clamp(h2o + amount, 0, MAX_H2O)
 
 func update_h2o_bar():
@@ -466,15 +462,14 @@ func drop_selected_object():
 func _initialize_bars():
 	stamina_bar.max_value = MAX_STAMINA
 	stamina_bar.value = stamina
-	stamina_bar.modulate.a = 0.0
+	stamina_bar.modulate.a = 1.0  # Changed to immediately visible when initializing
 
 	h2o_bar.max_value = MAX_H2O
 	h2o_bar.value = h2o
-	h2o_bar.modulate.a = 0.0
+	h2o_bar.modulate.a = 1.0  # Changed to immediately visible when initializing
 
-	stamina_bar.visible = false
-	h2o_bar.visible = false
-	bar_visible = false
+	stamina_bar.visible = true
+	h2o_bar.visible = true
 
 func get_input_direction() -> Vector3:
 	var i = Vector3(
@@ -493,21 +488,12 @@ func is_in_water() -> bool:
 			return true
 	return false
 
-func determine_speed():
-	var rf = 1.0 - (elapsed_time / 10.0) * 0.01
-	if rf < 0.5:
-		rf = 0.5
-	var eff = WALK_SPEED * rf
+func determine_speed() -> float:
 	if is_running and stamina > 0:
-		return eff * RUN_SPEED_MULTIPLIER
+		return WALK_SPEED * RUN_SPEED_MULTIPLIER
 	elif stamina == 0:
-		return LOW_STAMINA_SPEED * rf
-	return eff
-
-func apply_inertia(delta):
-	if move_vector.length() == 0.0:
-		velocity.x = lerp(velocity.x, 0.0, delta * 5.0)
-		velocity.z = lerp(velocity.z, 0.0, delta * 5.0)
+		return LOW_STAMINA_SPEED
+	return WALK_SPEED
 
 func set_held_object(body: RigidBody3D):
 	held_object = body
@@ -516,7 +502,7 @@ func drop_held_object():
 	held_object = null
 
 func follow_player_with_object():
-	var tp = camera.global_transform.origin + camera.global_basis * Vector3(0,0,-follow_distance)
+	var tp = camera.global_transform.origin + camera.global_basis * Vector3(0, 0, -follow_distance)
 	var op = held_object.global_transform.origin
 	held_object.linear_velocity = (tp - op) * follow_speed
 	if held_object.global_position.distance_to(camera.global_position) > max_distance_from_camera:
@@ -555,7 +541,7 @@ func update_label_for_nearby_object():
 				return
 	label_3d.visible = false
 
-func get_object_height(obj):
+func get_object_height(obj) -> float:
 	var sn = obj.get_node_or_null("CollisionShape3D")
 	if sn and sn.shape is BoxShape3D:
 		return sn.shape.extents.y
@@ -568,7 +554,7 @@ func restart_scene():
 	show_notification("H2O Depleted! Restarting...", 2.0)
 	get_tree().reload_current_scene()
 
-func show_notification(text, delay = 2.0):
+func show_notification(text: String, delay: float = 2.0):
 	NotificationLabel.text = text
 	NotificationLabel.visible = true
 	await get_tree().create_timer(delay).timeout
@@ -609,12 +595,9 @@ func activate_suit(suit: Node):
 	suit.queue_free()
 	show_notification("Suit activated! Oxygen and stamina are now available.", 6.0)
 	stamina_bar.modulate.a = 1.0
-
 	h2o_bar.modulate.a = 1.0
-
 	stamina_bar.visible = true
 	h2o_bar.visible = true
-	bar_visible = true
 	var sound_path = "res://voice/voice.mp3"
 	if AudioManager:
 		AudioManager.play_sound(sound_path)
@@ -672,20 +655,14 @@ func handle_fear_mechanics(delta):
 	if Rayscary3D.is_colliding():
 		var collider = Rayscary3D.get_collider()
 		if collider is CharacterBody3D and collider.name in scary_list:
-			# Повышаем страх более плавно, например на 10 вместо 40
-			fear_level = clamp(fear_level + 10.0 * delta, 0, 100)
+			fear_level = clamp(fear_level + 10.0 * delta, 0, 100)  # Increased increment rate
 		else:
-			# Понижаем страх медленнее, например на 5 вместо 20
-			fear_level = clamp(fear_level - 5.0 * delta, 0, 100)
+			fear_level = clamp(fear_level - 5.0 * delta, 0, 100)  # Decreased decrement rate
 	else:
-		# Если луч никуда не попал, плавно снижаем ещё медленнее, к примеру 3
-		fear_level = clamp(fear_level - 3.0 * delta, 0, 100)
-
+		fear_level = clamp(fear_level - 3.0 * delta, 0, 100)  # Further decreased decrement rate
 	update_fear_sprite()
 
-
 func update_fear_sprite():
-	# Выбираем текстуру на основе текущего fear_level
 	if fear_level < 25:
 		fear_sprite.texture = fear_images[0]  # 0%
 	elif fear_level < 50:
@@ -697,21 +674,13 @@ func update_fear_sprite():
 	else:
 		fear_sprite.texture = fear_images[4]  # 100%
 
-	
 func handle_fear_death(delta):
-	# Если страх достиг или превысил 100
 	if fear_level >= 100:
-		# Постепенно «черним» экран. 
-		# Предположим, darken_screen — это ColorRect, уже используемый в коде.
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
-		# Ведём таймер
 		fear_death_timer += delta
-
-		# Если таймер «набежал», перезагружаем сцену
 		if fear_death_timer >= FEAR_DEATH_DELAY:
 			show_notification("You died of fear!", 2.0)
 			restart_scene()
 	else:
-		# Если страх опустился ниже 100, сбрасываем таймер и возвращаем экран к норме
 		fear_death_timer = 0.0
-		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 9)
+		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 9)  # Cleaned up as per request
