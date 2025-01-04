@@ -96,17 +96,21 @@ var fear_images = [
 var scary_list = ["fish", "shark", "barracuda"]
 
 @onready var fear_sprite: Sprite2D = $CameraPivot/Camera3D/UI/FearSprite
-
+@onready var Pro3: Sprite2D =$CameraPivot/Camera3D/UI/Pro3
+@onready var Pro2: Sprite2D =$CameraPivot/Camera3D/UI/Pro2
+@onready var Pro1: Sprite2D = $CameraPivot/Camera3D/UI/Pro
+@onready var icon2: Sprite2D = $CameraPivot/Camera3D/UI/icon2
+@onready var icon: Sprite2D = $CameraPivot/Camera3D/UI/icon
 @onready var AudioManager: Node = $AudioManager
 @onready var camera: Camera3D = $CameraPivot/Camera3D
 @onready var interact_ray: RayCast3D = $CameraPivot/Camera3D/InteractRay
 @onready var stamina_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/TextureProgressBar
-@onready var stamina_label: Label = $CameraPivot/Camera3D/UI/stamina
-@onready var h2o_bar: ProgressBar = $CameraPivot/Camera3D/UI/h2o2
-@onready var h2o_label: Label = $CameraPivot/Camera3D/UI/h2o
+@onready var h2o_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/o2
 @onready var label_3d: Label3D = $CameraPivot/Camera3D/Label3D
 @onready var darken_screen: ColorRect = $CameraPivot/Camera3D/UI/DarkenScreen
 @onready var NotificationLabel: Label = $CameraPivot/Camera3D/UI/NotificationLabel
+@onready var mask: Sprite2D = $CameraPivot/Camera3D/UI/mask
+
 @onready var camera_pivot: Node3D = $CameraPivot
 var shake_randomizer = RandomNumberGenerator.new()
 const SMOOTH_ROTATION_SPEED = 5.0
@@ -117,7 +121,7 @@ var target_rotation_y = 0.0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	_initialize_bars()
+
 
 	original_fov = camera.fov
 	if has_suit:
@@ -154,6 +158,7 @@ func _process_without_suit(delta):
 	apply_camera_shake(delta)
 	apply_inertia(delta)
 	check_suit_pickup()
+	_hide_all_ui()
 	handle_water_physics_without_suit(delta)
 	if h2o <= 0:
 		restart_scene()
@@ -168,6 +173,36 @@ func _process_with_suit(delta):
 	_initialize_bars()
 	handle_fear_mechanics(delta)
 	handle_fear_death(delta)
+	_show_all_ui()
+	
+func _hide_all_ui():
+	stamina_bar.visible = false
+	h2o_bar.visible = false
+	label_3d.visible = false
+	fear_sprite.visible = false
+	mask.visible = false
+	Pro3.visible = false
+	Pro2.visible = false
+	Pro1.visible = false
+	icon2.visible = false
+	icon.visible = false
+	NotificationLabel.visible = false
+	darken_screen.visible = false
+	# Можно обнулить альфу, если используете затемнение
+	darken_screen.modulate.a = 0.0
+func _show_all_ui():
+	stamina_bar.visible = true
+	h2o_bar.visible = true
+	fear_sprite.visible = true
+	Pro3.visible = true
+	Pro2.visible = true
+	Pro1.visible = true
+	icon2.visible = true
+	mask.visible = true
+	icon.visible = true
+	NotificationLabel.visible = true
+	darken_screen.visible = true
+	
 
 func handle_object_interactions(delta):
 	last_interaction_time += delta
@@ -432,11 +467,11 @@ func _initialize_bars():
 	stamina_bar.max_value = MAX_STAMINA
 	stamina_bar.value = stamina
 	stamina_bar.modulate.a = 0.0
-	stamina_label.modulate.a = 0.0
+
 	h2o_bar.max_value = MAX_H2O
 	h2o_bar.value = h2o
 	h2o_bar.modulate.a = 0.0
-	h2o_label.modulate.a = 0.0
+
 	stamina_bar.visible = false
 	h2o_bar.visible = false
 	bar_visible = false
@@ -574,9 +609,9 @@ func activate_suit(suit: Node):
 	suit.queue_free()
 	show_notification("Suit activated! Oxygen and stamina are now available.", 6.0)
 	stamina_bar.modulate.a = 1.0
-	stamina_label.modulate.a = 1.0
+
 	h2o_bar.modulate.a = 1.0
-	h2o_label.modulate.a = 1.0
+
 	stamina_bar.visible = true
 	h2o_bar.visible = true
 	bar_visible = true
@@ -632,8 +667,7 @@ func apply_water_physics(delta):
 	velocity.z = lerp(velocity.z, 0.0, wh * delta)
 	velocity.y = lerp(velocity.y, 0.0, wv * delta)
 	is_running = false
-# ------------------------------------------------------------------------------
-# Новая функция и вспомогательные методы для обработки «уровня страха»
+
 func handle_fear_mechanics(delta):
 	if Rayscary3D.is_colliding():
 		var collider = Rayscary3D.get_collider()
@@ -663,11 +697,7 @@ func update_fear_sprite():
 	else:
 		fear_sprite.texture = fear_images[4]  # 100%
 
-	# При желании можно показывать/скрывать спрайт:
-	if fear_level <= 0:
-		fear_sprite.visible = false
-	else:
-		fear_sprite.visible = true
+	
 func handle_fear_death(delta):
 	# Если страх достиг или превысил 100
 	if fear_level >= 100:
@@ -676,6 +706,7 @@ func handle_fear_death(delta):
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
 		# Ведём таймер
 		fear_death_timer += delta
+
 		# Если таймер «набежал», перезагружаем сцену
 		if fear_death_timer >= FEAR_DEATH_DELAY:
 			show_notification("You died of fear!", 2.0)

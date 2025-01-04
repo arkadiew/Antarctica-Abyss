@@ -1,7 +1,7 @@
+Sprite2D
 CollisionShape3D
 CSGBox3D
 CharacterBody3D
-Sprite2D
 CollisionPolygon3D
 MeshInstance3D
 AudioStreamPlayer

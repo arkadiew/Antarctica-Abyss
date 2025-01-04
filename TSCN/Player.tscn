@@ -1,14 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=15 format=3 uid="uid://wssnx1an6whd"]
 
-[ext_resource type="Texture2D" uid="uid://b1xbatblje1jm" path="res://utils/img/stamina_img/full_stamin.png" id="1_6mo7b"]
 [ext_resource type="Script" path="res://SCR/player/Player.gd" id="1_6qoym"]
-[ext_resource type="Texture2D" uid="uid://biix3sa2uir3k" path="res://utils/img/stamina_img/stamin_no.png" id="2_k1srk"]
-[ext_resource type="Texture2D" uid="uid://csyxkd03fj4bx" path="res://utils/img/stamina_img/stamin_1.png" id="3_geka2"]
-[ext_resource type="Texture2D" uid="uid://d2xdifkfncpbw" path="res://utils/img/stamina_img/stamin_2.png" id="4_pfhll"]
-[ext_resource type="Texture2D" uid="uid://bkflhwasqhit4" path="res://utils/img/stamina_img/stamin_3.png" id="5_1tyxv"]
-[ext_resource type="Texture2D" uid="uid://bf4t0jhto3sw7" path="res://utils/img/stamina_img/stamin_4.png" id="6_wbvqo"]
+[ext_resource type="Texture2D" uid="uid://dptxs776qawaw" path="res://utils/suit/mask.png" id="3_k2huq"]
+[ext_resource type="Texture2D" uid="uid://dx81nigoc35r2" path="res://utils/suit/pro.png" id="4_77hi1"]
+[ext_resource type="Texture2D" uid="uid://c88e5v5pwpor5" path="res://utils/suit/ho.png" id="4_cpcni"]
+[ext_resource type="Texture2D" uid="uid://ly63slxye3bs" path="res://utils/suit/icon.png" id="6_kxttt"]
 [ext_resource type="Shader" path="res://utils/psx_camera/psx_camera_shader.gdshader" id="7_vjg34"]
 [ext_resource type="Script" path="res://SCR/audio_manager.gd" id="8_3vx6c"]
+[ext_resource type="Texture2D" uid="uid://b7acqecrl00g2" path="res://utils/suit/eng.png" id="9_84wo5"]
 [ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/png_scary/fear_0.png" id="9_flnhe"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hq87f"]
@@ -41,22 +40,6 @@ outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 1)
-
-[sub_resource type="AnimatedTexture" id="AnimatedTexture_cvq70"]
-frames = 6
-pause = true
-one_shot = true
-frame_0/texture = ExtResource("1_6mo7b")
-frame_1/texture = ExtResource("3_geka2")
-frame_1/duration = 1.0
-frame_2/texture = ExtResource("4_pfhll")
-frame_2/duration = 1.0
-frame_3/texture = ExtResource("5_1tyxv")
-frame_3/duration = 1.0
-frame_4/texture = ExtResource("6_wbvqo")
-frame_4/duration = 1.0
-frame_5/texture = ExtResource("2_k1srk")
-frame_5/duration = 1.0
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.724673, 0)
@@ -105,52 +88,68 @@ mesh = SubResource("QuadMesh_wryk6")
 
 [node name="UI" type="Node" parent="CameraPivot/Camera3D"]
 
-[node name="h2o2" type="ProgressBar" parent="CameraPivot/Camera3D/UI"]
-modulate = Color(0, 0, 0, 1)
-self_modulate = Color(0.230315, 0.230315, 0.230315, 1)
-show_behind_parent = true
-top_level = true
-clip_contents = true
-custom_minimum_size = Vector2(90, 0)
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
+[node name="mask" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(576.5, 320)
+scale = Vector2(0.450391, 0.459722)
+texture = ExtResource("3_k2huq")
+
+[node name="Pro3" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(214, 640)
+scale = Vector2(0.177162, 0.177162)
+texture = ExtResource("4_77hi1")
+
+[node name="Pro2" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(140, 613)
+scale = Vector2(0.30692, 0.30692)
+texture = ExtResource("4_77hi1")
+
+[node name="Pro" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(56, 610)
+scale = Vector2(0.28, 0.28)
+texture = ExtResource("4_77hi1")
+
+[node name="FearSprite" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(259, 599)
+scale = Vector2(0.21275, 0.21275)
+texture = ExtResource("9_flnhe")
+
+[node name="icon2" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(98, 525)
+scale = Vector2(0.328482, 0.328482)
+texture = ExtResource("6_kxttt")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = -90.0
-grow_horizontal = 0
-grow_vertical = 2
-fill_mode = 1
-show_percentage = false
+offset_left = 26.0
+offset_top = -194.0
+offset_right = 171.0
+offset_bottom = -49.0
+grow_vertical = 0
+step = 4.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("9_84wo5")
 
-[node name="h2o" type="Label" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -97.0
-offset_top = -25.0
-offset_right = 97.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "H2O"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="icon" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
+position = Vector2(183.375, 564.625)
+scale = Vector2(0.2055, 0.2055)
+texture = ExtResource("6_kxttt")
 
-[node name="stamina" type="Label" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -36.0
-offset_top = 59.0
-offset_right = 36.0
-offset_bottom = 82.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "STAMINA"
+[node name="o2" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 138.0
+offset_top = -127.0
+offset_right = 229.0
+offset_bottom = -38.0
+grow_vertical = 0
+step = 4.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("4_cpcni")
 
 [node name="Panel" type="Panel" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 8
@@ -165,7 +164,28 @@ offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="NotificationLabel" type="Label" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 2.0
+offset_top = 39.0
+offset_right = 2.0
+offset_bottom = 210.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_opqr3")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+justification_flags = 171
+
+[node name="SuitNotification" type="Label" parent="CameraPivot/Camera3D/UI"]
+offset_left = 442.0
+offset_top = 34.0
+offset_right = 621.0
+offset_bottom = 205.0
+
 [node name="DarkenScreen" type="ColorRect" parent="CameraPivot/Camera3D/UI"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -175,42 +195,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
-
-[node name="NotificationLabel" type="Label" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 171.0
-grow_horizontal = 2
-label_settings = SubResource("LabelSettings_opqr3")
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-justification_flags = 171
-
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 43.0
-offset_top = -202.0
-offset_right = 199.0
-offset_bottom = -46.0
-grow_vertical = 0
-step = 4.0
-fill_mode = 4
-nine_patch_stretch = true
-texture_progress = SubResource("AnimatedTexture_cvq70")
-
-[node name="SuitNotification" type="Label" parent="CameraPivot/Camera3D/UI"]
-offset_left = 442.0
-offset_top = 34.0
-offset_right = 621.0
-offset_bottom = 205.0
-
-[node name="FearSprite" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(304, 506)
-scale = Vector2(0.251, 0.251)
-texture = ExtResource("9_flnhe")
 
 [node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)
