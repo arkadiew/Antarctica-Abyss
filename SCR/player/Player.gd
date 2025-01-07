@@ -49,7 +49,9 @@ const OXYGEN_INTERACTION_DISTANCE = 3.0
 @export var ground_ray: RayCast3D
 @export var swim_up_speed = 10.0
 @export var climb_speed = 7.0
-
+var is_fear_max: bool = false
+var fear_max_hold_time: float = 5.0  # Duration to hold at 100% (in seconds)
+var fear_max_timer: float = 0.0
 # ---------------------
 # Variables
 # ---------------------
@@ -652,14 +654,25 @@ func apply_water_physics(delta):
 	is_running = false
 
 func handle_fear_mechanics(delta):
-	if Rayscary3D.is_colliding():
-		var collider = Rayscary3D.get_collider()
-		if collider is CharacterBody3D and collider.name in scary_list:
-			fear_level = clamp(fear_level + 10.0 * delta, 0, 100)  # Increased increment rate
-		else:
-			fear_level = clamp(fear_level - 5.0 * delta, 0, 100)  # Decreased decrement rate
+	if is_fear_max:
+		fear_max_timer -= delta
+		if fear_max_timer <= 0:
+			is_fear_max = false  # Allow fear_level to decrease after hold
 	else:
-		fear_level = clamp(fear_level - 3.0 * delta, 0, 100)  # Further decreased decrement rate
+		if Rayscary3D.is_colliding():
+			var collider = Rayscary3D.get_collider()
+			if collider is CharacterBody3D and collider.name in scary_list:
+				fear_level = clamp(fear_level + 10.0 * delta, 0, 100)  # Increased increment rate
+			else:
+				fear_level = clamp(fear_level - 5.0 * delta, 0, 100)  # Decreased decrement rate
+		else:
+			fear_level = clamp(fear_level - 3.0 * delta, 0, 100)  # Further decreased decrement rate
+
+		# Check if fear_level has reached 100%
+		if fear_level >= 100 and not is_fear_max:
+			is_fear_max = true
+			fear_max_timer = fear_max_hold_time  # Start the hold timer
+
 	update_fear_sprite()
 
 func update_fear_sprite():
