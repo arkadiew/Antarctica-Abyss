@@ -88,68 +88,103 @@ mesh = SubResource("QuadMesh_wryk6")
 
 [node name="UI" type="Node" parent="CameraPivot/Camera3D"]
 
-[node name="mask" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(576.5, 320)
-scale = Vector2(0.450391, 0.459722)
+[node name="mask" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -7.0
+offset_top = -6.0
+offset_right = 5.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("3_k2huq")
+expand_mode = 1
 
-[node name="Pro3" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(214, 640)
-scale = Vector2(0.177162, 0.177162)
+[node name="Pro3" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
+scale = Vector2(0.298985, 0.23807)
+size_flags_horizontal = 2
+size_flags_vertical = 2
 texture = ExtResource("4_77hi1")
+expand_mode = 1
+stretch_mode = 2
 
-[node name="Pro2" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(140, 613)
+[node name="Pro2" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
 scale = Vector2(0.30692, 0.30692)
+size_flags_horizontal = 2
+size_flags_vertical = 2
 texture = ExtResource("4_77hi1")
+expand_mode = 1
+stretch_mode = 2
 
-[node name="Pro" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(56, 610)
+[node name="Pro" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
 scale = Vector2(0.28, 0.28)
+size_flags_horizontal = 2
+size_flags_vertical = 2
 texture = ExtResource("4_77hi1")
+expand_mode = 1
 
 [node name="FearSprite" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(259, 599)
-scale = Vector2(0.21275, 0.21275)
+position = Vector2(324, 574)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("9_flnhe")
 
 [node name="icon2" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(98, 525)
-scale = Vector2(0.328482, 0.328482)
+position = Vector2(99, 525)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("6_kxttt")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 26.0
-offset_top = -194.0
-offset_right = 171.0
-offset_bottom = -49.0
+offset_left = 13.0
+offset_top = -641.0
+offset_right = 158.0
+offset_bottom = -496.0
 grow_vertical = 0
+scale = Vector2(1.2, 1.2)
 step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
 texture_progress = ExtResource("9_84wo5")
 
 [node name="icon" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(183.375, 564.625)
-scale = Vector2(0.2055, 0.2055)
+position = Vector2(209, 563)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("6_kxttt")
 
 [node name="o2" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 138.0
-offset_top = -127.0
-offset_right = 229.0
-offset_bottom = -38.0
+anchors_preset = -1
+anchor_left = 0.108854
+anchor_top = 0.451852
+anchor_right = 0.108854
+anchor_bottom = 0.451852
+offset_left = -66.0
+offset_top = 13.0
+offset_right = 23.0
+offset_bottom = 102.0
 grow_vertical = 0
+scale = Vector2(1.48, 1.406)
+size_flags_horizontal = 2
+size_flags_vertical = 2
 step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
 texture_progress = ExtResource("4_cpcni")
+metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 8

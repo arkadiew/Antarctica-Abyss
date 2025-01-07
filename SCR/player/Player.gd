@@ -99,9 +99,9 @@ var scary_list = ["fish", "shark", "barracuda"]
 # UI and Nodes
 # ---------------------
 @onready var fear_sprite: Sprite2D = $CameraPivot/Camera3D/UI/FearSprite
-@onready var Pro3: Sprite2D = $CameraPivot/Camera3D/UI/Pro3
-@onready var Pro2: Sprite2D = $CameraPivot/Camera3D/UI/Pro2
-@onready var Pro1: Sprite2D = $CameraPivot/Camera3D/UI/Pro
+@onready var Pro3: TextureRect = $CameraPivot/Camera3D/UI/Pro3
+@onready var Pro2: TextureRect = $CameraPivot/Camera3D/UI/Pro2
+@onready var Pro1: TextureRect = $CameraPivot/Camera3D/UI/Pro
 @onready var icon2: Sprite2D = $CameraPivot/Camera3D/UI/icon2
 @onready var icon: Sprite2D = $CameraPivot/Camera3D/UI/icon
 @onready var AudioManager: Node = $AudioManager
@@ -112,7 +112,7 @@ var scary_list = ["fish", "shark", "barracuda"]
 @onready var label_3d: Label3D = $CameraPivot/Camera3D/Label3D
 @onready var darken_screen: ColorRect = $CameraPivot/Camera3D/UI/DarkenScreen
 @onready var NotificationLabel: Label = $CameraPivot/Camera3D/UI/NotificationLabel
-@onready var mask: Sprite2D = $CameraPivot/Camera3D/UI/mask
+@onready var mask: TextureRect = $CameraPivot/Camera3D/UI/mask
 @onready var camera_pivot: Node3D = $CameraPivot
 
 var shake_randomizer = RandomNumberGenerator.new()

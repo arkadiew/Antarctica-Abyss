@@ -1,3 +1,4 @@
+TextureRect
 Sprite2D
 CollisionShape3D
 CSGBox3D
@@ -11,4 +12,3 @@ AudioStreamPlayer3D
 CPUParticles3D
 Area3D
 RigidBody3D
-Label
