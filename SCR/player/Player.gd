@@ -3,6 +3,7 @@ extends CharacterBody3D
 # ---------------------
 # Constants
 # ---------------------
+
 const FEAR_DEATH_DELAY = 3.0  # Seconds to wait after fear reaches 100
 const SUIT_PICKUP_DISTANCE = 3.0
 const SUIT_GROUP = "suit_items"
@@ -63,6 +64,7 @@ var selected_item_index = -1
 var stamina = MAX_STAMINA
 var h2o = MAX_H2O
 
+var can_attack = true
 var is_running = false
 var stamina_recovery_timer = 0.0
 var can_run = true
@@ -100,12 +102,12 @@ var scary_list = ["fish", "shark", "barracuda"]
 # ---------------------
 # UI and Nodes
 # ---------------------
-@onready var fear_sprite: Sprite2D = $CameraPivot/Camera3D/UI/FearSprite
+@onready var fear_sprite: TextureRect = $CameraPivot/Camera3D/UI/FearSprite
 @onready var Pro3: TextureRect = $CameraPivot/Camera3D/UI/Pro3
 @onready var Pro2: TextureRect = $CameraPivot/Camera3D/UI/Pro2
 @onready var Pro1: TextureRect = $CameraPivot/Camera3D/UI/Pro
-@onready var icon2: Sprite2D = $CameraPivot/Camera3D/UI/icon2
-@onready var icon: Sprite2D = $CameraPivot/Camera3D/UI/icon
+@onready var icon2: TextureRect = $CameraPivot/Camera3D/UI/icon2
+@onready var icon: TextureRect = $CameraPivot/Camera3D/UI/icon
 @onready var AudioManager: Node = $AudioManager
 @onready var camera: Camera3D = $CameraPivot/Camera3D
 @onready var interact_ray: RayCast3D = $CameraPivot/Camera3D/InteractRay
@@ -245,8 +247,8 @@ func _try_add_to_inventory():
 			add_to_inventory(collider)
 
 func apply_stamina_penalty_for_holding(delta):
-	var mass = held_object.mass
-	var drain_factor = (holding_object_time / 10.0) * mass
+	#var mass = held_object.mass * mass
+	var drain_factor = (holding_object_time / 10.0) 
 	if holding_object_time >= 1.0:
 		decrease_stamina(10.0 * drain_factor * delta)
 
@@ -567,6 +569,8 @@ func _input(event):
 		_handle_mouse_motion(event)
 	if event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
 		_toggle_mouse_mode()
+	if event.is_action_pressed("attack"):
+		attack()
 
 func _handle_mouse_motion(event: InputEventMouseMotion):
 	target_rotation_y -= event.relative.x * SENSITIVITY * 0.1
@@ -697,3 +701,18 @@ func handle_fear_death(delta):
 	else:
 		fear_death_timer = 0.0
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 9)  # Cleaned up as per request
+func attack():
+	if not can_attack:
+		return
+	if held_object and held_object.name == "DamagingObject":
+		check_for_breakable_objects()
+		# Выполнить атаку
+		print("Атака палкой!")
+	else:
+		print("Невозможно атаковать без палки.")
+func check_for_breakable_objects():
+	if interact_ray.is_colliding():  # Используем RayCast для проверки попадания
+		var collider = interact_ray.get_collider()
+		if collider and collider.is_in_group("breakable"):  # Проверяем, что объект может быть разрушен
+			collider.take_damage(1)  # Наносим урон
+			print("Нанесён урон объекту: " + collider.name)

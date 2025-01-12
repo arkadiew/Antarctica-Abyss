@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://m0sqhkvhgsdd"]
+[gd_scene load_steps=7 format=3 uid="uid://m0sqhkvhgsdd"]
 
 [ext_resource type="Texture2D" uid="uid://cmpphmam0hwe6" path="res://addons/devblocks/textures/dark/texture_01.png" id="1_i5pyh"]
+[ext_resource type="Script" path="res://SCR/cube.gd" id="1_l8qlg"]
 [ext_resource type="Shader" uid="uid://bg0s74rfgn7qx" path="res://gridmaterial.tres" id="1_q7u0t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5amll"]
@@ -15,10 +16,11 @@ shader_parameter/grid_size = null
 shader_parameter/Color_1 = null
 shader_parameter/Color_2 = null
 
-[node name="RigidBody3D" type="RigidBody3D" groups=["grab"]]
+[node name="cube" type="RigidBody3D" groups=["breakable", "grab"]]
 transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 0, 0, 0)
 center_of_mass_mode = 1
 angular_damp = 30.0
+script = ExtResource("1_l8qlg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00382352, 0.00271457, -0.00776839)

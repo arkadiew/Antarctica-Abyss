@@ -102,80 +102,111 @@ texture = ExtResource("3_k2huq")
 expand_mode = 1
 
 [node name="Pro3" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -33.0
+offset_top = -238.0
+offset_right = 873.0
+offset_bottom = 942.0
+grow_vertical = 0
 scale = Vector2(0.298985, 0.23807)
 size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource("4_77hi1")
-expand_mode = 1
-stretch_mode = 2
 
 [node name="Pro2" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 46.0
+offset_top = -202.0
+offset_right = 1001.0
+offset_bottom = 753.0
+grow_vertical = 0
 scale = Vector2(0.30692, 0.30692)
 size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource("4_77hi1")
-expand_mode = 1
-stretch_mode = 2
 
 [node name="Pro" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -157.0
+offset_right = 971.0
+offset_bottom = 636.0
+grow_vertical = 0
 scale = Vector2(0.28, 0.28)
 size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource("4_77hi1")
 expand_mode = 1
 
-[node name="FearSprite" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(324, 574)
+[node name="FearSprite" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 171.0
+offset_top = -353.0
+offset_right = 788.0
+offset_bottom = 264.0
+grow_vertical = 0
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("9_flnhe")
 
-[node name="icon2" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(99, 525)
+[node name="icon2" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = -287.0
+offset_right = 540.0
+offset_bottom = 230.0
+grow_vertical = 0
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("6_kxttt")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
+layout_direction = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = -641.0
-offset_right = 158.0
-offset_bottom = -496.0
+offset_left = 37.0
+offset_top = -270.0
+offset_right = 187.0
+offset_bottom = -124.0
 grow_vertical = 0
 scale = Vector2(1.2, 1.2)
 step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
+texture_under = ExtResource("9_84wo5")
 texture_progress = ExtResource("9_84wo5")
 
-[node name="icon" type="Sprite2D" parent="CameraPivot/Camera3D/UI"]
-position = Vector2(209, 563)
+[node name="icon" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 187.0
+offset_top = -206.0
+offset_right = 787.0
+offset_bottom = 394.0
+grow_vertical = 0
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("6_kxttt")
 
 [node name="o2" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
+layout_direction = 1
 anchors_preset = -1
-anchor_left = 0.108854
-anchor_top = 0.451852
-anchor_right = 0.108854
-anchor_bottom = 0.451852
-offset_left = -66.0
-offset_top = 13.0
-offset_right = 23.0
-offset_bottom = 102.0
+anchor_top = 0.9975
+anchor_right = 0.01
+anchor_bottom = 1.02125
+offset_left = 198.0
+offset_top = -190.0
+offset_right = 287.0
+offset_bottom = -101.0
 grow_vertical = 0
 scale = Vector2(1.48, 1.406)
 size_flags_horizontal = 2
@@ -183,6 +214,7 @@ size_flags_vertical = 2
 step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
+texture_under = ExtResource("4_cpcni")
 texture_progress = ExtResource("4_cpcni")
 metadata/_edit_use_anchors_ = true
 
@@ -230,6 +262,10 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)

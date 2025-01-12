@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cd1aps3p688pv"]
+
+[ext_resource type="Script" path="res://SCR/damaging_object.gd" id="1_02ipl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlf7d"]
+size = Vector3(1, 1, 21.7851)
+
+[node name="DamagingObject" type="RigidBody3D" groups=["spear"]]
+transform = Transform3D(0.490145, 0, 0, 0, 0.490145, 0, 0, 0, 0.42758, 0, 0, 0)
+mass = 0.165
+script = ExtResource("1_02ipl")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(0.562474, 0, 0, 0, 0.562474, 0, 0, 0, 0.562474, 0, 0, -3.5562)
+size = Vector3(1, 1, 23.3393)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.609398, 0, 0, 0, 0.609398, 0, 0, 0, 0.609398, 0, 0, -3.57775)
+shape = SubResource("BoxShape3D_hlf7d")

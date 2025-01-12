@@ -7,7 +7,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rl1bd"]
 albedo_texture = ExtResource("1_nr88k")
 
-[node name="RigidBody3D4" type="RigidBody3D"]
+[node name="RigidBody3D" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.22504, 0, 0)
 mass = 0.001
 
