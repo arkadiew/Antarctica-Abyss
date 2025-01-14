@@ -1,20 +1,53 @@
-[gd_scene load_steps=3 format=3 uid="uid://btxui38coukpq"]
+[gd_scene load_steps=6 format=3 uid="uid://btxui38coukpq"]
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fgdfd"]
+[ext_resource type="Script" path="res://SCR/damage.gd" id="1_75tlx"]
+
+[sub_resource type="Curve" id="Curve_fws4n"]
+max_value = 200.0
+_data = [Vector2(0.214286, 200), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2is62"]
+curve = SubResource("Curve_fws4n")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tv46j"]
+particle_flag_align_y = true
+particle_flag_damping_as_friction = true
 emission_shape = 3
 emission_box_extents = Vector3(1, 1, 1)
-gravity = Vector3(0, 12.245, 0)
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = -1.60933e-05
+gravity = Vector3(9, 9, 9)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 100.0
+tangential_accel_min = -100.0
+tangential_accel_max = -100.0
+damping_min = 100.0
+damping_max = 100.0
+color = Color(0.53862, 0.568379, 0.474876, 1)
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+anim_speed_min = 16.0
+anim_speed_max = 16.0
+anim_speed_curve = SubResource("CurveTexture_2is62")
+turbulence_noise_strength = 20.0
+turbulence_noise_scale = 5.78
 
 [sub_resource type="BoxMesh" id="BoxMesh_re27q"]
+size = Vector3(0.2, 0.2, 0.2)
 
 [node name="GPUParticles3D" type="GPUParticles3D"]
-transform = Transform3D(1.41913, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-emitting = false
-amount_ratio = 0.7975
-lifetime = 6.13
-one_shot = true
-fixed_fps = 31
+transform = Transform3D(0.637164, 0, 0, 0, 0.448982, 0, 0, 0, 0.448982, 0, 0, 0)
+amount = 5
+lifetime = 0.95
+preprocess = 1.45
+randomness = 1.0
+local_coords = true
+draw_order = 3
+transform_align = 1
 trail_enabled = true
-trail_lifetime = 0.01
-process_material = SubResource("ParticleProcessMaterial_fgdfd")
+process_material = SubResource("ParticleProcessMaterial_tv46j")
 draw_pass_1 = SubResource("BoxMesh_re27q")
+script = ExtResource("1_75tlx")

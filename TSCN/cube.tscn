@@ -19,6 +19,7 @@ shader_parameter/Color_2 = null
 [node name="cube" type="RigidBody3D" groups=["breakable", "grab"]]
 transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 0, 0, 0)
 center_of_mass_mode = 1
+can_sleep = false
 angular_damp = 30.0
 script = ExtResource("1_l8qlg")
 

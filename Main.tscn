@@ -66,7 +66,6 @@ mass = 0.5
 
 [node name="cube2" parent="." instance=ExtResource("3_258lm")]
 transform = Transform3D(0.609789, 0, 0, 0, 0.609789, 0, 0, 0, 0.609789, -7.98577, -0.129985, 1.44789)
-disable_mode = 1
 mass = 0.5
 
 [node name="WaterMaker3D" parent="." instance=ExtResource("4_002id")]
