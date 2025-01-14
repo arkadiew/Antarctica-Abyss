@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://btxui38coukpq"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fgdfd"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+gravity = Vector3(0, 12.245, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_re27q"]
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+transform = Transform3D(1.41913, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+emitting = false
+amount_ratio = 0.7975
+lifetime = 6.13
+one_shot = true
+fixed_fps = 31
+trail_enabled = true
+trail_lifetime = 0.01
+process_material = SubResource("ParticleProcessMaterial_fgdfd")
+draw_pass_1 = SubResource("BoxMesh_re27q")

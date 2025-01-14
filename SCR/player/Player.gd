@@ -4,7 +4,7 @@ extends CharacterBody3D
 # Constants
 # ---------------------
 
-const FEAR_DEATH_DELAY = 3.0  # Seconds to wait after fear reaches 100
+const FEAR_DEATH_DELAY = 4.0  # Seconds to wait after fear reaches 100
 const SUIT_PICKUP_DISTANCE = 3.0
 const SUIT_GROUP = "suit_items"
 const MAX_INVENTORY_SIZE = 5
@@ -127,6 +127,7 @@ var rotation_x = 0.0
 var target_rotation_y = 0.0
 
 func _ready():
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	original_fov = camera.fov
 	if has_suit:
@@ -139,6 +140,7 @@ func _ready():
 		h2o_bar.visible = false
 
 func _process(delta):
+	 
 	_handle_rotation(delta)
 	if has_suit:
 		_process_with_suit(delta)
@@ -693,26 +695,56 @@ func update_fear_sprite():
 
 func handle_fear_death(delta):
 	if fear_level >= 100:
-		darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2)
+		
+		darken_screen.modulate.a = 1
 		fear_death_timer += delta
 		if fear_death_timer >= FEAR_DEATH_DELAY:
-			show_notification("You died of fear!", 2.0)
 			restart_scene()
 	else:
 		fear_death_timer = 0.0
-		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 9)  # Cleaned up as per request
+		# Увеличиваем скорость осветления
+		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 12)  # Увеличена скорость осветления
 func attack():
 	if not can_attack:
 		return
 	if held_object and held_object.name == "DamagingObject":
+		
 		check_for_breakable_objects()
+		animate_spear_attack()
 		# Выполнить атаку
 		print("Атака палкой!")
 	else:
 		print("Невозможно атаковать без палки.")
+func animate_spear_attack():
+	if not held_object:
+		print("Ошибка: held_object равен null!")
+		return
+
+	
+
+	var tween = create_tween()
+
+	# Начальная позиция копья
+	var start_position = held_object.position
+	# Направление взгляда персонажа
+	var direction = -transform.basis.z.normalized()
+	# Конечная позиция копья (движение вперед на 2 единицы в направлении взгляда)
+	var end_position = start_position + direction * 2.0
+
+	# Анимация движения вперед
+	tween.tween_property(held_object, "position", end_position, 0.2).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+	# Анимация движения назад (возврат в исходную позицию)
+	tween.tween_property(held_object, "position", start_position, 0.2).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+	# Запуск анимации
+	tween.play()
+
+
+	
 func check_for_breakable_objects():
-	if interact_ray.is_colliding():  # Используем RayCast для проверки попадания
-		var collider = interact_ray.get_collider()
+	if Rayscary3D.is_colliding():  # Используем RayCast для проверки попадания
+		var collider = Rayscary3D.get_collider()
 		if collider and collider.is_in_group("breakable"):  # Проверяем, что объект может быть разрушен
 			collider.take_damage(1)  # Наносим урон
 			print("Нанесён урон объекту: " + collider.name)

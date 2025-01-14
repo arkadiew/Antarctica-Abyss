@@ -63,10 +63,10 @@ current = true
 fov = 120.0
 
 [node name="Rayscary3D" type="RayCast3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 0.0701492, -1.13434, 0, 5.34444, 0.0148889, 0, 0, -0.935285)
+transform = Transform3D(1, 0, 0, 0, 0.092242, -1.13903, 0, 7.02762, 0.0149504, 0, 0, -0.935285)
 
 [node name="InteractRay" type="RayCast3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(1.34086, 0, 0, 0, 1.07764, -0.129825, 0, 0.336805, 0.415392, -0.0749416, -0.433537, -0.928925)
+transform = Transform3D(1.34086, -3.71008e-07, 0.000113938, 0, 1.12905, 0.000547588, -0.000351042, -0.00141722, 0.435206, -0.00150963, -0.0021795, -0.928925)
 target_position = Vector3(0, 0, -3)
 collide_with_areas = true
 
@@ -79,7 +79,7 @@ transform = Transform3D(2.88281, 0, 0, 0, 2.88281, 0, 0, 0, 2.88281, 0, 0, -0.85
 gizmo_extents = 27.45
 
 [node name="HandSlot" type="Node3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0433952, 0.117052, -2.35171)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.337421, 0.117052, -1.87381)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(0.0384652, 0, 0, 0, 0.0384652, 0, 0, 0, 0.0178821, 0, 0, -0.546126)
@@ -182,7 +182,6 @@ scale = Vector2(1.2, 1.2)
 step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
-texture_under = ExtResource("9_84wo5")
 texture_progress = ExtResource("9_84wo5")
 
 [node name="icon" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
@@ -201,7 +200,7 @@ texture = ExtResource("6_kxttt")
 layout_direction = 1
 anchors_preset = -1
 anchor_top = 0.9975
-anchor_right = 0.01
+anchor_right = 0.0111111
 anchor_bottom = 1.02125
 offset_left = 198.0
 offset_top = -190.0
@@ -214,7 +213,6 @@ size_flags_vertical = 2
 step = 4.0
 fill_mode = 4
 nine_patch_stretch = true
-texture_under = ExtResource("4_cpcni")
 texture_progress = ExtResource("4_cpcni")
 metadata/_edit_use_anchors_ = true
 
