@@ -1,3 +1,4 @@
+MeshInstance3D
 GPUParticles3D
 CSGBox3D
 CollisionShape3D
@@ -5,11 +6,9 @@ Area3D
 TextureRect
 RigidBody3D
 Node3D
-MeshInstance3D
 Sprite2D
 CharacterBody3D
 CollisionPolygon3D
 AudioStreamPlayer
 Node
 AudioStreamPlayer3D
-CPUParticles3D

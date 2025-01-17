@@ -500,13 +500,40 @@ func determine_speed() -> float:
 	elif stamina == 0:
 		return LOW_STAMINA_SPEED
 	return WALK_SPEED
+	
+var original_material: Material = null
+var highlight_material: Material = preload("res://utils/highlight_material.tres")
+var default_material = StandardMaterial3D.new()
 
 func set_held_object(body: RigidBody3D):
 	held_object = body
+	if body and body.has_node("MeshInstance3D"):
+		var mesh_instance = body.get_node("MeshInstance3D")
+
+		# Если материалов нет, создаем и назначаем материал по умолчанию
+		if mesh_instance.get_surface_override_material_count() == 0:
+			
+		
+			mesh_instance.set_surface_override_material(0, highlight_material)
+
+		# Сохраняем исходный материал
+		var original_material = mesh_instance.get_surface_override_material(0)
+		# Применяем материал для выделения
+		mesh_instance.set_surface_override_material(0, highlight_material)
+
 
 func drop_held_object():
-	held_object = null
+	if held_object and held_object.has_node("MeshInstance3D"):
+		var mesh_instance = held_object.get_node("MeshInstance3D")
+		if mesh_instance.get_surface_override_material_count() > 0:
+			# Возвращаем исходный материал
 
+			mesh_instance.set_surface_override_material(0, original_material)
+		
+
+	# Сбрасываем held_object и original_material после всех операций
+	held_object = null
+	original_material = null
 func follow_player_with_object():
 	var tp = camera.global_transform.origin + camera.global_basis * Vector3(0, 0, -follow_distance)
 	var op = held_object.global_transform.origin

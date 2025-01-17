@@ -8,17 +8,10 @@ class_name DamagingObject
 func _physics_process(delta: float) -> void:
 	if not is_active:
 		return
-
-	
 	var my_pos = global_transform.origin
-
-	# Получаем всех "кандидатов" (например, врагов)
 	var bodies = get_tree().get_nodes_in_group(targets_group)
-
 	for body in bodies:
-		# Убедимся, что это RigidBody3D и не само оружие
 		if body is RigidBody3D and body != self:
-			# Сравниваем дистанцию
 			var dist = my_pos.distance_to(body.global_transform.origin)
 			if dist <= kill_distance:
 				body.queue_free()

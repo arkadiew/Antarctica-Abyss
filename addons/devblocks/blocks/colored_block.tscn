@@ -2,11 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_nhrmc"]
 [ext_resource type="Script" path="res://addons/devblocks/blocks/colored_block.gd" id="2_in130"]
-[ext_resource type="Texture2D" uid="uid://b18i1whruu2uo" path="res://addons/devblocks/textures/dark/texture_01.png" id="3_whpuj"]
+[ext_resource type="Texture2D" uid="uid://cmpphmam0hwe6" path="res://addons/devblocks/textures/dark/texture_01.png" id="3_whpuj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a1wqe"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2li4v"]
 albedo_texture = ExtResource("3_whpuj")
-emission = Color(1, 1, 1, 1)
 uv1_offset = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
 
@@ -15,4 +14,4 @@ script = ExtResource("2_in130")
 block_color = Color(1, 1, 1, 1)
 
 [node name="Mesh" parent="." index="1"]
-surface_material_override/0 = SubResource("StandardMaterial3D_a1wqe")
+surface_material_override/0 = SubResource("StandardMaterial3D_2li4v")
