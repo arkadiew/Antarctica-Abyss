@@ -1,1 +1,3 @@
+NoiseTexture2D
+ViewportTexture
 StandardMaterial3D

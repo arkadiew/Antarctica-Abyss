@@ -514,7 +514,7 @@ func set_held_object(body: RigidBody3D):
 		if mesh_instance.get_surface_override_material_count() == 0:
 			
 		
-			mesh_instance.set_surface_override_material(0, highlight_material)
+			mesh_instance.set_surface_override_material(0, original_material)
 
 		# Сохраняем исходный материал
 		var original_material = mesh_instance.get_surface_override_material(0)

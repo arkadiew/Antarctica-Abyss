@@ -1,12 +1,15 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bfhjf4he7bk6i"]
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://bfhjf4he7bk6i"]
 
+[ext_resource type="Texture2D" uid="uid://bepgbs6ocadcp" path="res://addons/devblocks/textures/red/texture_01.png" id="1_amom6"]
 [ext_resource type="Shader" path="res://utils/hm.gdshader" id="1_fd457"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tht6k"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bjs38"]
 render_priority = 1
 shader = ExtResource("1_fd457")
-shader_parameter/outline_color = Color(1, 1, 0, 1)
-shader_parameter/outline_thickness = 0.02
+shader_parameter/outline_color = null
+shader_parameter/outline_width = 3.0
+shader_parameter/constant_width = true
 
 [resource]
-next_pass = SubResource("ShaderMaterial_tht6k")
+next_pass = SubResource("ShaderMaterial_bjs38")
+albedo_texture = ExtResource("1_amom6")

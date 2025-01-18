@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=19 format=3 uid="uid://wssnx1an6whd"]
 
 [ext_resource type="Script" path="res://SCR/player/Player.gd" id="1_6qoym"]
 [ext_resource type="Texture2D" uid="uid://dptxs776qawaw" path="res://utils/suit/mask.png" id="3_k2huq"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://SCR/audio_manager.gd" id="8_3vx6c"]
 [ext_resource type="Texture2D" uid="uid://b7acqecrl00g2" path="res://utils/suit/eng.png" id="9_84wo5"]
 [ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/png_scary/fear_0.png" id="9_flnhe"]
+[ext_resource type="Shader" path="res://utils/cameraw.gdshader" id="9_vculq"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hq87f"]
 
@@ -40,6 +41,17 @@ outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g1ve8"]
+viewport_path = NodePath("CameraPivot/Camera3D/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3nbre"]
+render_priority = 0
+shader = ExtResource("9_vculq")
+shader_parameter/pixel_size = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_yke17"]
+material = SubResource("ShaderMaterial_3nbre")
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.724673, 0)
@@ -264,6 +276,25 @@ color = Color(0, 0, 0, 1)
 [node name="TextureRect" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="cameraw" type="TextureRect" parent="CameraPivot/Camera3D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_g1ve8")
+
+[node name="SubViewport" type="SubViewport" parent="CameraPivot/Camera3D"]
+own_world_3d = true
+transparent_bg = true
+scaling_3d_mode = 2
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1.79059, 0, 0, 0, 0.820363, 0, 0, 0, 0.583701, 0, 0, -0.54547)
+mesh = SubResource("QuadMesh_yke17")
 
 [node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)

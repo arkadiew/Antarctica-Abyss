@@ -1,23 +1,24 @@
 shader_type spatial;
+render_mode unshaded;
 
-uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 0.0, 1.0); // Желтый цвет
-uniform float outline_thickness : hint_range(0.0, 0.1) = 0.02;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture;
+uniform vec4 outline_color : source_color;
+uniform float outline_width = 2.0;
+uniform bool constant_width = true;
 
 void fragment() {
-    // Получаем нормаль текущего пикселя
-    vec3 normal = normalize(NORMAL);
-    
-    // Получаем нормали соседних пикселей
-    vec3 normal_right = normalize(dFdx(NORMAL));
-    vec3 normal_down = normalize(dFdy(NORMAL));
-    
-    // Вычисляем разницу между нормалями
-    float edge = max(length(normal_right), length(normal_down));
-    
-    // Применяем обводку только на краях
-    if (edge > outline_thickness) {
-        ALBEDO = outline_color.rgb;
-    } else {
-        ALBEDO = vec3(0.0);
-    }
+	vec4 pixelatedtext = texture(SCREEN_TEXTURE, SCREEN_UV);
+	vec2 pixel_size = 1.0 / VIEWPORT_SIZE;
+	ALBEDO = pixelatedtext.rgb;
+	for(int y = -1*int(outline_width); y <= 1*int(outline_width); y++)
+	for(int x = -1*int(outline_width); x <= 1*int(outline_width); x++)
+	{
+		vec4 tex = texture(SCREEN_TEXTURE, SCREEN_UV + vec2(float(x),float(y)) * pixel_size );
+		if(tex.a == 0.0 && SCREEN_UV.x + float(x) * pixel_size.x < 1.0 && SCREEN_UV.x + float(x) * pixel_size.x > 0.0 && SCREEN_UV.y + float(y) * pixel_size.y < 1.0 && SCREEN_UV.y + float(y) * pixel_size.y > 0.0)
+		{
+			ALBEDO = outline_color.rgb;
+			ALPHA = 1.0;
+		}
+	}
+
 }

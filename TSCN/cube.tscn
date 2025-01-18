@@ -1,19 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://m0sqhkvhgsdd"]
+[gd_scene load_steps=8 format=3 uid="uid://m0sqhkvhgsdd"]
 
 [ext_resource type="Texture2D" uid="uid://cmpphmam0hwe6" path="res://addons/devblocks/textures/dark/texture_01.png" id="1_i5pyh"]
 [ext_resource type="Script" path="res://SCR/cube.gd" id="1_l8qlg"]
-[ext_resource type="Shader" uid="uid://bg0s74rfgn7qx" path="res://gridmaterial.tres" id="1_q7u0t"]
 [ext_resource type="Texture2D" uid="uid://bepgbs6ocadcp" path="res://addons/devblocks/textures/red/texture_01.png" id="4_ujk82"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0407"]
 albedo_texture = ExtResource("1_i5pyh")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7ash"]
-render_priority = 12
-shader = ExtResource("1_q7u0t")
-shader_parameter/grid_size = null
-shader_parameter/Color_1 = null
-shader_parameter/Color_2 = null
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lh1b0"]
 albedo_texture = ExtResource("4_ujk82")
@@ -36,7 +28,6 @@ transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, -0.
 visible = false
 material_override = SubResource("StandardMaterial3D_b0407")
 collision_layer = 6
-material = SubResource("ShaderMaterial_a7ash")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.994991, 0, 0, 0, 0.994991, 0, 0, 0, 0.994991, 0, 0, 0)
