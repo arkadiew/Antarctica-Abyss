@@ -6,9 +6,9 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bjs38"]
 render_priority = 1
 shader = ExtResource("1_fd457")
+shader_parameter/pixel_size = 4
 shader_parameter/outline_color = null
 shader_parameter/outline_width = 3.0
-shader_parameter/constant_width = true
 
 [resource]
 next_pass = SubResource("ShaderMaterial_bjs38")

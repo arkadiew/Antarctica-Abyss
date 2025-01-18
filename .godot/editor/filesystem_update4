@@ -2,6 +2,7 @@ res://Main.tscn
 res://utils/hm.gdshader
 res://utils/highlight_material.tres
 res://utils/psx_camera/psx_camera_shader.gdshader
+res://utils/cameraw.gdshader
 res://utils/WaterMaker3D/FogFade.gdshader
 res://utils/WaterMaker3D/CameraWaterOverlay.gdshader
 res://SCR/damaging_object.gd
@@ -18,6 +19,3 @@ res://TSCN/damage.tscn
 res://addons/devblocks/blocks/colored_block.tscn
 res://addons/devblocks/blocks/emission_block.tscn
 res://TSCN/beta.tscn
-res://utils/cameraw.tres.tres
-res://utils/cameraw.gdshader
-res://utils/camera_2d.tres
