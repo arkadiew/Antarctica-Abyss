@@ -140,7 +140,6 @@ func _ready():
 		h2o_bar.visible = false
 
 func _process(delta):
-	 
 	_handle_rotation(delta)
 	if has_suit:
 		_process_with_suit(delta)
@@ -505,7 +504,13 @@ var original_material: Material = null
 var highlight_material: Material = preload("res://utils/highlight_material.tres")
 var default_material = StandardMaterial3D.new()
 
+
+var zoom_speed: float = 1.0  # Скорость изменения расстояния
+var min_distance: float = 1.0  # Минимальное расстояние до объекта
+var max_distance: float = 5.0  # Максимальное расстояние до объекта
+
 func set_held_object(body: RigidBody3D):
+	
 	held_object = body
 	if body and body.has_node("MeshInstance3D"):
 		var mesh_instance = body.get_node("MeshInstance3D")
@@ -542,7 +547,7 @@ func follow_player_with_object():
 		drop_held_object()
 	elif drop_below_player and ground_ray.is_colliding() and ground_ray.get_collider() == held_object:
 		drop_held_object()
-
+			
 func update_label_position():
 	if held_object:
 		update_label_for_held_object(held_object)
@@ -600,7 +605,12 @@ func _input(event):
 		_toggle_mouse_mode()
 	if event.is_action_pressed("attack"):
 		attack()
-
+	if event is InputEventMouseButton and held_object:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			follow_distance = max(follow_distance - zoom_speed, min_distance)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			follow_distance = min(follow_distance + zoom_speed, max_distance)
+			
 func _handle_mouse_motion(event: InputEventMouseMotion):
 	target_rotation_y -= event.relative.x * SENSITIVITY * 0.1
 	rotation_x -= event.relative.y * SENSITIVITY * 5

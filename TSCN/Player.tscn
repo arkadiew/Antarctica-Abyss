@@ -48,7 +48,7 @@ viewport_path = NodePath("CameraPivot/Camera3D/SubViewport")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3nbre"]
 render_priority = 0
 shader = ExtResource("9_vculq")
-shader_parameter/pixel_size = 3
+shader_parameter/pixel_size = 6
 
 [sub_resource type="QuadMesh" id="QuadMesh_yke17"]
 material = SubResource("ShaderMaterial_3nbre")
@@ -281,6 +281,10 @@ offset_bottom = 40.0
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_g1ve8")
@@ -288,6 +292,7 @@ texture = SubResource("ViewportTexture_g1ve8")
 [node name="SubViewport" type="SubViewport" parent="CameraPivot/Camera3D"]
 transparent_bg = true
 handle_input_locally = false
+scaling_3d_mode = 0
 size_2d_override_stretch = true
 render_target_update_mode = 4
 

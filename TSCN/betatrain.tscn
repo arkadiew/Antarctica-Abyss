@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://dssu662eyypx2"]
+
+[ext_resource type="Texture2D" uid="uid://b728mabel7wsm" path="res://addons/devblocks/textures/green/texture_03.png" id="1_pmujs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbtbo"]
+albedo_texture = ExtResource("1_pmujs")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cx5qi"]
+next_pass = SubResource("StandardMaterial3D_tbtbo")
+
+[sub_resource type="BoxMesh" id="BoxMesh_h2wlq"]
+material = SubResource("StandardMaterial3D_cx5qi")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rw5ip"]
+
+[node name="betatrain" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.94117)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.449094, 0, 0.485229)
+mesh = SubResource("BoxMesh_h2wlq")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.449094, 0, 0.485229)
+shape = SubResource("BoxShape3D_rw5ip")

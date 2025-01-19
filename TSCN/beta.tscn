@@ -1,78 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://bbr1dv50ac64l"]
+[gd_scene load_steps=2 format=3 uid="uid://bbr1dv50ac64l"]
 
-[ext_resource type="Texture2D" uid="uid://cexj483js6tin" path="res://addons/devblocks/textures/orange/texture_01.png" id="1_qad65"]
-[ext_resource type="Texture2D" uid="uid://7ju4mpg442yk" path="res://addons/devblocks/textures/green/texture_01.png" id="2_jkm2k"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmxq2"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v3far"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3317a"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avilm"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ro6c"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m47iu"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jdx6n"]
-albedo_texture = ExtResource("1_qad65")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s08bx"]
-albedo_texture = ExtResource("2_jkm2k")
+[ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_0hcsg"]
 
 [node name="beta" type="Node3D"]
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.93447, 57.0307, -8.61027, -2.30972)
-material_override = SubResource("StandardMaterial3D_dmxq2")
-use_collision = true
-size = Vector3(0.954747, 15.1169, 68.6138)
+[node name="BasicBlock" parent="." instance=ExtResource("1_0hcsg")]
+transform = Transform3D(219.52, 0, 0, 0, 2.39994, 0, 0, 0, 199.022, 0, -32.1733, 0)
+block_color_group = 1
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="."]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 33.6852, -9.19021, -50.3046)
-material_override = SubResource("StandardMaterial3D_v3far")
-use_collision = true
-size = Vector3(0.954747, 15.1169, 68.6138)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 31.4132, -8.11329, 32.0642)
-material_override = SubResource("StandardMaterial3D_3317a")
-use_collision = true
-size = Vector3(0.954747, 15.1169, 68.6138)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.98827, 7.09712, -9.10725, -2.59375)
-material_override = SubResource("StandardMaterial3D_avilm")
-use_collision = true
-size = Vector3(0.954747, 15.1169, 68.6138)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2.06672, 42.2597, -13.8915, -2.81183)
-material_override = SubResource("StandardMaterial3D_2ro6c")
-use_collision = true
-size = Vector3(71.1659, 0.932686, 68.9065)
-
-[node name="CSGBox3D7" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.9509, 2.88009, -2.59156)
-material_override = SubResource("StandardMaterial3D_m47iu")
-use_collision = true
-size = Vector3(2.91231, 12.1371, 41.7536)
-
-[node name="CSGBox3D8" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 4.27133, 32.389, 8.44867, 2.25628)
-material_override = SubResource("StandardMaterial3D_jdx6n")
-use_collision = true
-size = Vector3(64.8276, 0.932686, 68.9065)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.56752, -1.54423, -5.26408)
-material_override = SubResource("StandardMaterial3D_s08bx")
-use_collision = true
-size = Vector3(30.8793, 0.2, 25.8804)
+[node name="BasicBlock2" parent="." instance=ExtResource("1_0hcsg")]
+transform = Transform3D(245.18, 0, 0, 0, 1.52161, 0, 0, 0, 126.856, 0, -25.3392, -57.9595)

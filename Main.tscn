@@ -69,7 +69,7 @@ transform = Transform3D(0.609789, 0, 0, 0, 0.609789, 0, 0, 0, 0.609789, -7.98577
 mass = 0.5
 
 [node name="WaterMaker3D" parent="." instance=ExtResource("4_002id")]
-transform = Transform3D(59.9999, 0, 0, 0, 18.7647, 0, 0, 0, 79.2873, 32.2289, -5.7341, -1.59455)
+transform = Transform3D(-4.57448e-06, 0, -138.293, 0, 32.7294, 0, 104.652, 0, -6.04498e-06, 22.6129, -5.7341, 56.8993)
 size = Vector3(1, 1.58386, 1)
 material = SubResource("StandardMaterial3D_p8gj2")
 
@@ -107,6 +107,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.9015, -0.612414, -9.62846
 shape = SubResource("BoxShape3D_3ykax")
 
 [node name="beta" parent="." instance=ExtResource("8_6paqb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.6325, 0)
 
 [node name="DamagingObject" parent="." instance=ExtResource("9_8loda")]
 transform = Transform3D(0.23288, 0, 0, 0, 0.23288, 0, 0, 0, 0.331181, -3.13429, -0.762629, -7.7527)

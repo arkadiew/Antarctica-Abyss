@@ -77,8 +77,8 @@ collide_with_bodies = false
 
 [node name="FogVolume" type="FogVolume" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0140941, 0.114807, -0.0231209)
-size = Vector3(1.15863, 2.36951, 1.24322)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00311546, 0.000230163, -5.66468e-05)
+size = Vector3(0.826645, 0.804231, 0.854262)
 material = SubResource("ShaderMaterial_wrt5a")
 script = ExtResource("3_b5ytn")
 

@@ -19,3 +19,5 @@ res://TSCN/damage.tscn
 res://addons/devblocks/blocks/colored_block.tscn
 res://addons/devblocks/blocks/emission_block.tscn
 res://TSCN/beta.tscn
+res://SCR/player/Player.gd
+res://TSCN/betatrain.tscn
