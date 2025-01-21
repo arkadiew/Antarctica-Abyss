@@ -1,18 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://m0sqhkvhgsdd"]
+[gd_scene load_steps=7 format=3 uid="uid://m0sqhkvhgsdd"]
 
-[ext_resource type="Texture2D" uid="uid://cmpphmam0hwe6" path="res://addons/devblocks/textures/dark/texture_01.png" id="1_i5pyh"]
 [ext_resource type="Script" path="res://SCR/cube.gd" id="1_l8qlg"]
-[ext_resource type="Texture2D" uid="uid://bepgbs6ocadcp" path="res://addons/devblocks/textures/red/texture_01.png" id="4_ujk82"]
+[ext_resource type="Texture2D" uid="uid://bepgbs6ocadcp" path="res://addons/devblocks/textures/red/texture_01.png" id="2_bb0v4"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0407"]
-albedo_texture = ExtResource("1_i5pyh")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_36b5d"]
+emission_energy_multiplier = 16.0
+normal_scale = -16.0
+proximity_fade_enabled = true
+distance_fade_mode = 1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lh1b0"]
-albedo_texture = ExtResource("4_ujk82")
+[sub_resource type="BoxMesh" id="BoxMesh_q7d01"]
+material = SubResource("StandardMaterial3D_36b5d")
 
-[sub_resource type="BoxMesh" id="BoxMesh_dwxdm"]
-lightmap_size_hint = Vector2i(14, 21)
-material = SubResource("StandardMaterial3D_lh1b0")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l2v42"]
+albedo_texture = ExtResource("2_bb0v4")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5amll"]
 
@@ -23,19 +24,14 @@ can_sleep = false
 angular_damp = 30.0
 script = ExtResource("1_l8qlg")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(0.96187, 0, 0, 0, 0.957784, 0, 0, 0, 0.953293, 0, 0, -0.0112081)
-visible = false
-material_override = SubResource("StandardMaterial3D_b0407")
-collision_layer = 6
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.994991, 0, 0, 0, 0.994991, 0, 0, 0, 0.994991, 0, 0, 0)
-mesh = SubResource("BoxMesh_dwxdm")
+mesh = SubResource("BoxMesh_q7d01")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(0.967384, 0, 0, 0, 0.967384, 0, 0, 0, 0.967384, 0, 0, 0)
+material = SubResource("StandardMaterial3D_l2v42")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00382352, 0.00271457, -0.00776839)
 shape = SubResource("BoxShape3D_5amll")
-
-[node name="stamina" type="Label3D" parent="CollisionShape3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.871128)

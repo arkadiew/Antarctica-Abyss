@@ -1,13 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://dj26sacnhty4r"]
 
 [ext_resource type="Script" path="res://addons/devblocks/blocks/basic_block.gd" id="1_aiicv"]
-[ext_resource type="Texture2D" uid="uid://b18i1whruu2uo" path="res://addons/devblocks/textures/dark/texture_01.png" id="2_xurbp"]
+[ext_resource type="Texture2D" uid="uid://cmpphmam0hwe6" path="res://addons/devblocks/textures/dark/texture_01.png" id="2_xurbp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hwyfo"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gblw7"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s5c3m"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irh0j"]
 albedo_texture = ExtResource("2_xurbp")
 uv1_offset = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
@@ -20,4 +20,4 @@ shape = SubResource("BoxShape3D_hwyfo")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_gblw7")
-surface_material_override/0 = SubResource("StandardMaterial3D_s5c3m")
+surface_material_override/0 = SubResource("StandardMaterial3D_irh0j")

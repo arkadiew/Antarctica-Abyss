@@ -45,13 +45,12 @@ shadow_color = Color(0, 0, 0, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_g1ve8"]
 viewport_path = NodePath("CameraPivot/Camera3D/SubViewport")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3nbre"]
+[sub_resource type="QuadMesh" id="QuadMesh_yke17"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mhxql"]
 render_priority = 0
 shader = ExtResource("9_vculq")
-shader_parameter/pixel_size = 6
-
-[sub_resource type="QuadMesh" id="QuadMesh_yke17"]
-material = SubResource("ShaderMaterial_3nbre")
+shader_parameter/pixel_size = 2
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.724673, 0)
@@ -292,13 +291,14 @@ texture = SubResource("ViewportTexture_g1ve8")
 [node name="SubViewport" type="SubViewport" parent="CameraPivot/Camera3D"]
 transparent_bg = true
 handle_input_locally = false
-scaling_3d_mode = 0
+vrs_mode = 2
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1.79059, 0, 0, 0, 0.820363, 0, 0, 0, 0.583701, 0, 0, -0.54547)
 mesh = SubResource("QuadMesh_yke17")
+surface_material_override/0 = SubResource("ShaderMaterial_mhxql")
 
 [node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.00424123)

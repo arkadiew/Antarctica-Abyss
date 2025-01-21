@@ -1,7 +1,9 @@
 extends RigidBody3D
 
+
 @export var max_hp: int = 3
 var hp: int = max_hp
+
 
 var destruction_particles: PackedScene = load("res://TSCN/damage.tscn")
 

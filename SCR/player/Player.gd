@@ -507,7 +507,7 @@ var default_material = StandardMaterial3D.new()
 
 var zoom_speed: float = 1.0  # Скорость изменения расстояния
 var min_distance: float = 1.0  # Минимальное расстояние до объекта
-var max_distance: float = 5.0  # Максимальное расстояние до объекта
+var max_distance: float = 3.0  # Максимальное расстояние до объекта
 
 func set_held_object(body: RigidBody3D):
 	

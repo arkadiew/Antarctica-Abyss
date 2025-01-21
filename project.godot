@@ -25,6 +25,10 @@ window/size/initial_position_type=0
 
 enabled=PackedStringArray()
 
+[filesystem]
+
+import/blender/enabled=false
+
 [gui]
 
 theme/custom_font="res://utils/static/PixelifySans-Bold.ttf"
