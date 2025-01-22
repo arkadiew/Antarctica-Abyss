@@ -7,7 +7,7 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_gblw7"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irh0j"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8a68"]
 albedo_texture = ExtResource("2_xurbp")
 uv1_offset = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
@@ -20,4 +20,4 @@ shape = SubResource("BoxShape3D_hwyfo")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_gblw7")
-surface_material_override/0 = SubResource("StandardMaterial3D_irh0j")
+surface_material_override/0 = SubResource("StandardMaterial3D_w8a68")

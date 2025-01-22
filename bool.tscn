@@ -14,7 +14,7 @@ albedo_texture = ExtResource("2_vv4tb")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_lkojt"]
 
-[node name="RigidBody3D" type="RigidBody3D"]
+[node name="RigidBody3D" type="RigidBody3D" groups=["breakable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.22504, 0, 0)
 mass = 0.001
 script = ExtResource("1_hshkj")
@@ -22,7 +22,7 @@ script = ExtResource("1_hshkj")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_2sled")
 
-[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." groups=["breakable"]]
 material = SubResource("StandardMaterial3D_kwgiu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
