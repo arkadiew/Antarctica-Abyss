@@ -2,7 +2,13 @@
 		A Work-in-Progress Educational Game Project
 
 <p style="background: #e8f0fe; padding: 10px; border-left: 4px solid #1a73e8; margin: 10px 0; border-radius: 4px;"><strong>Note:</strong> This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.</p>
-
+<h2><font color="#1a73e8">Roles</font></h2>
+<p>Our team consists of three members, each contributing unique skills to <b>Antarctica-Abyss</b>:</p>
+<ul>
+    <li><b>Artyom Zadera</b>: Coder and Scriptwriter - Responsible for programming game mechanics and writing the narrative.</li>
+    <li><b>Aleksei Sut</b>: 2D Artist (UI Designer) and Coder - Designs user interfaces, creates 2D assets, and contributes to coding.</li>
+    <li><b>Arkadi Perevoztsikov</b>: 3D Modeller and Coder - Builds 3D models in Blender and assists with programming.</li>
+</ul>
 <h2>Project Overview</h2>
 		<p><strong>Antarctica-Abyss</strong> is a first-person game combining elements of horror, survival, exploration, and puzzle-solving, developed as a final project for our diploma. Set in an underwater Arctic research base, you play as a scientist tasked with completing daily missions in a mysterious Arctic lake under a tight deadline. Your task completion contributes to a percentage score that determines one of two endings: <strong>Success</strong> (all tasks completed) or <strong>Game Over</strong> (restart required).</p>
 		<p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> with 3D assets crafted in <strong>Blender</strong>. It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
