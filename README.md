@@ -408,8 +408,7 @@ func trigger_success_ending():
 │   ├── base/           # Underwater base scenes
 │   └── player/         # Player character
 ├── scripts/
-│   ├── player.gd       # Movement, sliding, diving
-│   └── tasks.gd        # Task system
+│   └── player       # Movement,  diving
 ├── utils     		# utils for Antarctica-Abyss
 │   ├── img       	# img for gui
 │   └── shader      	# shader gor project
