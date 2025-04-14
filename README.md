@@ -177,6 +177,6 @@ func trigger_success_ending():
         <p>As this is an educational project, contributions are limited to team members. However, feedback is welcome! Open an issue to share suggestions or report bugs.</p>
     </div>
 
-    <footer>
+<footer>
         <p>Developed by [Your Team Name] for Educational Purposes | 2025</p>
-    </footer>
+</footer>
