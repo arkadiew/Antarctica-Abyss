@@ -384,7 +384,8 @@ func trigger_success_ending():
 <h2>Project Structure</h2>
         <p>The current project structure is as follows:</p>
         <pre><code>Antarctica-Abyss/
-├── assets/
+├── Animation/		# Animation models
+├── blender/
 │   ├── models/          # Blender 3D models
 │   ├── textures/       # Textures for assets
 │   └── sounds/         # Placeholder audio
@@ -394,8 +395,7 @@ func trigger_success_ending():
 │   └── player/         # Player character
 ├── scripts/
 │   ├── player.gd       # Movement, sliding, diving
-│   ├── tasks.gd        # Task system
-│   └── environment.gd  # Environmental effects
+│   └── tasks.gd        # Task system
 ├── project.godot        # Godot project file
 └── README.html         # This file
 </code></pre>
