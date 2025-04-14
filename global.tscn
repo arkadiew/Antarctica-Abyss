@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddi4jofogmejv"]
+
+[ext_resource type="Script" path="res://global.gd" id="1_lyv6l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2p7ql"]
+font_size = 92
+
+[node name="Global" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lyv6l")
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 57.0
+offset_right = 907.0
+offset_bottom = 232.0
+text = "Antarctica-Abyss"
+label_settings = SubResource("LabelSettings_2p7ql")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_left = 1147.0
+offset_top = 568.0
+offset_right = 1697.0
+offset_bottom = 691.0
+alignment = 1
+
+[node name="NewGame" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "New game"
+
+[node name="Continue" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Continue"
+
+[node name="Exit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[connection signal="pressed" from="VBoxContainer/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

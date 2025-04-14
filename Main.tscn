@@ -1,0 +1,101 @@
+[gd_scene load_steps=16 format=3 uid="uid://bj3l75816anov"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_rpcql"]
+[ext_resource type="PackedScene" uid="uid://wssnx1an6whd" path="res://scenes/Player.tscn" id="1_s72jo"]
+[ext_resource type="Shader" path="res://sky.gdshader" id="5_sy4wd"]
+[ext_resource type="PackedScene" uid="uid://bs41h7hha0clm" path="res://scenes/vending_machine/vending_machine.tscn" id="7_qf6pw"]
+[ext_resource type="PackedScene" uid="uid://bbr1dv50ac64l" path="res://scenes/beta.tscn" id="8_6paqb"]
+[ext_resource type="PackedScene" uid="uid://v7k7teo1oqpy" path="res://scenes/research/framework.tscn" id="8_jvupn"]
+[ext_resource type="Script" path="res://scripts/fish_spawner.gd" id="9_wxqbo"]
+[ext_resource type="PackedScene" uid="uid://bl6tsurhnun81" path="res://scenes/research/base.tscn" id="9_xdnjo"]
+[ext_resource type="PackedScene" uid="uid://cbw7phol7apu0" path="res://scenes/reset_button.tscn" id="10_3njp3"]
+[ext_resource type="PackedScene" uid="uid://ctwkjwrmoqokp" path="res://scenes/suit.tscn" id="11_1iwbf"]
+[ext_resource type="Script" path="res://scripts/spawn.gd" id="12_l60vt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lh5a2"]
+shader = ExtResource("5_sy4wd")
+shader_parameter/color_top = Color(0.545639, 0.59339, 0.987545, 1)
+shader_parameter/color_horizon = Color(0.242153, 0.568861, 0.858561, 1)
+shader_parameter/color_bottom = Color(0.0098166, 0.529348, 0.571695, 1)
+shader_parameter/exponent_factor_top = 1.0
+shader_parameter/exponent_factor_bottom = 1.0
+shader_parameter/intensity_amp = 1.0
+
+[sub_resource type="Sky" id="Sky_hfysu"]
+sky_material = SubResource("ShaderMaterial_lh5a2")
+
+[sub_resource type="Environment" id="Environment_1grc2"]
+background_mode = 2
+sky = SubResource("Sky_hfysu")
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.0
+fog_mode = 1
+fog_light_color = Color(0.595178, 0.628666, 0.681288, 1)
+fog_density = 0.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_orvig"]
+custom_solver_bias = 0.234
+size = Vector3(40, 1, 40)
+
+[node name="main" type="Node3D"]
+process_mode = 3
+script = ExtResource("1_rpcql")
+
+[node name="Player" parent="." instance=ExtResource("1_s72jo")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.724673, -8.05707)
+throw_force = 7.5
+follow_speed = 3.5
+follow_distance = 2.5
+max_distance_from_camera = 5.0
+drop_below_player = false
+swim_up_speed = 10.0
+climb_speed = 7.0
+suit_scene = ExtResource("11_1iwbf")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1grc2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433015, 0.250001, -0.353555, 0.883882, 0.306189, -0.353556, 0.176778, -0.918557, -22.8211, 13.6863, -31.6385)
+light_energy = 0.75
+shadow_enabled = true
+
+[node name="FishSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.48074, -104.873, -54.8429)
+script = ExtResource("9_wxqbo")
+
+[node name="beta" parent="." instance=ExtResource("8_6paqb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.6325, 0)
+
+[node name="spawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.41081, 1.35134, -10.2056)
+script = ExtResource("12_l60vt")
+
+[node name="Vending_Machine" parent="." instance=ExtResource("7_qf6pw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.50075, -0.898651, -6.69213)
+
+[node name="point" type="Node3D" parent="."]
+
+[node name="exercisespawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3108, -10.9839, 63.1315)
+
+[node name="framework" parent="." instance=ExtResource("8_jvupn")]
+transform = Transform3D(-0.228133, 0, 1.99441e-08, 0, 0.228133, 0, -1.99441e-08, 0, -0.228133, -7.75312, -1.55844, -9.11659)
+
+[node name="base" parent="." instance=ExtResource("9_xdnjo")]
+transform = Transform3D(-1.01197e-08, 0, -0.231511, 0, 0.231511, 0, 0.231511, 0, -1.01197e-08, -7.74696, -1.67618, -9.12021)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.152132, -32.253)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0210648, -1.79579, 0.0578613)
+shape = SubResource("BoxShape3D_orvig")
+
+[node name="reset_button" parent="." instance=ExtResource("10_3njp3")]
+transform = Transform3D(-8.94016e-09, 0, -0.204527, 0, 0.204527, 0, 0.204527, 0, -8.94016e-09, -6.4708, -1.87312, -12.1083)
+
+[node name="Submarine" parent="." instance=ExtResource("11_1iwbf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50026, -1.69894, 7.25349)

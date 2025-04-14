@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b018kf28mfox7"]
+
+[ext_resource type="PackedScene" uid="uid://dmky71jaitsor" path="res://blender/fish/Giant_squid.blend" id="1_d63lo"]
+
+[node name="Giant_squid" instance=ExtResource("1_d63lo")]

@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=4 uid="uid://m0sqhkvhgsdd"]
+
+[ext_resource type="Script" path="res://scripts/obj/BreakableObject.gd" id="1_1n8p0"]
+[ext_resource type="Texture2D" uid="uid://b5nt032ybiuvk" path="res://blender/box/textures/Parquet_Trials_02_basecolor.jpg" id="2_lo20m"]
+[ext_resource type="Texture2D" uid="uid://bht23wj5wnhj0" path="res://blender/box/textures/Parquet_Trials_02_roughness.jpg" id="3_u7sl7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_q7d01"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ooaj2"]
+resource_name = "Old Wood Floor"
+cull_mode = 2
+albedo_texture = ExtResource("2_lo20m")
+metallic_texture = ExtResource("3_u7sl7")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("3_u7sl7")
+roughness_texture_channel = 1
+uv1_scale = Vector3(4, 2, 1)
+uv1_offset = Vector3(0, -1, 0)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_q03hh"]
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"format": 34896613377,
+"index_count": 36,
+"index_data": PackedByteArray("AAAGAAQAAAACAAYAAwAGAAIAAwAHAAYABwAEAAYABwAFAAQABQADAAEABQAHAAMAAQACAAAAAQADAAIABQAAAAQABQABAAAA"),
+"name": "Old Wood Floor",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("/////wAAAAD//wAAAAAAAP///////wAA//8AAP//AAAAAP//AAAAAAAAAAAAAAAAAAD/////AAAAAAAA//8AAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_06i2p"]
+resource_name = "box_Cube"
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"attribute_data": PackedByteArray("/5//f2dOVkD/n/9/Z07/gf+f/38qQYEf/1//f6NbVkD/X/9/o1tWQP9f/39nToEf/5//PypBVkD/n/8/KkH/gf+f/z8qQVZA/1//P2dOVkD/X/8/Z05WQP9f/z9nTlZA/5//v2dOgR//3/9/Z04qYf+f/79nTv+B/1//v6NbgR//H/9/o1sqYf9f/7+jW/+B/58AACpBKmH/3/8/KkEqYf+f//9nTiph/18AAGdOKmH/H/8/Z04qYf9f//+jWyph"),
+"format": 34896613431,
+"index_count": 36,
+"index_data": PackedByteArray("AQATAA0AAQAHABMACQASAAYACQAVABIAFwAOABQAFwARAA4AEAAKAAQAEAAWAAoABQAIAAIABQALAAgADwAAAAwADwADAAAA"),
+"material": SubResource("StandardMaterial3D_ooaj2"),
+"name": "Old Wood Floor",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("/////wAA////////AABU1f////8AAFTV//8AAAAA/////wAAAABU1f//AAAAAFTV/////////7////////9U1f///////1TV//8AAP///7///wAA//9U1f//AAD//1TVAAD//wAA//8AAP//AABU1QAA//8AAFTVAAAAAAAA//8AAAAAAABU1QAAAAAAAFTVAAD//////78AAP////9U1QAA/////1TVAAAAAP///78AAAAA//9U1QAAAAD//1TV/z//v1TVqiqqqlRV/z//v1RVVFWqqlRV/3//f1TVqiqqqlRV/3//f1RVVFWqqlRV/z//v1TVqipUVaqq/z//v1RVVFVUVaqq/3//f1TVqipUVaqq/3//f1RVVFVUVaqq")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_q03hh")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5amll"]
+
+[node name="Box" type="RigidBody3D" groups=["breakable", "grab"]]
+transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 0, 0, 0)
+center_of_mass_mode = 1
+can_sleep = false
+angular_damp = 30.0
+script = ExtResource("1_1n8p0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.994991, 0, 0, 0, 0.994991, 0, 0, 0, 0.994991, 0, 0, 0)
+transparency = 1.0
+mesh = SubResource("BoxMesh_q7d01")
+
+[node name="Cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.494701, 0, 0, 0, 0.494701, 0, 0, 0, 0.494701, 0, 0, -0.00452041)
+mesh = SubResource("ArrayMesh_06i2p")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00382352, 0.00271457, -0.00776839)
+shape = SubResource("BoxShape3D_5amll")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

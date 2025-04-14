@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://bs41h7hha0clm"]
+
+[ext_resource type="PackedScene" uid="uid://yk0cuyjgf3jt" path="res://scenes/vending_machine/shop.tscn" id="1_6roje"]
+[ext_resource type="PackedScene" uid="uid://d20ci4ihilkwo" path="res://scenes/button/button.tscn" id="2_323mb"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u3jro"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_vx1b6"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_35nws"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_vx1b6")
+
+[node name="Vending_Machine" type="Node3D"]
+
+[node name="shop" parent="." instance=ExtResource("1_6roje")]
+transform = Transform3D(0.396689, 0, 0, 0, 0.396689, 0, 0, 0, 0.396689, -0.0104761, -0.700417, 0.00999832)
+
+[node name="button" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.33263, 0.598563, -0.581701)
+
+[node name="delete_button" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-8.26286e-09, 0.189032, 8.26287e-09, 0, -8.26287e-09, 0.189032, 0.189032, 8.26286e-09, 3.61181e-16, 0.38447, -0.538097, -0.601622)
+
+[node name="button_gun" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.33263, 0.304263, -0.581701)
+
+[node name="button_oxygen" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.32786, -0.00620306, -0.572742)
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="Control" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(15.0295, 13.6012)
+
+[node name="Label" type="Label" parent="SubViewport/Control"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 105.0
+offset_bottom = 22.0
+scale = Vector2(0.498043, 0.480761)
+
+[node name="screen" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.32032e-08, 0.466658, 0, 2.32032e-08, -2.42417e-15, -0.480862, -0.530828, -2.03983e-08, -2.10191e-08, 0.332563, 0.293623, 0.0670522)
+mesh = SubResource("PlaneMesh_u3jro")
+surface_material_override/0 = SubResource("StandardMaterial3D_35nws")

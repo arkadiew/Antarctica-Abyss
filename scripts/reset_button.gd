@@ -1,0 +1,167 @@
+extends StaticBody3D
+var is_button_open: bool = false
+var day_counter: int = 0
+var can_press: bool = true
+@onready var button_node: StaticBody3D = $button
+@onready var bed: StaticBody3D = $Bed
+@onready var player = get_node("/root/main/Player")
+@onready var camera = player.get_node("CameraPivot/Camera3D")
+@onready var InteractRay = player.get_node("CameraPivot/Camera3D/InteractRay")
+@onready var day: PanelContainer = $UI/Day
+@onready var day_l: Label = $UI/Day/Day
+@onready var animation_player =  $Bed/AnimationPlayer
+const SAVE_PATH = "user://player_save.json"
+
+func _ready():
+	if animation_player and animation_player.has_animation("static"):
+		animation_player.play("static")  # Проигрываем анимацию нажатия
+	# Hook up the buttons so they actually do something when pressed
+	if button_node:  # If the cube button exists...
+		button_node.connect("button_state_changed", _on_button_state_changed)
+	load_player_state()
+	update_day_label()
+	can_press = true
+	# Ensure bed is pickable
+	bed.input_ray_pickable = true
+# When the cube button gets pressed
+
+		
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("use_item"):
+		# Проверяем, сталкивается ли InteractRay с чем-либо
+		if InteractRay.is_colliding():
+			var collider = InteractRay.get_collider()
+			if collider == bed:  # Если луч столкнулся с кроватью
+				if can_press:
+					can_press = false
+					day_counter += 1
+					update_day_label()
+					await play_day_animation()
+					restart_scene()
+				else:
+					if player.AudioManager:
+						player.AudioManager.play_sound("res://sounds/button/wpn_denyselect.mp3")
+
+func update_day_label():
+	day_l.text = "Day: " + str(day_counter)
+
+func play_day_animation() -> void:
+	var tween = create_tween()
+	tween.set_parallel(false)
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_IN_OUT)
+
+	var original_position = day.position
+	var original_scale = day.scale
+	var viewport_size = get_viewport().size
+	var center_position = Vector2(viewport_size.x / 2, viewport_size.y / 2)
+	
+	tween.tween_property(day, "position", center_position, 0.5)
+	tween.tween_property(day, "scale", Vector2(2, 2), 0.5).as_relative()
+	tween.tween_property(day, "position", original_position, 0.5)
+	tween.tween_property(day, "scale", original_scale, 0.5)
+
+	await tween.finished
+
+func save_player_state():
+	if not player or not camera:
+		printerr("Error: Player or camera node is not initialized.")
+		return
+
+	var save_data = {
+		"money": player.money,
+		"day_counter": day_counter,
+		"position": {
+			"x": player.position.x,
+			"y": player.position.y,
+			"z": player.position.z
+		}
+	}
+	if camera and camera is Camera3D:
+		var camera_quat = camera.quaternion
+		save_data["camera_quaternion"] = {
+			"x": camera_quat.x,
+			"y": camera_quat.y,
+			"z": camera_quat.z,
+			"w": camera_quat.w
+		}
+	
+	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(save_data))
+		file.close()
+	else:
+		printerr("Error: Could not save player state")
+
+func load_player_state():
+	if not FileAccess.file_exists(SAVE_PATH):
+		return
+	
+	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if file:
+		var json_string = file.get_as_text()
+		file.close()
+		
+		var json = JSON.new()
+		var error = json.parse(json_string)
+		if error == OK:
+			var data = json.data
+			player.money = data.get("money", 0)
+			day_counter = data.get("day_counter", 0)
+			
+			if data.has("position"):
+				var pos = data["position"]
+				player.position = Vector3(
+					pos.get("x", 0.0),
+					pos.get("y", 0.0),
+					pos.get("z", 0.0)
+				)
+			
+			if data.has("camera_quaternion") and camera and camera is Camera3D:
+				var quat_data = data["camera_quaternion"]
+				var loaded_quat = Quaternion(
+					quat_data.get("x", 0.0),
+					quat_data.get("y", 0.0),
+					quat_data.get("z", 0.0),
+					quat_data.get("w", 1.0)
+				)
+				camera.quaternion = loaded_quat
+			
+			update_day_label()
+		else:
+			printerr("Error parsing save file: ", error)
+	else:
+		printerr("Error: Could not load player state")
+
+func restart_scene():
+	if not get_tree():
+		printerr("Error: Scene tree is null.")
+		return
+	
+	save_player_state()
+	await get_tree().create_timer(1.0).timeout
+	get_tree().reload_current_scene()
+
+func _on_button_state_changed(is_pressed: bool):
+	if is_pressed:
+		if can_press:
+			if animation_player:
+				if is_button_open:
+
+					if animation_player.has_animation("close"):
+						animation_player.play("close")
+						is_button_open = false
+					else:
+						printerr("Error: Animation 'close' not found")
+				else:
+					
+					if animation_player.has_animation("open"):
+						animation_player.play("open")
+						is_button_open = true
+					else:
+						printerr("Error: Animation 'open' not found")
+			else:
+				printerr("Error: AnimationPlayer not found")
+	else:
+		if player.AudioManager:
+			player.AudioManager.play_sound("res://sounds/button/wpn_denyselect.mp3")

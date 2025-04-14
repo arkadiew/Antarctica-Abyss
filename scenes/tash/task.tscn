@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://rkfonp6ibni7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jxekv"]
+font_size = 60
+
+[node name="task" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TaskControl" type="Control" parent="."]
+layout_direction = 2
+anchors_preset = 0
+offset_left = 1204.0
+offset_top = 6.0
+offset_right = 1767.0
+offset_bottom = 193.0
+
+[node name="Panel" type="Panel" parent="TaskControl"]
+layout_mode = 0
+offset_right = 566.0
+offset_bottom = 181.0
+
+[node name="taskproc" type="ProgressBar" parent="TaskControl"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 91.0
+offset_right = 548.0
+offset_bottom = 128.0
+
+[node name="Label" type="Label" parent="TaskControl"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 20.0
+offset_right = 544.0
+offset_bottom = 68.0
+text = "Task"
+label_settings = SubResource("LabelSettings_jxekv")
+horizontal_alignment = 1
+vertical_alignment = 1

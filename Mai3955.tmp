@@ -1,0 +1,248 @@
+[gd_scene load_steps=16 format=3 uid="uid://bj3l75816anov"]
+
+[ext_resource type="PackedScene" uid="uid://wssnx1an6whd" path="res://TSCN/Player.tscn" id="1_s72jo"]
+[ext_resource type="Script" path="res://Player.gd" id="2_kg5ig"]
+[ext_resource type="PackedScene" uid="uid://m0sqhkvhgsdd" path="res://TSCN/cube.tscn" id="3_258lm"]
+[ext_resource type="Texture2D" uid="uid://7ju4mpg442yk" path="res://addons/devblocks/textures/green/texture_01.png" id="3_sp6o7"]
+[ext_resource type="PackedScene" uid="uid://ca0wevg1lb4rx" path="res://utils/WaterMaker3D/WaterMaker3D.tscn" id="4_002id"]
+[ext_resource type="PackedScene" uid="uid://0pjgspw1hybq" path="res://TSCN/FISh.tscn" id="4_x1wad"]
+[ext_resource type="PackedScene" uid="uid://5v2ic1cxc6l8" path="res://bool.tscn" id="6_1v1di"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s08bx"]
+albedo_texture = ExtResource("3_sp6o7")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_thtwr"]
+resource_local_to_scene = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c8trs"]
+resource_local_to_scene = true
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_thtwr")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m3bf6"]
+resource_local_to_scene = true
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_thtwr")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_84lp5"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+depth_draw_mode = 1
+albedo_color = Color(0.097825, 0.249085, 0.456925, 0.388235)
+roughness = 0.0
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_c8trs")
+refraction_enabled = true
+refraction_texture = SubResource("NoiseTexture2D_m3bf6")
+uv1_scale = Vector3(0.01, 0.01, 0.01)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qrbfl"]
+
+[sub_resource type="Sky" id="Sky_hfysu"]
+sky_material = SubResource("ProceduralSkyMaterial_qrbfl")
+
+[sub_resource type="Environment" id="Environment_1grc2"]
+background_mode = 2
+sky = SubResource("Sky_hfysu")
+tonemap_mode = 2
+fog_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_s72jo")]
+script = ExtResource("2_kg5ig")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.56752, -1.54423, -5.26408)
+material_override = SubResource("StandardMaterial3D_s08bx")
+use_collision = true
+size = Vector3(30.8793, 0.2, 25.8804)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.4632, -7.06604, 2.95436)
+use_collision = true
+size = Vector3(0.954747, 15.1169, 68.6138)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 34.6757, -6.69979, -30.6043)
+use_collision = true
+size = Vector3(0.954747, 15.1169, 68.6138)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 29.8457, -6.56906, 37.3283)
+use_collision = true
+size = Vector3(0.954747, 15.1169, 68.6138)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5296, -7.56302, 2.67033)
+use_collision = true
+size = Vector3(0.954747, 15.1169, 68.6138)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2235, -12.3473, 2.45225)
+use_collision = true
+size = Vector3(50.2286, 0.932686, 68.9065)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5184, 4.42432, 2.67252)
+use_collision = true
+size = Vector3(2.91231, 12.1371, 41.7536)
+
+[node name="RigidBody3D2" parent="." instance=ExtResource("4_x1wad")]
+transform = Transform3D(0.986948, 0, 0, 0, 0.986948, 0, 0, 0, 0.986948, 3.14631, 0, -10.9047)
+
+[node name="RigidBody3D" parent="." instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D2" parent="RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -1.56376, -0.421187, -1.68805)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D2" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D2/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D2/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D2/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D2/RigidBody3D/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D3" parent="RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -1.37589, 0.198916, -4.2976)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D2" parent="RigidBody3D/RigidBody3D3" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -1.56376, -0.421187, -1.68805)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D2" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D2/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D2/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D2/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="RigidBody3D" parent="RigidBody3D/RigidBody3D3/RigidBody3D2/RigidBody3D/RigidBody3D/RigidBody3D/RigidBody3D" instance=ExtResource("3_258lm")]
+transform = Transform3D(0.78089, 0, 0, 0, 0.78089, 0, 0, 0, 0.78089, -2.65521, 0.198916, 0.181935)
+disable_mode = 1
+mass = 0.5
+
+[node name="WaterMaker3D" parent="." instance=ExtResource("4_002id")]
+transform = Transform3D(59.9999, 0, 0, 0, 18.7647, 0, 0, 0, 79.2873, 32.2289, -11.2121, -1.59455)
+material = SubResource("StandardMaterial3D_84lp5")
+water_texture_uv_scale = 0.01
+water_color = Color(0.097825, 0.249085, 0.456925, 0.388235)
+fog_color = Color(4.09111e-07, 0.069285, 0.21331, 1)
+
+[node name="stamina" type="Label3D" parent="WaterMaker3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.76609)
+
+[node name="девушка" parent="." groups=["grab"] instance=ExtResource("6_1v1di")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.19939, -0.428483, -0.00714874)
+mass = 0.065
+
+[node name="RigidBody3D4" parent="девушка" groups=["grab"] instance=ExtResource("6_1v1di")]
+mass = 0.065
+
+[node name="RigidBody3D4" parent="девушка/RigidBody3D4" groups=["grab"] instance=ExtResource("6_1v1di")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.35505, 0, 0)
+mass = 0.065
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1grc2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433015, 0.250001, -0.353555, 0.883882, 0.306189, -0.353556, 0.176778, -0.918557, 51.348, 17.487, 0)
+light_energy = 0.75
+shadow_enabled = true

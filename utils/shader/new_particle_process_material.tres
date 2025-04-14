@@ -1,0 +1,5 @@
+[gd_resource type="ParticleProcessMaterial" format=3 uid="uid://c2iw3mfpf782v"]
+
+[resource]
+emission_shape = 1
+emission_sphere_radius = 1.0
