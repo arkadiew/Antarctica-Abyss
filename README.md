@@ -391,11 +391,13 @@ func trigger_success_ending():
 │   └── sounds/         # Placeholder audio
 ├── scenes/
 │   ├── base/           # Underwater base scenes
-│   ├── lake/           # Arctic lake scenes
 │   └── player/         # Player character
 ├── scripts/
 │   ├── player.gd       # Movement, sliding, diving
 │   └── tasks.gd        # Task system
+├── utils     		# utils for Antarctica-Abyss
+│   ├── img       	# img for gui
+│   └── shader      	# shader gor project
 ├── project.godot        # Godot project file
 └── README.html         # This file
 </code></pre>
