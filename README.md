@@ -423,5 +423,5 @@ func trigger_success_ending():
     </div>
 
 <footer>
-        <p>Developed by [Your Team Name] for Educational Purposes | 2025</p>
+        <p>Developed by  Abyssal Team for Educational Purposes | 2025</p>
 </footer>
