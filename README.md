@@ -1,2 +1,2 @@
 # Antarctica-Abyss
-#2 How to install project
+<h2> How to install project</h2>
