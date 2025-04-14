@@ -8,6 +8,21 @@
         <p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> with 3D assets crafted in <strong>Blender</strong>. It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
 
 <h2>Installation</h2>
+	<p>To install EXE file, follow these steps:</p>
+ 	<ol>
+            <li><strong>Find release version file</strong>:
+                <ul>
+		    <li>Follow link https://github.com/arkadiew/Antarctica-Abyss/releases</li>
+		    <li>Dowload latest version EXE file</li>
+		</ul>
+            </li>
+            <li><strong>Start EXE file</strong>:
+                <ul>
+                    <li>Double click on EXE file to start it</li>
+                    <li>Play game!</li>
+                </ul>
+            </li>
+        </ol>
         <p>To set up and run the project locally, follow these steps:</p>
         <ol>
             <li><strong>Clone the Repository</strong>:
