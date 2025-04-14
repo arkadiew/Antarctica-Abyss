@@ -57,7 +57,7 @@
 <h3>Player Movement with Sliding</h3>
         <p>This script handles basic player movement on icy surfaces:</p>
         <pre><code>
-                 Figure out how fast you should move
+               
 func determine_character_speed() -> float:
 	if is_running and stamina > 0:
 		return WALK_SPEED * RUN_SPEED_MULTIPLIER
@@ -65,7 +65,6 @@ func determine_character_speed() -> float:
 		return LOW_STAMINA_SPEED
 	return WALK_SPEED
 
-# Update player movement
 func update_movement(delta: float) -> void:
 	var input_vector = get_input_direction()
 	var target_speed = determine_character_speed()
@@ -102,33 +101,25 @@ func update_movement(delta: float) -> void:
 	apply_character_turn_tilt(delta)
 	move_and_slide()
 
-# Apply gravity when not on ground
 func apply_gravity_force(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y = max(velocity.y + GRAVITY * delta, TERMINAL_VELOCITY)
 
-# Handle jumping
 func handle_character_jump(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
 		velocity.y = JUMP_FORCE
 		decrease_stamina(JUMP_STAMINA_COST)
 
-# Tilt camera when turning
 func apply_character_turn_tilt(delta: float) -> void:
 	var input_direction = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var target_tilt_angle = -input_direction.x * max_tilt
 	tilt_angle = lerp(tilt_angle, target_tilt_angle, delta * tilt_speed)
 	$CameraPivot.rotation_degrees.z = tilt_angle
-#endregion
 
-#region Stamina
-# Drain stamina when holding stuff
 func apply_stamina_penalty_for_holding(delta):
 	var drain_factor = (holding_object_time / 10.0)
 	if holding_object_time >= 1.0:
 		decrease_stamina(10.0 * drain_factor * delta)
-
-# Update stamina levels
 func update_stamina(delta):
 	var in_water = is_in_water()
 	var moving = get_input_direction().length() > 0
@@ -144,11 +135,11 @@ func update_stamina(delta):
 			can_run = true
 	stamina_bar.value = stamina
 
-# Reduce stamina
+
 func decrease_stamina(amount: float):
 	stamina = clamp(stamina - amount, 0, MAX_STAMINA)
 
-# Restore stamina
+
 func increase_stamina(amount: float):
 	stamina = clamp(stamina + amount, 0, MAX_STAMINA)
 </code></pre>
