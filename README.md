@@ -399,20 +399,19 @@ func trigger_success_ending():
 <h2>Project Structure</h2>
         <p>The current project structure is as follows:</p>
         <pre><code>Antarctica-Abyss/
-├── Animation/		# Animation models
-├── sounds/         	# Placeholder audio
+├── Animation/          # Animation models
+├── sounds/            # Placeholder audio
 ├── blender/
-│   ├── models/          # Blender 3D models
-│   └── textures/       # Textures for assets
+│   ├── models/        # Blender 3D models
+│   └── textures/      # Textures for assets
 ├── scenes/
-│   ├── base/           # Underwater base scenes
-│   └── player/         # Player character
+│   └── world          # All game-related scenes
 ├── scripts/
-│   └── player       # Movement,  diving
-├── utils     		# utils for Antarctica-Abyss
-│   ├── img       	# img for gui
-│   └── shader      	# shader gor project
-├── project.godot        # Godot project file
+│   └── logic          # Scripts for movement, diving, objects, etc.
+├── utils/             # Utils for Antarctica-Abyss
+│   ├── img/           # Images for GUI
+│   └── shader/        # Shaders for project
+├── project.godot       # Godot project file
 └── README.html         # This file
 </code></pre>
 
