@@ -1,4 +1,4 @@
-<h1>Antarctica-Abyss</h1>
+<h1>Antarctica Abyss</h1>
         A Work-in-Progress Educational Game Project
 
 <p style="background: #e8f0fe; padding: 10px; border-left: 4px solid #1a73e8; margin: 10px 0; border-radius: 4px;"><strong>Note:</strong> This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.</p>
