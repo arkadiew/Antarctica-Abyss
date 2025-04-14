@@ -30,7 +30,7 @@
             </li>
             <li><strong>Install Godot Engine</strong>:
                 <ul>
-                    <li>Download <a href="https://godotengine.org/">Godot Engine</a> (version 4.x recommended).</li>
+                    <li>Download <a href="https://godotengine.org/">Godot Engine</a> (version 4.3 recommended).</li>
                     <li>Install and ensure it's accessible in your IDE or system PATH.</li>
                 </ul>
             </li>
