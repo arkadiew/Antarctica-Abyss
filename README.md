@@ -400,10 +400,10 @@ func trigger_success_ending():
         <p>The current project structure is as follows:</p>
         <pre><code>Antarctica-Abyss/
 ├── Animation/		# Animation models
+├── sounds/         	# Placeholder audio
 ├── blender/
 │   ├── models/          # Blender 3D models
-│   ├── textures/       # Textures for assets
-│   └── sounds/         # Placeholder audio
+│   └── textures/       # Textures for assets
 ├── scenes/
 │   ├── base/           # Underwater base scenes
 │   └── player/         # Player character
