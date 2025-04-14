@@ -146,8 +146,7 @@ func increase_stamina(amount: float):
 
 <h3>Diving Mechanic</h3>
         <p>This script manages diving and oxygen levels when underwater:</p>
-        <pre><code>extends Node
-
+        <pre><code>
 
 func is_camera_fully_submerged() -> bool:
 	if not is_instance_valid(camera_pivot) or not get_tree():
