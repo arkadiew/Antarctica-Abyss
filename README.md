@@ -54,7 +54,7 @@
 <h2>Code Examples</h2>
         <p>Below are snippets from our GDScript code to illustrate key mechanics. These are simplified for clarity and may evolve as development continues.</p>
 
-<h3>Player Movement with Sliding</h3>
+<h3>Player Movement</h3>
         <p>This script handles basic player movement on icy surfaces:</p>
         <pre><code>
                
