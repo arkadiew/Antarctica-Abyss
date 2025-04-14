@@ -55,31 +55,102 @@
         <p>Below are snippets from our GDScript code to illustrate key mechanics. These are simplified for clarity and may evolve as development continues.</p>
 
 <h3>Player Movement with Sliding</h3>
-        <p>This script handles basic player movement and sliding on icy surfaces:</p>
-        <pre><code>extends CharacterBody3D
+        <p>This script handles basic player movement on icy surfaces:</p>
+        <pre><code>
+                 Figure out how fast you should move
+func determine_character_speed() -> float:
+	if is_running and stamina > 0:
+		return WALK_SPEED * RUN_SPEED_MULTIPLIER
+	elif stamina == 0:
+		return LOW_STAMINA_SPEED
+	return WALK_SPEED
 
-var speed = 5.0
-var slide_speed = 10.0
-var is_sliding = false
+# Update player movement
+func update_movement(delta: float) -> void:
+	var input_vector = get_input_direction()
+	var target_speed = determine_character_speed()
+	var target_velocity = Vector3(input_vector.x * target_speed, velocity.y, input_vector.z * target_speed)
 
-func _physics_process(delta):
-    var input_dir = Vector3.ZERO
-    input_dir.x = Input.get_axis("ui_left", "ui_right")
-    input_dir.z = Input.get_axis("ui_up", "ui_down")
-    
-    # Check if on icy surface (WIP)
-    if is_on_ice():
-        is_sliding = true
-        velocity = input_dir.normalized() * slide_speed
-    else:
-        is_sliding = false
-        velocity = input_dir.normalized() * speed
-    
-    move_and_slide()
+	if is_on_floor() and input_vector.length() > 0 and not is_running and AudioManager:
+		if not AudioManager.is_playing("walk_sound"):
+			AudioManager.play_sound_player("res://voice/player/walk.mp3")
+	elif AudioManager and AudioManager.is_playing("walk_sound"):
+		AudioManager.stop_sound("walk_sound")  #
+	if is_on_floor() and is_running and AudioManager:
+		if not AudioManager.is_playing("run_sound"):
+			AudioManager.play_sound_player("res://voice/player/sprint.mp3")
+	elif AudioManager and AudioManager.is_playing("run_sound"):
+		AudioManager.stop_sound("run_sound")
+		
+	if input_vector.length() > 0:
+		velocity.x = lerp(velocity.x, target_velocity.x, ACCELERATION * delta)
+		velocity.z = lerp(velocity.z, target_velocity.z, ACCELERATION * delta)
+	else:
+		velocity.x = lerp(velocity.x, 0.0, DECELERATION * delta)
+		velocity.z = lerp(velocity.z, 0.0, DECELERATION * delta)
+	if not is_on_floor():
+		velocity.x = lerp(velocity.x, target_velocity.x, AIR_CONTROL * delta)
+		velocity.z = lerp(velocity.z, target_velocity.z, AIR_CONTROL * delta)
+	if can_run and Input.is_action_pressed("run") and stamina > 0 and not is_in_water():
+		is_running = true
+	else:
+		is_running = false
+	if is_on_floor():
+		handle_character_jump(delta)
+	else:
+		apply_gravity_force(delta)
+	apply_character_turn_tilt(delta)
+	move_and_slide()
 
-func is_on_ice():
-    # Placeholder: Detect icy surface (to be implemented)
-    return false
+# Apply gravity when not on ground
+func apply_gravity_force(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y = max(velocity.y + GRAVITY * delta, TERMINAL_VELOCITY)
+
+# Handle jumping
+func handle_character_jump(delta: float) -> void:
+	if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
+		velocity.y = JUMP_FORCE
+		decrease_stamina(JUMP_STAMINA_COST)
+
+# Tilt camera when turning
+func apply_character_turn_tilt(delta: float) -> void:
+	var input_direction = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var target_tilt_angle = -input_direction.x * max_tilt
+	tilt_angle = lerp(tilt_angle, target_tilt_angle, delta * tilt_speed)
+	$CameraPivot.rotation_degrees.z = tilt_angle
+#endregion
+
+#region Stamina
+# Drain stamina when holding stuff
+func apply_stamina_penalty_for_holding(delta):
+	var drain_factor = (holding_object_time / 10.0)
+	if holding_object_time >= 1.0:
+		decrease_stamina(10.0 * drain_factor * delta)
+
+# Update stamina levels
+func update_stamina(delta):
+	var in_water = is_in_water()
+	var moving = get_input_direction().length() > 0
+	if can_run and stamina > 0 and Input.is_action_pressed("run") and moving and not in_water:
+		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta)
+		stamina_recovery_timer = STAMINA_RECOVERY_DELAY
+		is_running = true
+	else:
+		is_running = false
+		stamina_recovery_timer -= delta
+		if stamina_recovery_timer <= 0 and stamina < MAX_STAMINA:
+			increase_stamina(STAMINA_RECOVERY_RATE * delta)
+			can_run = true
+	stamina_bar.value = stamina
+
+# Reduce stamina
+func decrease_stamina(amount: float):
+	stamina = clamp(stamina - amount, 0, MAX_STAMINA)
+
+# Restore stamina
+func increase_stamina(amount: float):
+	stamina = clamp(stamina + amount, 0, MAX_STAMINA)
 </code></pre>
 
 <h3>Diving Mechanic</h3>
