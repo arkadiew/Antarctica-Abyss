@@ -1,13 +1,11 @@
-[gd_scene load_steps=12 format=4 uid="uid://c4uswbs6waiav"]
+[gd_scene load_steps=11 format=4 uid="uid://c4uswbs6waiav"]
 
 [ext_resource type="Script" path="res://scripts/fish/enemy.gd" id="1_uyisp"]
-[ext_resource type="Texture2D" uid="uid://dfmqw328p10w5" path="res://blender/fish/unnamed.png" id="2_68bkl"]
 [ext_resource type="Animation" uid="uid://obfwynrodkm" path="res://Animation/enemy.res" id="3_flwnn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n6f2k"]
 resource_name = "Material"
 cull_mode = 2
-albedo_texture = ExtResource("2_68bkl")
 roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_pdi62"]
@@ -422,6 +420,8 @@ size = Vector3(1, 1, 3.51636)
 
 [node name="Enemy" type="CharacterBody3D" parent="."]
 transform = Transform3D(0.644867, 0, 0, 0, 0.551061, 0, 0, 0, 0.723562, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_uyisp")
 
 [node name="Giant_squid" type="Node3D" parent="Enemy" groups=["enemy"]]

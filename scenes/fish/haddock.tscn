@@ -1,13 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://cwpmja5l2erej"]
+[gd_scene load_steps=9 format=4 uid="uid://cwpmja5l2erej"]
 
 [ext_resource type="Script" path="res://scripts/fish/fish.gd" id="1_kjnpl"]
-[ext_resource type="Texture2D" uid="uid://dbi0rsm8nqgdy" path="res://blender/fish/haddock.png" id="2_dscef"]
 [ext_resource type="Animation" uid="uid://eopkwyb3g4t7" path="res://Animation/Fish.res" id="3_g7aei"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3kdfd"]
 resource_name = "Material"
 cull_mode = 2
-albedo_texture = ExtResource("2_dscef")
 roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kmisc"]
@@ -78,6 +76,8 @@ size = Vector3(0.262024, 1.36386, 2.0026)
 
 [node name="fish" type="CharacterBody3D" parent="."]
 transform = Transform3D(0.644867, 0, 0, 0, 0.551061, 0, 0, 0, 0.723562, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_kjnpl")
 
 [node name="haddock" type="Node3D" parent="fish" groups=["fishe"]]

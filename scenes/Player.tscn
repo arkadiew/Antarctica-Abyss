@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=24 format=3 uid="uid://wssnx1an6whd"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_6qoym"]
 [ext_resource type="Texture2D" uid="uid://dptxs776qawaw" path="res://utils/img/suit/mask.png" id="3_k2huq"]
@@ -9,8 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://dv0k0pm2prh6j" path="res://utils/img/suit/menu.png" id="8_n87jm"]
 [ext_resource type="Texture2D" uid="uid://b7acqecrl00g2" path="res://utils/img/suit/eng.png" id="9_84wo5"]
 [ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/img/png_scary/fear_0.png" id="9_flnhe"]
+[ext_resource type="Script" path="res://scenes/minimap_camera.gd" id="9_qwegp"]
 [ext_resource type="Shader" path="res://utils/shader/cameraw.gdshader" id="9_vculq"]
+[ext_resource type="Texture2D" path="res://addons/PlayerArrowIcon.png" id="9_vwdlo"]
 [ext_resource type="PackedScene" uid="uid://rkfonp6ibni7" path="res://scenes/tash/task.tscn" id="10_qr72b"]
+[ext_resource type="Script" path="res://scenes/player_rotation.gd" id="11_a56li"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]
 
@@ -30,6 +33,9 @@ font_size = 49
 
 [sub_resource type="LabelSettings" id="LabelSettings_nnknb"]
 font_size = 49
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ss1hn"]
+viewport_path = NodePath("CameraPivot/Camera3D/UI/MONEY/CanvasLayer/MinimapContainer/MinimapViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_g1ve8"]
 viewport_path = NodePath("CameraPivot/Camera3D/SubViewport")
@@ -311,7 +317,56 @@ layout_mode = 2
 label_settings = SubResource("LabelSettings_nnknb")
 horizontal_alignment = 2
 
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraPivot/Camera3D/UI/MONEY" node_paths=PackedStringArray("player")]
+script = ExtResource("11_a56li")
+player = NodePath("../../../../..")
+
+[node name="MinimapContainer" type="TextureRect" parent="CameraPivot/Camera3D/UI/MONEY/CanvasLayer"]
+texture_filter = 1
+custom_minimum_size = Vector2(256, 256)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -256.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = SubResource("ViewportTexture_ss1hn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MinimapViewport" type="SubViewport" parent="CameraPivot/Camera3D/UI/MONEY/CanvasLayer/MinimapContainer"]
+
+[node name="MinimapCamera" type="Camera3D" parent="CameraPivot/Camera3D/UI/MONEY/CanvasLayer/MinimapContainer/MinimapViewport" node_paths=PackedStringArray("Player")]
+transform = Transform3D(1, 0, 0, 0, -0.00155334, 0.999999, 0, -0.999999, -0.00155334, 0, 50, 0)
+cull_mask = 1
+projection = 1
+size = 20.0
+script = ExtResource("9_qwegp")
+Player = NodePath("../../../../../../../..")
+
+[node name="PlayerIcon" type="TextureRect" parent="CameraPivot/Camera3D/UI/MONEY/CanvasLayer/MinimapContainer"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(5, 5)
+texture = ExtResource("9_vwdlo")
+expand_mode = 1
+
 [node name="cameraw" type="TextureRect" parent="CameraPivot/Camera3D"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -322,13 +377,6 @@ offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_g1ve8")
-
-[node name="SubViewport" type="SubViewport" parent="CameraPivot/Camera3D"]
-transparent_bg = true
-handle_input_locally = false
-vrs_mode = 2
-size_2d_override_stretch = true
-render_target_update_mode = 4
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1.79059, 0, 0, 0, 0.820363, 0, 0, 0, 0.583701, 0, 0, -0.54547)
@@ -341,6 +389,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -0.93701, -0.0042
 target_position = Vector3(0, -0.1, 0)
 
 [node name="task" parent="." instance=ExtResource("10_qr72b")]
+visible = false
 
 [node name="AudioManager" type="Node" parent="."]
 script = ExtResource("8_3vx6c")

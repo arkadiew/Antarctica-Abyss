@@ -1,13 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://bkrbjxq3j0das"]
+[gd_scene load_steps=9 format=4 uid="uid://bkrbjxq3j0das"]
 
 [ext_resource type="Script" path="res://scripts/fish/fish.gd" id="1_bcwvf"]
-[ext_resource type="Texture2D" uid="uid://cst51itjwhmdl" path="res://blender/fish/cod.png" id="2_8haqq"]
 [ext_resource type="Animation" uid="uid://eopkwyb3g4t7" path="res://Animation/Fish.res" id="3_w25ei"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3b408"]
 resource_name = "Material"
 cull_mode = 2
-albedo_texture = ExtResource("2_8haqq")
 roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_mbory"]
@@ -78,6 +76,8 @@ size = Vector3(0.477661, 0.923157, 1.62106)
 
 [node name="fish" type="CharacterBody3D" parent="."]
 transform = Transform3D(0.644867, 0, 0, 0, 0.551061, 0, 0, 0, 0.723562, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_bcwvf")
 
 [node name="cod" type="Node3D" parent="fish" groups=["fishe"]]
@@ -106,14 +106,14 @@ bones/2/parent = 1
 bones/2/rest = Transform3D(1, -9.05949e-09, 1.72213e-10, 9.05949e-09, 0.999278, -0.0379983, 1.72157e-10, 0.0379983, 0.999278, 7.77156e-16, 0.753413, -2.32831e-09)
 bones/2/enabled = true
 bones/2/position = Vector3(7.77156e-16, 0.753413, -2.32831e-09)
-bones/2/rotation = Quaternion(0.0190026, 1.05088e-14, 4.53057e-09, 0.99982)
+bones/2/rotation = Quaternion(0.0188703, 0.00085871, -0.11777, 0.992861)
 bones/2/scale = Vector3(1, 1, 1)
 bones/3/name = "Bone.003"
 bones/3/parent = 2
 bones/3/rest = Transform3D(1, 5.86313e-09, 7.20892e-11, -5.86313e-09, 0.999698, 0.0245917, 7.21172e-11, -0.0245918, 0.999697, 1.249e-16, 0.72299, -5.23869e-10)
 bones/3/enabled = true
 bones/3/position = Vector3(1.249e-16, 0.72299, -5.23869e-10)
-bones/3/rotation = Quaternion(-0.0122968, -2.133e-14, -2.93179e-09, 0.999924)
+bones/3/rotation = Quaternion(-0.0122655, 4.1705e-05, -0.0713271, 0.997378)
 bones/3/scale = Vector3(1, 1, 1)
 
 [node name="Cube" type="MeshInstance3D" parent="fish/cod/Armature/Skeleton3D"]

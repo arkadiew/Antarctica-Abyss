@@ -1,17 +1,14 @@
-[gd_scene load_steps=11 format=4 uid="uid://dly830wq4ywof"]
+[gd_scene load_steps=10 format=4 uid="uid://dly830wq4ywof"]
 
 [ext_resource type="Script" path="res://scripts/obj/BreakableObject.gd" id="1_ulp45"]
-[ext_resource type="Texture2D" uid="uid://dn4eegmdfwasv" path="res://blender/object/textures/metal_yellow_diffuse.jpg" id="2_eriin"]
-[ext_resource type="Texture2D" uid="uid://c0arllq2q2bbw" path="res://blender/object/textures/metal_glossiness.jpg" id="3_3uyuu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e81qy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8xuiu"]
 resource_name = "Painted yellow old metal"
 cull_mode = 2
-albedo_texture = ExtResource("2_eriin")
 metallic = 1.0
-metallic_texture = ExtResource("3_3uyuu")
 metallic_texture_channel = 2
-roughness_texture = ExtResource("3_3uyuu")
 roughness_texture_channel = 1
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_sb7jr"]
@@ -87,11 +84,14 @@ script = ExtResource("1_ulp45")
 
 [node name="Curiosity" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.769949, 0, 0, 0, 0.769949, 0, 0, 0, 0.488246, 0, 0, 0)
+layers = 2
+material_override = SubResource("StandardMaterial3D_e81qy")
 mesh = SubResource("ArrayMesh_rswcy")
 skeleton = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.803975, 0, 0, 0, 0.803975, 0, 0, 0, 0.509823, 0, 0, 0)
+layers = 2
 transparency = 1.0
 mesh = SubResource("ArrayMesh_1r1p1")
 skeleton = NodePath("")
