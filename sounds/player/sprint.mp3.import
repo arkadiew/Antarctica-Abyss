@@ -3,11 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://cqy4f5essdyjb"
-valid=false
+path="res://.godot/imported/sprint.mp3-617e791620a494f9b41ec7b5f9d4701a.mp3str"
 
 [deps]
 
 source_file="res://sounds/player/sprint.mp3"
+dest_files=["res://.godot/imported/sprint.mp3-617e791620a494f9b41ec7b5f9d4701a.mp3str"]
 
 [params]
 

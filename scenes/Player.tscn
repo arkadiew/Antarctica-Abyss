@@ -11,9 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/img/png_scary/fear_0.png" id="9_flnhe"]
 [ext_resource type="Script" path="res://scenes/minimap_camera.gd" id="9_qwegp"]
 [ext_resource type="Shader" path="res://utils/shader/cameraw.gdshader" id="9_vculq"]
-[ext_resource type="Texture2D" path="res://addons/PlayerArrowIcon.png" id="9_vwdlo"]
 [ext_resource type="PackedScene" uid="uid://rkfonp6ibni7" path="res://scenes/tash/task.tscn" id="10_qr72b"]
 [ext_resource type="Script" path="res://scenes/player_rotation.gd" id="11_a56li"]
+[ext_resource type="Texture2D" uid="uid://bgv0plga2lnkj" path="res://addons/PlayerIcon.png" id="11_hgx5j"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]
 
@@ -362,7 +362,7 @@ offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(5, 5)
-texture = ExtResource("9_vwdlo")
+texture = ExtResource("11_hgx5j")
 expand_mode = 1
 
 [node name="cameraw" type="TextureRect" parent="CameraPivot/Camera3D"]

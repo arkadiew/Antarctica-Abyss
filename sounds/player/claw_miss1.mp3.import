@@ -3,11 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://drohxfaswgphf"
-valid=false
+path="res://.godot/imported/claw_miss1.mp3-db64b6ceed9d4370a4657898a6d4b133.mp3str"
 
 [deps]
 
 source_file="res://sounds/player/claw_miss1.mp3"
+dest_files=["res://.godot/imported/claw_miss1.mp3-db64b6ceed9d4370a4657898a6d4b133.mp3str"]
 
 [params]
 
