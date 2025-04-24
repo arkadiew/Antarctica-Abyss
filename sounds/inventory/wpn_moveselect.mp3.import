@@ -3,12 +3,11 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://dkq6xjqsliwts"
-path="res://.godot/imported/wpn_moveselect.mp3-cb79dec2753b9170f5e1659b012649e8.mp3str"
+valid=false
 
 [deps]
 
 source_file="res://sounds/inventory/wpn_moveselect.mp3"
-dest_files=["res://.godot/imported/wpn_moveselect.mp3-cb79dec2753b9170f5e1659b012649e8.mp3str"]
 
 [params]
 

@@ -3,12 +3,11 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://uvrqu3wj7kfy"
-path="res://.godot/imported/thud-291047.mp3-bfcb81212053c9c32dbae786f4d74a59.mp3str"
+valid=false
 
 [deps]
 
 source_file="res://sounds/obj/thud-291047.mp3"
-dest_files=["res://.godot/imported/thud-291047.mp3-bfcb81212053c9c32dbae786f4d74a59.mp3str"]
 
 [params]
 

@@ -4,14 +4,11 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://c1k6wgnjlvxpm"
-path="res://.godot/imported/grass_quad.obj-da067750350fe98ec466261b2aeaf486.mesh"
+valid=false
 
 [deps]
 
-files=["res://.godot/imported/grass_quad.obj-da067750350fe98ec466261b2aeaf486.mesh"]
-
 source_file="res://addons/zylann.hterrain/models/grass_quad.obj"
-dest_files=["res://.godot/imported/grass_quad.obj-da067750350fe98ec466261b2aeaf486.mesh", "res://.godot/imported/grass_quad.obj-da067750350fe98ec466261b2aeaf486.mesh"]
 
 [params]
 

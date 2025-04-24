@@ -3,12 +3,11 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://cr8axl3m6lpv3"
-path="res://.godot/imported/wpn_denyselect.mp3-2538e11f88449f3a4696798ef5c6435d.mp3str"
+valid=false
 
 [deps]
 
 source_file="res://sounds/button/wpn_denyselect.mp3"
-dest_files=["res://.godot/imported/wpn_denyselect.mp3-2538e11f88449f3a4696798ef5c6435d.mp3str"]
 
 [params]
 

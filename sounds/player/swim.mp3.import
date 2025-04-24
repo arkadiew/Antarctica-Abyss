@@ -3,12 +3,11 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://dk8dcml3c0oip"
-path="res://.godot/imported/swim.mp3-345dfc767e20c681ee91ceb3782c0b48.mp3str"
+valid=false
 
 [deps]
 
 source_file="res://sounds/player/swim.mp3"
-dest_files=["res://.godot/imported/swim.mp3-345dfc767e20c681ee91ceb3782c0b48.mp3str"]
 
 [params]
 
