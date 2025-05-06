@@ -40,6 +40,12 @@
 					<li>Install and ensure it's accessible in your IDE or system PATH.</li>
 				</ul>
 			</li>
+			<li><strong>Install Blender</strong>:
+				<ul>
+					<li>Install <a href="https://www.blender.org/">Blender</a> (version 3.x or later) to be able to open and edit 3D assets.</li>
+					<li>Find assets in the <code>assets/models</code> directory.</li>
+				</ul>
+			</li>
 			<li><strong>Open the Project</strong>:
 				<ul>
 					<li>Launch Godot Engine.</li>
@@ -50,12 +56,6 @@
 				<ul>
 					<li>Press <code>F5</code> in Godot to play the current build.</li>
 					<li>Note: Some features may be unstable as this is a WIP.</li>
-				</ul>
-			</li>
-			<li><strong>Optional: Modify Assets</strong>:
-				<ul>
-					<li>Install <a href="https://www.blender.org/">Blender</a> (version 3.x or later) to edit 3D assets.</li>
-					<li>Find assets in the <code>assets/models</code> directory.</li>
 				</ul>
 			</li>
 		</ol>
