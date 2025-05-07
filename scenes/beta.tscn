@@ -1,47 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbr1dv50ac64l"]
-
-[ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_0hcsg"]
-[ext_resource type="PackedScene" uid="uid://ca0wevg1lb4rx" path="res://utils/WaterMaker3D/WaterMaker3D.tscn" id="5_707fu"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_axusn"]
-resource_local_to_scene = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t20mi"]
-resource_local_to_scene = true
-seamless = true
-as_normal_map = true
-noise = SubResource("FastNoiseLite_axusn")
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l8ppe"]
-resource_local_to_scene = true
-seamless = true
-as_normal_map = true
-noise = SubResource("FastNoiseLite_axusn")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j0x52"]
-resource_local_to_scene = true
-transparency = 1
-cull_mode = 2
-depth_draw_mode = 1
-albedo_color = Color(0.0470588, 0.152941, 0.294118, 0.858824)
-roughness = 0.0
-normal_enabled = true
-normal_texture = SubResource("NoiseTexture2D_t20mi")
-refraction_enabled = true
-refraction_texture = SubResource("NoiseTexture2D_l8ppe")
-uv1_scale = Vector3(0.01, 0.01, 0.01)
-uv1_triplanar = true
-uv1_world_triplanar = true
+[gd_scene format=3 uid="uid://bbr1dv50ac64l"]
 
 [node name="beta" type="Node3D"]
-
-[node name="BasicBlock2" parent="." instance=ExtResource("1_0hcsg")]
-transform = Transform3D(218.841, 0, 0, 0, 1.52161, 0, 0, 0, 126.856, 0, -25.3595, -57.9595)
-
-[node name="BasicBlock3" parent="." instance=ExtResource("1_0hcsg")]
-transform = Transform3D(244.518, 0, 0, 0, 1.52161, 0, 0, 0, 169.772, 0.150707, -26.51, -57.1485)
-
-[node name="WaterMaker3D" parent="." instance=ExtResource("5_707fu")]
-transform = Transform3D(2706.99, 0, 0, 0, 1413.94, 0, 0, 0, 4483.31, 0, -731.793, -52.1876)
-size = Vector3(1, 1, 1.68988)
-material = SubResource("StandardMaterial3D_j0x52")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -103.998, 0)

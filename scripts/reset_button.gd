@@ -7,8 +7,8 @@ var can_press: bool = true
 @onready var player = get_node("/root/main/Player")
 @onready var camera = player.get_node("CameraPivot/Camera3D")
 @onready var InteractRay = player.get_node("CameraPivot/Camera3D/InteractRay")
-@onready var day: PanelContainer = $UI/Day
-@onready var day_l: Label = $UI/Day/Day
+@onready var day  = player.get_node("CameraPivot/Camera3D/UI/Map/Day")
+@onready var day_l = player.get_node("CameraPivot/Camera3D/UI/Map/Day/Day")
 @onready var animation_player =  $Bed/AnimationPlayer
 const SAVE_PATH = "user://player_save.json"
 
@@ -27,41 +27,25 @@ func _ready():
 
 		
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("use_item"):
+	if Input.is_action_just_pressed("player_use_item"):
 		# Проверяем, сталкивается ли InteractRay с чем-либо
 		if InteractRay.is_colliding():
 			var collider = InteractRay.get_collider()
 			if collider == bed:  # Если луч столкнулся с кроватью
-				if can_press:
-					can_press = false
-					day_counter += 1
-					update_day_label()
-					await play_day_animation()
-					restart_scene()
-				else:
-					if player.AudioManager:
-						player.AudioManager.play_sound("res://sounds/button/wpn_denyselect.mp3")
+				if is_button_open and can_press:
+					if can_press:
+						can_press = false
+						day_counter += 1
+						update_day_label()
+						restart_scene()
+					else:
+						if player.AudioManager:
+							player.AudioManager.play_sound("res://sounds/button/wpn_denyselect.mp3")
 
 func update_day_label():
 	day_l.text = "Day: " + str(day_counter)
 
-func play_day_animation() -> void:
-	var tween = create_tween()
-	tween.set_parallel(false)
-	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_IN_OUT)
 
-	var original_position = day.position
-	var original_scale = day.scale
-	var viewport_size = get_viewport().size
-	var center_position = Vector2(viewport_size.x / 2, viewport_size.y / 2)
-	
-	tween.tween_property(day, "position", center_position, 0.5)
-	tween.tween_property(day, "scale", Vector2(2, 2), 0.5).as_relative()
-	tween.tween_property(day, "position", original_position, 0.5)
-	tween.tween_property(day, "scale", original_scale, 0.5)
-
-	await tween.finished
 
 func save_player_state():
 	if not player or not camera:
@@ -147,17 +131,25 @@ func _on_button_state_changed(is_pressed: bool):
 		if can_press:
 			if animation_player:
 				if is_button_open:
-
 					if animation_player.has_animation("close"):
 						animation_player.play("close")
 						is_button_open = false
+						# Play sound for closing the bed
+						if player.AudioManager:
+							player.AudioManager.play_sound("res://sounds/bed.mp3")
+						else:
+							printerr("Error: AudioManager not found")
 					else:
 						printerr("Error: Animation 'close' not found")
 				else:
-					
 					if animation_player.has_animation("open"):
 						animation_player.play("open")
 						is_button_open = true
+						# Play sound for opening the bed
+						if player.AudioManager:
+							player.AudioManager.play_sound("res://sounds/bed.mp3")
+						else:
+							printerr("Error: AudioManager not found")
 					else:
 						printerr("Error: Animation 'open' not found")
 			else:
@@ -165,3 +157,5 @@ func _on_button_state_changed(is_pressed: bool):
 	else:
 		if player.AudioManager:
 			player.AudioManager.play_sound("res://sounds/button/wpn_denyselect.mp3")
+		else:
+			printerr("Error: AudioManager not found")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://cwpmja5l2erej"]
+[gd_scene load_steps=11 format=4 uid="uid://cwpmja5l2erej"]
 
 [ext_resource type="Script" path="res://scripts/fish/fish.gd" id="1_kjnpl"]
 [ext_resource type="Texture2D" uid="uid://dbi0rsm8nqgdy" path="res://blender/fish/haddock.png" id="2_dscef"]
@@ -74,9 +74,12 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_pcmio"]
 size = Vector3(0.262024, 1.36386, 2.0026)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_orb2w"]
+size = Vector3(0.276665, 1.08371, 1.85814)
+
 [node name="fish" type="Node3D"]
 
-[node name="fish" type="CharacterBody3D" parent="."]
+[node name="fish" type="CharacterBody3D" parent="." groups=["fish", "fishe"]]
 transform = Transform3D(0.644867, 0, 0, 0, 0.551061, 0, 0, 0, 0.723562, 0, 0, 0)
 script = ExtResource("1_kjnpl")
 
@@ -128,3 +131,9 @@ libraries = {
 [node name="CollisionShape3D" type="CollisionShape3D" parent="fish"]
 transform = Transform3D(0.999983, 0, 0, 0, 0.999975, 0, 0, 0, 0.999985, -0.0110171, 0.105362, -0.348039)
 shape = SubResource("BoxShape3D_pcmio")
+
+[node name="HitArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0140495, 0.121109, -0.282936)
+shape = SubResource("BoxShape3D_orb2w")

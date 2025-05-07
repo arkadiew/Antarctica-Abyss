@@ -21,14 +21,14 @@ func _process(delta: float) -> void:
 	# If the player’s looking right at this button with their raycast...
 	if interact_ray.is_colliding() and interact_ray.get_collider() == self:
 		# If they hit the "use_item" key (like E) and the button’s not pressed yet...
-		if Input.is_action_just_pressed("use_item") and not is_pressed:
+		if Input.is_action_just_pressed("player_use_item") and not is_pressed:
 			if player.AudioManager:
 				player.AudioManager.play_sound("res://sounds/button/button.mp3")
 			anim.play("pressdown")  # Play the animation of the button going down
 			is_pressed = true  # Mark it as pressed
 			emit_signal("button_state_changed", is_pressed)  # Tell everyone the button’s now pressed
 		# If they let go of the "use_item" key and the button’s currently pressed...
-		elif Input.is_action_just_released("use_item") and is_pressed:
+		elif Input.is_action_just_released("player_use_item") and is_pressed:
 			anim.play("pressup")  # Play the animation of the button popping back up
 			is_pressed = false  # Mark it as not pressed anymore
 			emit_signal("button_state_changed", is_pressed)  # Tell everyone the button’s released

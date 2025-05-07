@@ -5,7 +5,7 @@ extends CharacterBody3D
 # Where to go when the game ends
 const END_SCENE_PATH = "res://end.tscn"
 # Camera height stuff
-const DEFAULT_CAMERA_HEIGHT: float = 0.1  # Normal eye level
+const DEFAULT_CAMERA_HEIGHT: float = 0.3  # Normal eye level
 const SUIT_CAMERA_HEIGHT: float = -0.5   # Lower when wearing a suit
 var current_camera_height: float = DEFAULT_CAMERA_HEIGHT  # Tracks current height
 
@@ -26,10 +26,10 @@ const OXYGEN_LOW_MOVEMENT_PENALTY: float = 0.5  # Slower movement when low on O2
 const WATER_DENSITY: float = 1.0  # Water physics stuff
 const PLAYER_VOLUME: float = 0.5  # How much space you take up in water
 const BUOYANCY_FACTOR: float = 1.0  # How floaty you are
-const SWIM_SPEED: float = 2.0  # Normal swim speed
-const SWIM_UP_SPEED: float = 3.0  # Speed going up in water
+const SWIM_SPEED: float = 9.0  # Normal swim speed
+const SWIM_UP_SPEED: float = 12.0  # Speed going up in water
 const MIN_VERTICAL_SPEED: float = -0.5  # Slowest downward swim speed
-const SWIM_DOWN_SPEED: float = 6.0  # Speed going down in water
+const SWIM_DOWN_SPEED: float = 19.0  # Speed going down in water
 const STAMINA_DOWN_COST: float = 2.0  # Stamina cost for swimming down
 const MAX_VERTICAL_ANGLE: float = 89.0  # Max camera tilt up/down
 const RUN_SPEED_MULTIPLIER: float = 2.0  # How much faster running is
@@ -37,16 +37,16 @@ const SENSITIVITY: float = 0.01  # Mouse sensitivity
 const GRAVITY: float = -9.8  # Fall speed on land
 const WALK_SPEED: float = 3.0  # Normal walk speed
 const LOW_STAMINA_SPEED: float = 1.0  # Slow walk when tired
-const JUMP_FORCE: float = 3.0  # How high you jump
+const JUMP_FORCE: float = 5.0  # How high you jump
 const JUMP_STAMINA_COST: float = 10.0  # Stamina cost for jumping
-const MAX_STAMINA: float = 100.0  # Max stamina
-const MAX_H2O: float = 100.0  # Max oxygen
-const H2O_DEPLETION_RATE: float = 1.0  # Oxygen drain rate without suit
-const H2O_RECOVERY_RATE: float = 30.0  # Oxygen recovery rate out of water
+const MAX_STAMINA: float = 200.0  # Max stamina
+const MAX_O2: float = 100.0  # Max oxygen
+const O2_DEPLETION_RATE: float = 1.0  # Oxygen drain rate without suit
+const O2_RECOVERY_RATE: float = 30.0  # Oxygen recovery rate out of water
 const STAMINA_RECOVERY_RATE: float = 30.0  # Stamina recovery rate
 const STAMINA_RUN_DEPLETION_RATE: float = 20.0  # Stamina drain while running
 const STAMINA_RECOVERY_DELAY: float = 3.5  # Delay before stamina recovers
-const MIN_H2O_THRESHOLD: float = 10.0  # Low oxygen warning point
+const MIN_O2_THRESHOLD: float = 10.0  # Low oxygen warning point
 const INTERACTION_DISTANCE: float = 3.0  # How close to interact with stuff
 const LERP_SPEED: float = 5.0  # Smooth transition speed
 const RESTART_DELAY: float = 9.0  # Delay before restarting
@@ -83,8 +83,8 @@ var inventory: Array = []  # Your inventory list
 var selected_item: RigidBody3D = null  # Item you’ve picked from inventory
 var selected_item_index: int = -1  # Index of selected item
 var stamina: float = MAX_STAMINA  # Current stamina
-var h2o: float = MAX_H2O  # Current oxygen
-
+var o2: float = MAX_O2  # Current oxygen
+var repair_amount: float = 10.0
 # Money system with animations
 var money: int = 100:
 	set(value):
@@ -93,10 +93,10 @@ var money: int = 100:
 			show_money_change(change)  # Show the difference
 		animate_money_change(money, value)  # Animate the update
 		money = value  # Set new money value
-
+@onready var money_l  = get_node("CameraPivot/Camera3D/UI/Map/MONEY/Money")
+@onready var money__ = get_node("CameraPivot/Camera3D/UI/Map/MONEY/Money?")
 # UI and other nodes
-@onready var money_l: Label = $CameraPivot/Camera3D/UI/MONEY/Money  # Money display
-@onready var money__: Label = $"CameraPivot/Camera3D/UI/MONEY/Money?"  # Money change display
+
 var can_attack: bool = true  # Can you attack?
 var is_running: bool = false  # Are you running?
 var stamina_recovery_timer: float = 0.0  # Delay for stamina recovery
@@ -139,7 +139,8 @@ var scary_list: Array = ["fish", "Enemy"]  # Things that scare you
 var original_material: Material = null  # Original object material
 var highlight_material: Material = preload("res://utils/shader/highlight_material.tres")  # Highlight material
 var default_material: StandardMaterial3D = StandardMaterial3D.new()  # Default material
-
+@onready var map : Node = $CameraPivot/Camera3D/UI/Map# Interaction menu
+@onready var statistic: Node = $CameraPivot/Camera3D/UI/Statistic_Info
 # UI elements
 @onready var Menu: TextureRect = $CameraPivot/Camera3D/UI/Menu/Menu  # Interaction menu
 @onready var fear_sprite: TextureRect = $CameraPivot/Camera3D/UI/FearSprite  # Fear display
@@ -153,7 +154,7 @@ var default_material: StandardMaterial3D = StandardMaterial3D.new()  # Default m
 @onready var camera: Camera3D = $CameraPivot/Camera3D  # Player camera
 @onready var interact_ray: RayCast3D = $CameraPivot/Camera3D/InteractRay  # Interaction ray
 @onready var stamina_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/TextureProgressBar  # Stamina bar
-@onready var h2o_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/o2  # Oxygen bar
+@onready var o2_bar: TextureProgressBar = $CameraPivot/Camera3D/UI/o2  # Oxygen bar
 @onready var label_3d: Label = $"CameraPivot/Camera3D/UI/Menu/Menu?la"  # Interaction label
 @onready var darken_screen: ColorRect = $CameraPivot/Camera3D/UI/DarkenScreen  # Fade screen
 @onready var NotificationLabel: Label = $CameraPivot/Camera3D/UI/NotificationLabel  # Notification text
@@ -170,38 +171,56 @@ var target_rotation_y: float = 0.0  # Target horizontal rotation
 #region Start
 # Sets up the player when they spawn
 func _ready():
-	
+	 # Инициализация карты
+	if map:
+		map.visible = false
+		map.modulate.a = 0.0
+		map.scale = Vector2(0.8, 0.8)
+		map.rotation_degrees = 15.0
+	else:
+		printerr("Error: Map node is not found!")
+	var repairables = get_tree().get_nodes_in_group("repairable") # Add repairables to a group
+	for repairable in repairables:
+		if repairable.has_signal("money_awarded"):
+			repairable.connect("money_awarded", Callable(self, "_on_money_awarded"))
 	money_l.text = str(money)  # Show starting money
 	Menu.visible = false  # Hide interaction menu
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  # Lock mouse for camera control
 	original_fov = camera.fov if camera else 70.0  # Set default camera zoom
-	if not camera or not stamina_bar or not h2o_bar or not AudioManager:
+	if not camera or not stamina_bar or not o2_bar or not AudioManager:
 		printerr("Warning: Essential nodes are missing!")  # Complain if stuff’s missing
 		return
 	_update_ui_visibility()  # Show/hide UI based on suit
 	stamina_bar.max_value = MAX_STAMINA  # Set stamina bar max
-	h2o_bar.max_value = MAX_H2O  # Set oxygen bar max
-
+	o2_bar.max_value = MAX_O2  # Set oxygen bar max
+func _on_money_awarded(amount: int):
+	add_money(amount)
 # Main loop, runs every frame
 func _process(delta):
 	if is_changing_scene:
 		return  # Skip if we’re switching scenes
 	# Smoothly adjust camera height based on suit
 	if has_suit:
+		max_tilt = 1.5  # Max tilt angle
+		tilt_speed = 4.0  # How fast it tilts
+		tilt_recovery = 3.0  # How fast tilt recovers
 		current_camera_height = lerp(current_camera_height, SUIT_CAMERA_HEIGHT, delta * LERP_SPEED)
 	else:
+		max_tilt = 3.0
+		tilt_speed = 8.0
+		tilt_recovery = 6.0
 		current_camera_height = lerp(current_camera_height, DEFAULT_CAMERA_HEIGHT, delta * LERP_SPEED)
 	camera_pivot.position.y = current_camera_height
 	# Suit controls
-	if Input.is_action_just_pressed("use_item"):
+	if Input.is_action_just_pressed("player_use_item"):
 		activate_suit()
-	if Input.is_action_just_pressed("exit_suit") and has_suit:
+	if Input.is_action_just_pressed("player_exit_suit") and has_suit:
 		exit_suit()
 	_handle_rotation(delta)  # Handle camera rotation
 	handle_object_interactions(delta)  # Manage picking up/dropping stuff
 	update_movement(delta)  # Move the player
 	update_stamina(delta)  # Update stamina levels
-	update_h2o(delta)  # Update oxygen levels
+	update_o2(delta)  # Update oxygen levels
 	update_label()  # Update interaction label
 	update_oxygen_tank_interaction(delta)  # Check for oxygen tanks
 	if has_suit:
@@ -213,7 +232,7 @@ func _process(delta):
 		_hide_all_ui()  # Hide most UI without suit
 		handle_water_physics_without_suit(delta)  # Water physics without suit
 	apply_camera_shake(delta)  # Add camera shake if needed
-	if h2o <= 0 and not is_changing_scene:
+	if o2 <= 0 and not is_changing_scene:
 		change_scene()  # Die and switch scenes if oxygen runs out
 
 # Smoothly rotate the camera
@@ -225,19 +244,43 @@ func _handle_rotation(delta):
 
 # Handle mouse and key inputs
 func _input(event):
+# Проверка нажатия клавиши Tab (открытие планшета)
+	if event.is_action_pressed("ui_focus_next"):
+		open_tablet()
+	# Проверка отпускания клавиши Tab (закрытие планшета)
+	elif event.is_action_released("ui_focus_next"):
+		close_tablet()
+	if event.is_action_pressed("player_attack"):
+			if interact_ray.is_colliding():
+				var collider = interact_ray.get_collider()
+				if collider and collider.has_method("repair"):
+					if held_object and held_object.is_in_group("spanner") and can_attack:
+						collider.repair(repair_amount)
+						animate_spanner_repair()
+						#if AudioManager:
+							#AudioManager.play_sound("res://sounds/repair/repair_wrench.mp3")
+					else:
+						show_notification("It can only be fixed with spanner", 2.0)
+						
+			elif held_object and held_object.is_in_group("spear") and can_attack:
+				if AudioManager:
+					AudioManager.play_sound("res://sounds/player/claw_miss1.mp3")
+				attack()
+			else:
+				return
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		_handle_mouse_motion(event)  # Rotate camera with mouse
-	if event is InputEventKey and event.pressed and Input.is_action_pressed("exit"):
+	if event is InputEventKey and event.pressed and Input.is_action_pressed("player_exit"):
 		_toggle_mouse_mode()  # Toggle mouse lock
-	if event.is_action_pressed("attack"):
+	if event.is_action_pressed("player_attack"):
 		if AudioManager:
-			AudioManager.play_sound("res://voice/player/claw_miss1.mp3")
+			AudioManager.play_sound("res://sounds/player/claw_miss1.mp3")
 		attack()  # Attack with held object
 	if event is InputEventMouseButton and held_object:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			follow_distance = max(follow_distance - zoom_speed, min_distance)  # Zoom in
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			follow_distance = min(follow_distance + zoom_speed, max_distance)  # Zoom out
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			follow_distance = max(follow_distance - zoom_speed, min_distance)  # Zoom out
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			follow_distance = min(follow_distance + zoom_speed, max_distance)  # Zoom in
 
 # Turn camera based on mouse movement
 func _handle_mouse_motion(event: InputEventMouseMotion):
@@ -251,9 +294,9 @@ func _toggle_mouse_mode():
 # Get movement direction from input
 func get_input_direction() -> Vector3:
 	var i = Vector3(
-		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+		Input.get_action_strength("player_move_right") - Input.get_action_strength("player_move_left"),
 		0,
-		Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")
+		Input.get_action_strength("player_move_backward") - Input.get_action_strength("player_move_forward")
 	)
 	var w = transform.basis.x * i.x + transform.basis.z * i.z
 	return w.normalized()
@@ -288,7 +331,7 @@ func _update_ui_visibility():
 # Hide most UI when no suit
 func _hide_all_ui():
 	stamina_bar.visible = true
-	h2o_bar.visible = true
+	o2_bar.visible = true
 	fear_sprite.visible = false
 	mask.visible = false
 	Pro3.visible = true
@@ -302,7 +345,7 @@ func _hide_all_ui():
 # Show full UI with suit
 func _show_all_ui():
 	stamina_bar.visible = true
-	h2o_bar.visible = true
+	o2_bar.visible = true
 	fear_sprite.visible = true
 	Pro3.visible = true
 	Pro2.visible = true
@@ -318,24 +361,24 @@ func _show_all_ui():
 # Handle picking up and dropping stuff
 func handle_object_interactions(delta):
 	last_interaction_time += delta
-	if Input.is_action_just_pressed("interact") and last_interaction_time >= interaction_cooldown:
+	if Input.is_action_just_pressed("player_interact") and last_interaction_time >= interaction_cooldown:
 		last_interaction_time = 0.0
 		if AudioManager:
-			AudioManager.play_sound("res://shader/inventory/wpn_select.mp3")
+			AudioManager.play_sound("res://sounds/inventory/wpn_select.mp3")
 		if held_object:
 			drop_held_object()
 		else:
 			_try_pick_object()
-	if Input.is_action_just_pressed("use_item"):
+	if Input.is_action_just_pressed("player_use_item"):
 		_try_add_to_inventory()
-	if Input.is_action_just_pressed("Q"):
+	if Input.is_action_just_pressed("player_Q"):
 		select_next_inventory_item()
 		if AudioManager:
-			AudioManager.play_sound("res://shader/inventory/wpn_moveselect.mp3") 
-	if Input.is_action_just_pressed("use_item") and selected_item:
+			AudioManager.play_sound("res://sounds/inventory/wpn_moveselect.mp3") 
+	if Input.is_action_just_pressed("player_use_item") and selected_item:
 		drop_selected_object()
 		if AudioManager:
-			AudioManager.play_sound("res://shader/inventory/inventory.mp3")
+			AudioManager.play_sound("res://sounds/inventory/inventory.mp3")
 	if held_object:
 		follow_player_with_object()
 		apply_stamina_penalty_for_holding(delta)
@@ -458,7 +501,7 @@ func update_movement(delta: float) -> void:
 	if not is_on_floor():
 		velocity.x = lerp(velocity.x, target_velocity.x, AIR_CONTROL * delta)
 		velocity.z = lerp(velocity.z, target_velocity.z, AIR_CONTROL * delta)
-	if can_run and Input.is_action_pressed("run") and stamina > 0 and not is_in_water():
+	if can_run and Input.is_action_pressed("player_run") and stamina > 0 and not is_in_water():
 		is_running = true
 	else:
 		is_running = false
@@ -476,13 +519,13 @@ func apply_gravity_force(delta: float) -> void:
 
 # Handle jumping
 func handle_character_jump(delta: float) -> void:
-	if Input.is_action_just_pressed("jump") and stamina >= JUMP_STAMINA_COST:
+	if Input.is_action_just_pressed("player_jump") and stamina >= JUMP_STAMINA_COST:
 		velocity.y = JUMP_FORCE
 		decrease_stamina(JUMP_STAMINA_COST)
 
 # Tilt camera when turning
 func apply_character_turn_tilt(delta: float) -> void:
-	var input_direction = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var input_direction = Input.get_vector("player_move_left", "player_move_right", "player_move_forward", "player_move_backward")
 	var target_tilt_angle = -input_direction.x * max_tilt
 	tilt_angle = lerp(tilt_angle, target_tilt_angle, delta * tilt_speed)
 	$CameraPivot.rotation_degrees.z = tilt_angle
@@ -499,7 +542,7 @@ func apply_stamina_penalty_for_holding(delta):
 func update_stamina(delta):
 	var in_water = is_in_water()
 	var moving = get_input_direction().length() > 0
-	if can_run and stamina > 0 and Input.is_action_pressed("run") and moving and not in_water:
+	if can_run and stamina > 0 and Input.is_action_pressed("player_run") and moving and not in_water:
 		decrease_stamina(STAMINA_RUN_DEPLETION_RATE * delta)
 		stamina_recovery_timer = STAMINA_RECOVERY_DELAY
 		is_running = true
@@ -521,6 +564,15 @@ func increase_stamina(amount: float):
 #endregion
 
 #region Water
+# Check if the player is in a no-water-effect zone
+func is_in_no_water_effect_zone() -> bool:
+	if not is_instance_valid(self) or not get_tree():
+		return false
+	var no_water_zones = get_tree().get_nodes_in_group("no_water_effect_zone")
+	for zone in no_water_zones:
+		if zone is Area3D and zone.overlaps_body(self):
+			return true
+	return false
 # Check if the camera is fully submerged underwater
 func is_camera_fully_submerged() -> bool:
 	if not is_instance_valid(camera_pivot) or not get_tree():
@@ -540,6 +592,8 @@ func is_camera_fully_submerged() -> bool:
 	return false
 # Check if you’re in water
 func is_in_water() -> bool:
+	if is_in_no_water_effect_zone():
+		return false
 	if not is_instance_valid(self) or not get_tree():
 		return false
 	var water_areas = get_tree().get_nodes_in_group("water_area")
@@ -547,7 +601,6 @@ func is_in_water() -> bool:
 		if area.overlaps_body(self):
 			return true
 	return false
-
 # Handle water physics with suit
 func handle_water_physics(delta: float) -> void:
 	if is_in_water():
@@ -575,7 +628,7 @@ func apply_buoyancy_and_drag_scuba(delta: float) -> void:
 func handle_swimming_input_scuba(delta: float) -> void:
 	var input_direction = get_input_direction()
 	var speed = SWIM_SPEED
-	if h2o < OXYGEN_CRITICAL_LEVEL:
+	if o2 < OXYGEN_CRITICAL_LEVEL:
 		speed *= OXYGEN_LOW_MOVEMENT_PENALTY
 	var target_velocity = Vector3(input_direction.x * speed, velocity.y, input_direction.z * speed)
 	if input_direction != Vector3.ZERO:
@@ -585,10 +638,10 @@ func handle_swimming_input_scuba(delta: float) -> void:
 	else:
 		velocity.x = lerp(velocity.x, 0.0, DECELERATION * delta * 0.5)
 		velocity.z = lerp(velocity.z, 0.0, DECELERATION * delta * 0.5)
-	if Input.is_action_pressed("jump") and stamina > 1:
+	if Input.is_action_pressed("player_jump") and stamina > 1:
 		velocity.y = lerp(velocity.y, SWIM_UP_SPEED, delta * 2.0)
 		decrease_stamina(2.0 * delta)
-	elif Input.is_action_pressed("crouch") and stamina > 1:
+	elif Input.is_action_pressed("player_run") and stamina > 1:
 		velocity.y = lerp(velocity.y, -SWIM_DOWN_SPEED, delta * 2.0)
 		decrease_stamina(STAMINA_DOWN_COST * delta)
 	else:
@@ -596,8 +649,8 @@ func handle_swimming_input_scuba(delta: float) -> void:
 			velocity.y = MIN_VERTICAL_SPEED
 
 # Update oxygen levels
-func update_h2o(delta: float) -> void:
-	if h2o <= 0:
+func update_o2(delta: float) -> void:
+	if o2 <= 0:
 		if not is_changing_scene:
 			await get_tree().create_timer(2.0).timeout
 			change_scene()
@@ -613,44 +666,44 @@ func update_h2o(delta: float) -> void:
 	# Check various conditions for oxygen consumption/recovery
 	if is_camera_fully_submerged() and has_suit:
 		# Increased oxygen consumption when the camera is fully submerged
-		decrease_h2o(OXYGEN_CONSUMPTION_RATE * 2.0 * delta)
+		decrease_o2(OXYGEN_CONSUMPTION_RATE * 2.0 * delta)
 		_handle_underwater_effects(delta)
 	elif is_underwater and has_suit:
 		# Normal oxygen consumption underwater with a suit
-		decrease_h2o(OXYGEN_CONSUMPTION_RATE * delta)
+		decrease_o2(OXYGEN_CONSUMPTION_RATE * delta)
 		_handle_underwater_effects(delta)
 	elif not is_underwater:
 		# Oxygen recovery outside of water
-		increase_h2o(H2O_RECOVERY_RATE * delta)
+		increase_o2(O2_RECOVERY_RATE * delta)
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, 0.0, delta * 2.0)
 
-	update_h2o_bar()
+	update_o2_bar()
 
 # Effects when low on oxygen
 func _handle_underwater_effects(delta: float) -> void:
-	if h2o <= MIN_H2O_THRESHOLD and not is_shaking:
+	if o2 <= MIN_O2_THRESHOLD and not is_shaking:
 		is_shaking = true
 		shake_intensity = 0.2
 		shake_timer = 2.0
 		camera.fov = lerp(camera.fov, original_fov + 10, delta * 5.0)
-	elif h2o > MIN_H2O_THRESHOLD and is_shaking:
+	elif o2 > MIN_O2_THRESHOLD and is_shaking:
 		is_shaking = false
 		shake_intensity = 0.0
 		camera.fov = original_fov
-	if h2o <= 0:
+	if o2 <= 0:
 		darken_screen.modulate.a = lerp(darken_screen.modulate.a, DARKEN_MAX_ALPHA, delta * 2.0)
 
 # Reduce oxygen
-func decrease_h2o(amount: float) -> void:
-	h2o = clamp(h2o - amount, 0, MAX_H2O)
+func decrease_o2(amount: float) -> void:
+	o2 = clamp(o2 - amount, 0, MAX_O2)
 
 # Restore oxygen
-func increase_h2o(amount: float) -> void:
-	h2o = clamp(h2o + amount, 0, MAX_H2O)
+func increase_o2(amount: float) -> void:
+	o2 = clamp(o2 + amount, 0, MAX_O2)
 
 # Update oxygen bar
-func update_h2o_bar() -> void:
-	h2o_bar.value = h2o
+func update_o2_bar() -> void:
+	o2_bar.value = o2
 
 # Check for oxygen tanks nearby
 func update_oxygen_tank_interaction(delta: float) -> void:
@@ -658,7 +711,7 @@ func update_oxygen_tank_interaction(delta: float) -> void:
 		return
 	for tank in get_tree().get_nodes_in_group("oxygen_source"):
 		if tank.global_transform.origin.distance_to(global_transform.origin) <= OXYGEN_INTERACTION_DISTANCE:
-			increase_h2o(OXYGEN_REPLENISH_RATE * delta)
+			increase_o2(OXYGEN_REPLENISH_RATE * delta)
 			return
 
 # Shake camera when low on oxygen
@@ -683,8 +736,8 @@ func handle_water_physics_without_suit(delta):
 
 		update_current_flow()
 		apply_water_physics(delta)
-		decrease_h2o(H2O_DEPLETION_RATE * 3.0 * delta)
-		if h2o <= 0:
+		decrease_o2(O2_DEPLETION_RATE * 3.0 * delta)
+		if o2 <= 0:
 			change_scene()
 	else:
 		velocity.y = max(velocity.y + GRAVITY * delta, TERMINAL_VELOCITY)
@@ -714,7 +767,7 @@ func apply_water_physics(delta_time):
 		resisting_flow = false
 		velocity.x = lerp(velocity.x, 0.0, DECELERATION * delta_time)
 		velocity.z = lerp(velocity.z, 0.0, DECELERATION * delta_time)
-	if Input.is_action_pressed("jump") and stamina > 1:
+	if Input.is_action_pressed("player_jump") and stamina > 1:
 		velocity.y += swim_up_force * delta_time
 		decrease_stamina(2)
 	else:
@@ -840,7 +893,7 @@ func exit_suit():
 	if AudioManager:
 		AudioManager.play_sound("res://sounds/exit.mp3")
 	current_camera_height = DEFAULT_CAMERA_HEIGHT
-	camera_pivot.position.y = current_camera_height
+	camera.position.y = current_camera_height
 
 # Show a notification on screen
 func show_notification(text: String, delay: float = 2.0):
@@ -932,6 +985,24 @@ func handle_fear_death(delta):
 #endregion
 
 #region Attack
+func animate_spanner_repair():
+	if not held_object:
+		return
+	var tween = create_tween()
+	var start_position = held_object.position
+	var start_rotation = held_object.rotation
+	var direction = -transform.basis.z.normalized()
+	var end_position = start_position + direction * 0.5
+	var twist_rotation = start_rotation + Vector3(0, 0, deg_to_rad(45)) # 45-degree twist
+	
+	# Move forward and twist
+	tween.tween_property(held_object, "position", end_position, 0.15).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(held_object, "rotation", twist_rotation, 0.15).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	# Move back and reset rotation
+	tween.tween_property(held_object, "position", start_position, 0.15).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(held_object, "rotation", start_rotation, 0.15).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween.play()
+
 # Attack with a spear
 func attack():
 	if not can_attack or not held_object or not held_object.is_in_group("spear"):
@@ -1001,4 +1072,55 @@ func show_money_change(change: int):
 	money__.text = ""
 	money__.modulate = Color(1, 1, 1, 1)
 	money__.position = initial_position
+#endregion
+#region tablet 
+
+func open_tablet():
+	if not map:
+		printerr("Error: Map node is not found!")
+		return
+	
+	
+	map.visible = true
+	map.modulate.a = 0.0
+	map.scale = Vector2(0.8, 0.8)
+	map.rotation_degrees = 15.0
+	
+	# Создаём анимацию
+	var tween = create_tween()
+	tween.set_parallel(true) 
+	# Прозрачность: от 0 до 1.0 (полностью непрозрачная)
+	tween.tween_property(map, "modulate:a", 1.0, 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	# Масштабирование: от 0.8 до 1.0 с "пружинным" эффектом
+	tween.tween_property(map, "scale", Vector2(1.0, 1.0), 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	# Вращение: от 15 градусов до 0
+	tween.tween_property(map, "rotation_degrees", 0.0, 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	
+	# Воспроизведение звука (опционально)
+   # if AudioManager:
+	  #  AudioManager.play_sound("res://sounds/ui/tablet_open.mp3")  # Укажите путь к вашему звуку
+
+# Анимация закрытия планшета
+func close_tablet():
+	if not map:
+		printerr("Error: Map node is not found!")
+		return
+	
+	# Создаём анимацию
+	var tween = create_tween()
+	tween.set_parallel(true)
+	# Прозрачность: от 1.0 до 0
+	tween.tween_property(map, "modulate:a", 0.0, 0.3).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+	# Масштабирование: от 1.0 до 0.8
+	tween.tween_property(map, "scale", Vector2(0.8, 0.8), 0.3).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	# Вращение: от 0 до -15 градусов
+	tween.tween_property(map, "rotation_degrees", -15.0, 0.3).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
+	
+	# Скрываем карту после анимации
+	tween.tween_callback(func(): map.visible = false)
+
+	# Воспроизведение звука (опционально)
+	#if AudioManager:
+	   # AudioManager.play_sound("res://sounds/ui/tablet_close.mp3")  # Укажите путь к вашему звуку
+
 #endregion
