@@ -1,0 +1,27 @@
+[gd_scene load_steps=10 format=4 uid="uid://bihbuq7r5f3km"]
+
+[ext_resource type="PackedScene" uid="uid://cpxmsseaujvi" path="res://scenes/map/base.tscn" id="1_7t5mf"]
+[ext_resource type="PackedScene" uid="uid://dohcee5vu1o8v" path="res://utils/ocean/ocean.tscn" id="2_as5gi"]
+[ext_resource type="Texture2D" uid="uid://c13jtdkwof4mf" path="res://scenes/map/textures/sand01_BaseColor.jpg" id="3_ro3jl"]
+[ext_resource type="Texture2D" uid="uid://cc7b5q5dyso3w" path="res://scenes/map/textures/sand01_Roughness.jpg" id="4_2gons"]
+[ext_resource type="Texture2D" uid="uid://c4yqa63bbswvh" path="res://scenes/map/textures/sand01_Normal.jpg" id="5_pjqd3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dvv75"]
+size = Vector3(9.34505, 3.96606, 8.69626)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8tdfk"]
+resource_name = "Sand"
+cull_mode = 2
+albedo_texture = ExtResource("3_ro3jl")
+metallic_texture = ExtResource("4_2gons")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("4_2gons")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("5_pjqd3")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_7qml3"]
+_surfaces = [{
+"aabb": AABB(-1, 0.691501, -1, 2, 0.43038, 2),
+"format": 34359742465,
+"index_count": 6291456,
