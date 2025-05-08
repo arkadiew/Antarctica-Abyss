@@ -15,6 +15,10 @@ run/main_scene="res://global.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.png"
 
+[autoload]
+
+TaskManager="*res://task_manager.gd"
+
 [display]
 
 window/size/viewport_width=1800
