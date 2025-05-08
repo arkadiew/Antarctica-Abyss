@@ -94,7 +94,7 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_g4mpd")
 
-[node name="OxygenTank" type="RigidBody3D" groups=["oxygen_source"]]
+[node name="OxygenTank" type="RigidBody3D" groups=["items", "oxygen_source"]]
 transform = Transform3D(1, 0, 0, 0, 1.29548, 0, 0, 0, 0.549294, 0, 0, 0)
 script = ExtResource("1_j66rw")
 

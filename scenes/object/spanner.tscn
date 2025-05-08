@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=4 uid="uid://c5mqh7pqgnvrx"]
+[gd_scene load_steps=14 format=4 uid="uid://c5mqh7pqgnvrx"]
 
 [ext_resource type="Texture2D" uid="uid://duj2jvo7fm8e2" path="res://blender/repair/textures/tiled_plane_DefaultMaterial_BaseColor.jpg" id="1_oc32d"]
+[ext_resource type="Script" path="res://scripts/obj/BreakableObject.gd" id="1_xdrs7"]
 [ext_resource type="Texture2D" uid="uid://y7bodhloyu3e" path="res://blender/repair/textures/tiled_plane_DefaultMaterial_Roughness.jpg" id="2_d2kxf"]
 [ext_resource type="Texture2D" uid="uid://dkwypgt3vdju3" path="res://blender/repair/textures/Wood055_2K_Color.jpg" id="3_3o6ix"]
 [ext_resource type="Texture2D" uid="uid://dpso8bprgs2mh" path="res://blender/repair/textures/Wood055_2K_Roughness.jpg" id="4_7dhqn"]
@@ -115,14 +116,23 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_hd7ih")
 
-[node name="spanner" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_2pds3"]
+size = Vector3(2.20972, 2.75873, 18.2016)
+
+[node name="spanner" type="RigidBody3D" groups=["items", "spanner"]]
+transform = Transform3D(0.0381278, 0, 0, 0, 0.0381278, 0, 0, 0, 0.0381278, 0, 0, 0)
+script = ExtResource("1_xdrs7")
 
 [node name="Spanner" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_5or7b")
 skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.07995, 0, 0, 0, 1.05978, 0, 0, 0, 1, 0, 0, 0)
 transparency = 1.0
 mesh = SubResource("ArrayMesh_fx6p2")
 skeleton = NodePath("")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.00255, 0, 0, 0, 1.00255, 0, 0, 0, 1.00255, 0.0145264, -0.080658, -0.214203)
+shape = SubResource("BoxShape3D_2pds3")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://cbw7phol7apu0"]
+[gd_scene load_steps=36 format=4 uid="uid://cbw7phol7apu0"]
 
 [ext_resource type="Script" path="res://scripts/reset_button.gd" id="1_1wm58"]
 [ext_resource type="PackedScene" uid="uid://d20ci4ihilkwo" path="res://scenes/button/button.tscn" id="1_4jxep"]
@@ -106,9 +106,6 @@ shadow_mesh = SubResource("ArrayMesh_k23ul")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k8uel"]
 size = Vector3(1.94275, 4.2124, 1.94287)
-
-[sub_resource type="LabelSettings" id="LabelSettings_4dl38"]
-font_size = 49
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rknra"]
 resource_name = "Patched cloth"
@@ -303,21 +300,7 @@ skeleton = NodePath("")
 transform = Transform3D(1.00002, 0, 0, 0, 1.00002, 0, 0, 0, 1.00002, 0.0079965, 1.12622, 0.0060997)
 shape = SubResource("BoxShape3D_k8uel")
 
-[node name="UI" type="Node" parent="."]
-
-[node name="Day" type="PanelContainer" parent="UI"]
-offset_left = 31.0
-offset_top = 168.0
-offset_right = 266.0
-offset_bottom = 246.0
-
-[node name="Day" type="Label" parent="UI/Day"]
-layout_mode = 2
-label_settings = SubResource("LabelSettings_4dl38")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Bed" type="StaticBody3D" parent="."]
+[node name="Bed" type="StaticBody3D" parent="." groups=["Interactable"]]
 transform = Transform3D(-2.93036, 0, 2.5618e-07, 0, 2.93036, 0, -2.5618e-07, 0, -2.93036, -2.73266, 1.42814, -9.51685)
 
 [node name="Armature" type="Node3D" parent="Bed"]

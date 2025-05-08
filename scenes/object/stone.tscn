@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=4 uid="uid://cwejunpo3y61j"]
 
 [ext_resource type="Script" path="res://scripts/obj/BreakableObject.gd" id="1_slykh"]
-[ext_resource type="Texture2D" uid="uid://cvsu4b1yjyq2c" path="res://blender/object/textures/rocks01_diffuse.jpg" id="2_qm5ot"]
+[ext_resource type="Texture2D" uid="uid://d2vy8rv6dnwu0" path="res://blender/object/textures/rocks01_diffuse.jpg" id="2_qm5ot"]
 [ext_resource type="Texture2D" uid="uid://dt2ekfiyb7yyj" path="res://blender/object/textures/rocks01_glossiness.jpg" id="3_aocgi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oyew2"]
@@ -80,7 +80,7 @@ shadow_mesh = SubResource("ArrayMesh_7i14a")
 [sub_resource type="BoxShape3D" id="BoxShape3D_w2n01"]
 size = Vector3(2.18243, 1.83893, 1.933)
 
-[node name="Stone" type="RigidBody3D" groups=["collectable", "grab"]]
+[node name="Stone" type="RigidBody3D" groups=["collectable", "conveyor_objects", "grab"]]
 transform = Transform3D(0.194708, 0, 0, 0, 0.194708, 0, 0, 0, 0.194708, 0, 0, 0)
 script = ExtResource("1_slykh")
 

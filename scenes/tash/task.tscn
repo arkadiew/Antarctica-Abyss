@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://rkfonp6ibni7"]
+[gd_scene load_steps=4 format=3 uid="uid://rkfonp6ibni7"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_jxekv"]
-font_size = 60
+[ext_resource type="Script" path="res://scripts/task.gd" id="1_0y8hq"]
+[ext_resource type="Texture2D" uid="uid://cdoo7s0em2iq7" path="res://utils/img/hints screen.png" id="2_xkkeu"]
+
+[sub_resource type="Theme" id="Theme_gipix"]
+default_font_size = 20
 
 [node name="task" type="Control"]
 layout_mode = 3
@@ -10,34 +13,49 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_0y8hq")
 
 [node name="TaskControl" type="Control" parent="."]
 layout_direction = 2
-anchors_preset = 0
-offset_left = 1204.0
-offset_top = 6.0
-offset_right = 1767.0
-offset_bottom = 193.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -478.0
+offset_top = 57.0
+offset_right = 97.0
+offset_bottom = 244.0
+grow_horizontal = 0
 
-[node name="Panel" type="Panel" parent="TaskControl"]
-layout_mode = 0
-offset_right = 566.0
-offset_bottom = 181.0
+[node name="TextureRect" type="TextureRect" parent="TaskControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.5
+offset_bottom = 30.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_xkkeu")
+stretch_mode = 5
 
-[node name="taskproc" type="ProgressBar" parent="TaskControl"]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 91.0
-offset_right = 548.0
-offset_bottom = 128.0
+[node name="VBoxContainer" type="VBoxContainer" parent="TaskControl"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -12.5
+offset_right = 0.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_gipix")
+alignment = 1
 
-[node name="Label" type="Label" parent="TaskControl"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 20.0
-offset_right = 544.0
-offset_bottom = 68.0
-text = "Task"
-label_settings = SubResource("LabelSettings_jxekv")
+[node name="TotalLabel" type="Label" parent="TaskControl/VBoxContainer"]
+layout_mode = 2
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2

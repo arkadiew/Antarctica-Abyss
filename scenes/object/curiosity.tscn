@@ -81,7 +81,7 @@ shadow_mesh = SubResource("ArrayMesh_jwdbq")
 [sub_resource type="BoxShape3D" id="BoxShape3D_t8rbf"]
 size = Vector3(2.68074, 3.03217, 1)
 
-[node name="Curiosity" type="RigidBody3D" groups=["collectable", "grab"]]
+[node name="Curiosity" type="RigidBody3D" groups=["collectable", "conveyor_objects", "grab"]]
 transform = Transform3D(0.118692, 0, 0, 0, -5.18819e-09, 0.118692, 0, -0.118692, -5.18819e-09, 0, 0, 0)
 script = ExtResource("1_ulp45")
 

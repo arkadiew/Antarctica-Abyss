@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://dohcee5vu1o8v"]
+
+[ext_resource type="Shader" path="res://utils/ocean/ocean.gdshader" id="1_2gl7v"]
+[ext_resource type="Script" path="res://utils/ocean/ocean.gd" id="1_fw41f"]
+[ext_resource type="Script" path="res://utils/ocean/swimmable_area_3d.gd" id="1_hmc5o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2ygjn"]
+size = Vector3(50, 50, 50)
+
+[sub_resource type="FogMaterial" id="FogMaterial_fn2qb"]
+albedo = Color(0.228387, 0.235144, 0.746329, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfd36"]
+render_priority = 0
+next_pass = SubResource("FogMaterial_fn2qb")
+shader = ExtResource("1_2gl7v")
+shader_parameter/wave_speed = 0.1
+shader_parameter/wave_height = 0.3
+shader_parameter/wave_direction1 = Vector2(0, 0)
+shader_parameter/wave_direction2 = Vector2(0, 0)
+shader_parameter/wave_steepness = 0.0
+shader_parameter/shallow_color = Color(0, 0.5, 0.6, 1)
+shader_parameter/deep_color = Color(0, 0.2, 0.4, 1)
+shader_parameter/transparency = 0.7
+shader_parameter/foam_amount = 0.2
+shader_parameter/foam_threshold = 0.4
+shader_parameter/caustic_strength = 0.2
+shader_parameter/caustic_speed = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_p0puc"]
+material = SubResource("ShaderMaterial_bfd36")
+
+[sub_resource type="FogMaterial" id="FogMaterial_o6nxy"]
+density = 0.1027
+albedo = Color(0.492436, 0.599078, 0.932718, 1)
+emission = Color(0.39224, 0.444387, 0.845127, 1)
+
+[node name="Ocean" type="Node3D"]
+
+[node name="SwimmableArea" type="Area3D" parent="." groups=["swimmable_area", "water_area"]]
+script = ExtResource("1_hmc5o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SwimmableArea"]
+shape = SubResource("BoxShape3D_2ygjn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_p0puc")
+
+[node name="FishSpawner" type="Node3D" parent="."]
+transform = Transform3D(0.768787, 0, 0, 0, 0.768787, 0, 0, 0, 0.768787, 0, 0, 0)
+script = ExtResource("1_fw41f")
+
+[node name="FogVolume" type="FogVolume" parent="."]
+transform = Transform3D(0.492416, 0, 0, 0, 0.492416, 0, 0, 0, 0.492416, 0, 0, 0)
+material = SubResource("FogMaterial_o6nxy")

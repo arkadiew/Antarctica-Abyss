@@ -1,7 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bs41h7hha0clm"]
+[gd_scene load_steps=8 format=3 uid="uid://bs41h7hha0clm"]
 
 [ext_resource type="PackedScene" uid="uid://yk0cuyjgf3jt" path="res://scenes/vending_machine/shop.tscn" id="1_6roje"]
+[ext_resource type="Script" path="res://scripts/vending/vending_machine.gd" id="1_igcq5"]
 [ext_resource type="PackedScene" uid="uid://d20ci4ihilkwo" path="res://scenes/button/button.tscn" id="2_323mb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_iii23"]
+font_size = 35
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u3jro"]
 
@@ -13,6 +17,7 @@ resource_local_to_scene = true
 albedo_texture = SubResource("ViewportTexture_vx1b6")
 
 [node name="Vending_Machine" type="Node3D"]
+script = ExtResource("1_igcq5")
 
 [node name="shop" parent="." instance=ExtResource("1_6roje")]
 transform = Transform3D(0.396689, 0, 0, 0, 0.396689, 0, 0, 0, 0.396689, -0.0104761, -0.700417, 0.00999832)
@@ -30,23 +35,28 @@ transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174
 transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.32786, -0.00620306, -0.572742)
 
 [node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
 
 [node name="Control" type="Control" parent="SubViewport"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(15.0295, 13.6012)
+offset_right = 512.0
+offset_bottom = 512.0
 
 [node name="Label" type="Label" parent="SubViewport/Control"]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 105.0
-offset_bottom = 22.0
-scale = Vector2(0.498043, 0.480761)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_iii23")
 
 [node name="screen" type="MeshInstance3D" parent="."]
 transform = Transform3D(-2.32032e-08, 0.466658, 0, 2.32032e-08, -2.42417e-15, -0.480862, -0.530828, -2.03983e-08, -2.10191e-08, 0.332563, 0.293623, 0.0670522)
 mesh = SubResource("PlaneMesh_u3jro")
 surface_material_override/0 = SubResource("StandardMaterial3D_35nws")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.00307182, 0.999995, 0, -0.999995, -0.00307182, 0.51635, 1.17083, 0)
+spot_range = 4.59235
