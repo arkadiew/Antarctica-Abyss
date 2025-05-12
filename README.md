@@ -38,6 +38,7 @@
     			<strong>Download additional game files</strong>:  
    			 To test the game properly, you need to download extra asset files from Google Drive:  
     					<a href="https://drive.google.com/example-link" target="_blank">Google Drive – Antarctica Abyss Assets</a> 
+				After you downloaded files, you need to place them in the root folder to work
 			</li>
 			<li><strong>Open the Project</strong>:
 				<ul>
