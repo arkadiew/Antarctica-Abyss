@@ -34,6 +34,11 @@
 					<li>Install and ensure it's accessible in your IDE or system PATH.</li>
 				</ul>
 			</li>
+			<li>
+    			<strong>Download additional game files</strong>:  
+   			 To test the game properly, you need to download extra asset files from Google Drive:  
+    					<a href="https://drive.google.com/example-link" target="_blank">Google Drive – Antarctica Abyss Assets</a> 
+			</li>
 			<li><strong>Open the Project</strong>:
 				<ul>
 					<li>Launch Godot Engine.</li>
