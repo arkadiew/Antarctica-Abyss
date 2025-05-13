@@ -55,8 +55,8 @@ To run and modify the project locally, follow these steps:
 6. **Optional: Modify Assets**:
    - Install [Blender](https://www.blender.org/) (version 3.x or later) to edit 3D assets.
    - Find assets in the `assets/models` directory.
-
-![TIP]: Ensure your system meets Godot’s requirements for smooth performance. Check the [Godot documentation](https://docs.godotengine.org/) for details.
+> [!TIP]
+> Ensure your system meets Godot’s requirements for smooth performance. Check the [Godot documentation](https://docs.godotengine.org/) for details.
 
 ---
 
@@ -68,8 +68,9 @@ The game includes unique mechanics to enhance gameplay, though some are still in
 - **Diving**: Submerge into the Arctic lake to explore underwater areas. Oxygen management is critical for survival.
 - **Task Progression**: Complete daily tasks (e.g., collecting samples, solving puzzles) to increase your completion percentage and unlock endings.
 - **Survival Elements**: Manage resources like oxygen and stamina while facing environmental threats.
-
-![Warning]: Sliding may clip through objects, and diving oxygen mechanics are still being balanced. These will be refined in future updates.
+  
+> [!WARNING]  
+> Sliding may clip through objects, and diving oxygen mechanics are still being balanced. These will be refined in future updates.
 
 ---
 
@@ -105,8 +106,8 @@ This project is a final submission for a diploma program, showcasing skills in:
 - **Team collaboration** via Git.
 
 As a WIP, we acknowledge bugs and incomplete features, which we aim to address post-submission.
-
-![Important]: This project is for educational purposes only and not intended for commercial use.
+> [!IMPORTANT]  
+> This project is for educational purposes only and not intended for commercial use.
 
 ---
 
@@ -116,8 +117,8 @@ As a WIP, we acknowledge bugs and incomplete features, which we aim to address p
 - **Diving**: Oxygen HUD not fully implemented.
 - **Tasks**: Limited task variety; more will be added.
 - **Performance**: Unoptimized assets may cause lag.
-
-[Tip]: Report bugs or suggestions by opening an issue on the [GitHub repository](https://github.com/your-username/Antarctica-Abyss/issues).
+> [!TIP]
+> Report bugs or suggestions by opening an issue on the [GitHub repository](https://github.com/your-username/Antarctica-Abyss/issues).
 
 ---
 
