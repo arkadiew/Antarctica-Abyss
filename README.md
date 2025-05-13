@@ -5,7 +5,7 @@
 
 <h2>Project Overview</h2>
 <p><strong>Antarctica-Abyss</strong> is a first-person game combining elements of horror, survival, exploration, and puzzle-solving, developed as a final project for our diploma. Set in an underwater Arctic research base, you play as a scientist tasked with completing daily missions in a mysterious Arctic lake under a tight deadline. Your task completion contributes to a percentage score that determines one of two endings: <strong>Success</strong> (all tasks completed) or <strong>Game Over</strong> (restart required).</p>
-<p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> with 3D assets crafted in <strong>Blender</strong> >. It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
+<p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> with 3D assets crafted in <strong>Blender</strong> . It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
 <h2>Installation</h2>
 	<p>To install EXE file, follow these steps:</p>
  	<ol>
