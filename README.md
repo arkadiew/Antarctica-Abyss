@@ -5,9 +5,7 @@
 
 <h2>Project Overview</h2>
 <p><strong>Antarctica-Abyss</strong> is a first-person game combining elements of horror, survival, exploration, and puzzle-solving, developed as a final project for our diploma. Set in an underwater Arctic research base, you play as a scientist tasked with completing daily missions in a mysterious Arctic lake under a tight deadline. Your task completion contributes to a percentage score that determines one of two endings: <strong>Success</strong> (all tasks completed) or <strong>Game Over</strong> (restart required).</p>
-<p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> <img src="https://godotengine.org/asset-library/branding/icon.png" alt="Godot Engine Icon" width="20" height="20" style="vertical-align: middle;"> with 3D assets crafted in <strong>Blender</strong> <img src="https://www.blender.org/wp-content/uploads/2019/07/blender_icon_32x32.png" alt="Blender Icon" width="20" height="20" style="vertical-align: middle;">. It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
-<p>Check out the project on <strong>GitHub</strong> <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Icon" width="20" height="20" style="vertical-align: middle;"> for more details and updates.</p>
-
+<p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> <img src="https://github.com/godotengine/godot/raw/master/icon.png" alt="Godot Engine Icon" style="width: 100px; height: 40px; border-radius: 8px; vertical-align: middle; background-color: #478CBF; padding: 5px;"> with 3D assets crafted in <strong>Blender</strong> <img src="https://github.com/blender/blender/raw/master/release/datafiles/icons/icon32.png" alt="Blender Icon" style="width: 100px; height: 40px; border-radius: 8px; vertical-align: middle; background-color: #F5792A; padding: 5px;">. It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
 <h2>Installation</h2>
 	<p>To install EXE file, follow these steps:</p>
  	<ol>
