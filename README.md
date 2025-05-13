@@ -55,7 +55,7 @@ To run and modify the project locally, follow these steps:
    - Install [Blender](https://www.blender.org/) (version 3.x or later) to edit 3D assets.
    - Find assets in the `assets/models` directory.
 
-> **Tip**: Ensure your system meets Godot’s requirements for smooth performance. Check the [Godot documentation](https://docs.godotengine.org/) for details.
+> [Tip]: Ensure your system meets Godot’s requirements for smooth performance. Check the [Godot documentation](https://docs.godotengine.org/) for details.
 
 ---
 
