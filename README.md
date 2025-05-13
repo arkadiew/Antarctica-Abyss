@@ -5,8 +5,9 @@ A Work-in-Progress Educational Game Project
 ![Godot Engine](https://img.shields.io/badge/Godot%20Engine-4.3-blue.svg)
 ![Blender](https://img.shields.io/badge/Blender-3.x-orange.svg)
 ![License](https://img.shields.io/badge/License-Educational-green.svg)
+> [!NOTE]  
+> This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.
 
-[!NOTE] This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.
 
 ## 📖 Project Overview
 
