@@ -1,80 +1,81 @@
-<h1>Antarctica Abyss</h1>
-		A Work-in-Progress Educational Game Project
+	# Antarctica Abyss
 
-<p style="background: #e8f0fe; padding: 10px; border-left: 4px solid #1a73e8; margin: 10px 0; border-radius: 4px;"><strong>Note:</strong> This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.</p>
+A Work-in-Progress Educational Game Project
 
-<h2>Project Overview</h2>
-<p><strong>Antarctica-Abyss</strong> is a first-person game combining elements of horror, survival, exploration, and puzzle-solving, developed as a final project for our diploma. Set in an underwater Arctic research base, you play as a scientist tasked with completing daily missions in a mysterious Arctic lake under a tight deadline. Your task completion contributes to a percentage score that determines one of two endings: <strong>Success</strong> (all tasks completed) or <strong>Game Over</strong> (restart required).</p>
-<p>The game is a work-in-progress (WIP), built using the <strong>Godot Engine</strong> with 3D assets crafted in <strong>Blender</strong> . It features unique mechanics like sliding, diving, and task-based progression, designed to create an immersive experience.</p>
-<h2>Installation</h2>
-	<p>To install EXE file, follow these steps:</p>
- 	<ol>
-			<li><strong>Find release version file</strong>:
-				<ul>
-			<li>Follow link https://github.com/arkadiew/Antarctica-Abyss/releases</li>
-			<li>Dowload latest version EXE file</li>
-		</ul>
-			</li>
-			<li><strong>Start EXE file</strong>:
-				<ul>
-					<li>Double click on EXE file to start it</li>
-					<li>Play game!</li>
-				</ul>
-			</li>
-		</ol>
-		<p>To set up and run the project locally, follow these steps:</p>
-		<ol>
-			<li><strong>Clone the Repository</strong>:
-				<pre><code>git clone https://github.com/your-username/Antarctica-Abyss.git cd Antarctica-Abyss</code></pre>
-			</li>
-			<li><strong>Install Godot Engine</strong>:
-				<ul>
-					<li>Download <a href="https://godotengine.org/">Godot Engine</a> (version 4.3 recommended).</li>
-					<li>Install and ensure it's accessible in your IDE or system PATH.</li>
-				</ul>
-			</li>
-			<li>
-    			<strong>Download additional game files</strong>:  
-   			 To test the game properly, you need to download extra asset files from Google Drive:  
-    					<a href="https://drive.google.com/example-link" target="_blank">Google Drive – Antarctica Abyss Assets</a> 
-				After you downloaded files, you need to place them in the root folder to work
-			</li>
-			<li><strong>Open the Project</strong>:
-				<ul>
-					<li>Launch Godot Engine.</li>
-					<li>Click "Import" and select the <code>project.godot</code> file in the <code>Antarctica-Abyss</code> folder.</li>
-				</ul>
-			</li>
-			<li><strong>Run the Game</strong>:
-				<ul>
-					<li>Press <code>F5</code> in Godot to play the current build.</li>
-					<li>Note: Some features may be unstable as this is a WIP.</li>
-				</ul>
-			</li>
-			<li><strong>Optional: Modify Assets</strong>:
-				<ul>
-					<li>Install <a href="https://www.blender.org/">Blender</a> (version 3.x or later) to edit 3D assets.</li>
-					<li>Find assets in the <code>assets/models</code> directory.</li>
-				</ul>
-			</li>
-		</ol>
+![Godot Engine](https://img.shields.io/badge/Godot%20Engine-4.3-blue.svg)
+![Blender](https://img.shields.io/badge/Blender-3.x-orange.svg)
+![License](https://img.shields.io/badge/License-Educational-green.svg)
 
-<h2>Special Mechanics</h2>
-		<p>The game includes unique mechanics to enhance gameplay, though some are still in development:</p>
-		<ul>
-			<li><strong>Sliding</strong>: Move quickly across icy surfaces to evade hazards or reach objectives. Sliding is triggered on specific terrain types.</li>
-			<li><strong>Diving</strong>: Submerge into the Arctic lake to explore underwater areas and complete tasks. Oxygen management is a key survival element.</li>
-			<li><strong>Task Progression</strong>: Daily tasks (e.g., collecting samples, solving puzzles) contribute to a completion percentage that determines the ending.</li>
-			<li><strong>Survival Elements</strong>: Manage resources like oxygen and stamina while facing environmental threats.</li>
-		</ul>
-		<div class="note">
-			<p><strong>WIP Status</strong>: Sliding may occasionally clip through objects, and diving oxygen mechanics are still being balanced. These will be refined in future updates.</p>
-		</div>
+> **Note**: This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.
 
+## 📖 Project Overview
 
-<h2>Project Structure</h2>
-		<p>The current project structure is as follows:</p>
-		<pre><code>Antarctica-Abyss/
+**Antarctica Abyss** is a first-person game blending *horror*, *survival*, *exploration*, and *puzzle-solving*. Set in an underwater Arctic research base, you play as a scientist completing daily missions in a mysterious Arctic lake under a tight deadline. Your task completion contributes to a percentage score determining one of two endings: **Success** (all tasks completed) or **Game Over** (restart required).
+
+Built using the **Godot Engine** with 3D assets crafted in **Blender**, this work-in-progress (WIP) game features unique mechanics like sliding, diving, and task-based progression to create an immersive experience.
+
+---
+
+## 🚀 Installation
+
+### Option 1: Run the Executable
+1. **Download the Release**:
+   - Visit [Releases](https://github.com/arkadiew/Antarctica-Abyss/releases).
+   - Download the latest `.exe` file.
+2. **Start the Game**:
+   - Double-click the `.exe` file to launch.
+   - Enjoy playing!
+
+### Option 2: Set Up Locally
+To run and modify the project locally, follow these steps:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/Antarctica-Abyss.git
+   cd Antarctica-Abyss
+   ```
+
+2. **Install Godot Engine**:
+   - Download [Godot Engine](https://godotengine.org/) (version 4.3 recommended).
+   - Install and ensure it’s accessible in your IDE or system PATH.
+
+3. **Download Additional Assets**:
+   - Access extra asset files on [Google Drive – Antarctica Abyss Assets](https://drive.google.com/example-link).
+   - Place the downloaded files in the project’s root folder.
+
+4. **Open the Project**:
+   - Launch Godot Engine.
+   - Click "Import" and select the `project.godot` file in the `Antarctica-Abyss` folder.
+
+5. **Run the Game**:
+   - Press `F5` in Godot to play the current build.
+   - **Warning**: Some features may be unstable as this is a WIP.
+
+6. **Optional: Modify Assets**:
+   - Install [Blender](https://www.blender.org/) (version 3.x or later) to edit 3D assets.
+   - Find assets in the `assets/models` directory.
+
+> **Tip**: Ensure your system meets Godot’s requirements for smooth performance. Check the [Godot documentation](https://docs.godotengine.org/) for details.
+
+---
+
+## 🎮 Special Mechanics
+
+The game includes unique mechanics to enhance gameplay, though some are still in development:
+
+- **Sliding**: Move quickly across icy surfaces to evade hazards or reach objectives. Triggered on specific terrain types.
+- **Diving**: Submerge into the Arctic lake to explore underwater areas. Oxygen management is critical for survival.
+- **Task Progression**: Complete daily tasks (e.g., collecting samples, solving puzzles) to increase your completion percentage and unlock endings.
+- **Survival Elements**: Manage resources like oxygen and stamina while facing environmental threats.
+
+> **Warning**: Sliding may clip through objects, and diving oxygen mechanics are still being balanced. These will be refined in future updates.
+
+---
+
+## 🗂️ Project Structure
+
+```
+Antarctica-Abyss/
 ├── Animation/          # Animation models
 ├── sounds/            # Placeholder audio
 ├── blender/
@@ -84,35 +85,50 @@
 │   └── world          # All game-related scenes
 ├── scripts/
 │   └── logic          # Scripts for movement, diving, objects, etc.
-├── utils/             # Utils for Antarctica-Abyss
+├── utils/
 │   ├── img/           # Images for GUI
 │   └── shader/        # Shaders for project
 ├── project.godot       # Godot project file
-└── README.html         # This file
-</code></pre>
+└── README.md          # This file
+```
 
-<h2>Educational Purpose</h2>
-		<p>This project is our final submission for a diploma program, showcasing our skills in game development, 3D modeling, and programming. We're using it to learn:</p>
-		<ul>
-			<li>Godot Engine workflows and GDScript.</li>
-			<li>3D asset creation with Blender.</li>
-			<li>Game mechanics design (horror, survival, puzzles).</li>
-			<li>Team collaboration via Git.</li>
-		</ul>
-		<p>As a WIP, we acknowledge bugs and incomplete features, which we aim to address post-submission.</p>
+---
 
-<h2>Known Issues</h2>
-		<ul>
-			<li>Sliding: Occasional collision issues on icy surfaces.</li>
-			<li>Diving: Oxygen HUD not fully implemented.</li>
-			<li>Tasks: Limited task variety; more will be added.</li>
-			<li>Performance: Unoptimized assets may cause lag.</li>
-		</ul>
+## 🎓 Educational Purpose
 
-<h2>Contributing</h2>
-		<p>As this is an educational project, contributions are limited to team members. However, feedback is welcome! Open an issue to share suggestions or report bugs.</p>
-	</div>
+This project is a final submission for a diploma program, showcasing skills in:
 
-<footer>
-		<p>Developed by  Abyssal Team for Educational Purposes | 2025</p>
-</footer>
+- **Godot Engine** workflows and GDScript.
+- **3D asset creation** with Blender.
+- **Game mechanics design** (horror, survival, puzzles).
+- **Team collaboration** via Git.
+
+As a WIP, we acknowledge bugs and incomplete features, which we aim to address post-submission.
+
+> **Important**: This project is for educational purposes only and not intended for commercial use.
+
+---
+
+## 🐛 Known Issues
+
+- **Sliding**: Occasional collision issues on icy surfaces.
+- **Diving**: Oxygen HUD not fully implemented.
+- **Tasks**: Limited task variety; more will be added.
+- **Performance**: Unoptimized assets may cause lag.
+
+> **Tip**: Report bugs or suggestions by opening an issue on the [GitHub repository](https://github.com/your-username/Antarctica-Abyss/issues).
+
+---
+
+## 🤝 Contributing
+
+As an educational project, contributions are limited to team members. However, we welcome feedback! Please:
+
+- Open an issue to share suggestions or report bugs.
+- Provide detailed descriptions to help us improve.
+
+---
+
+## 📜 Footer
+
+Developed by **Abyssal Team** for Educational Purposes | 2025
