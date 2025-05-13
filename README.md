@@ -6,7 +6,7 @@ A Work-in-Progress Educational Game Project
 ![Blender](https://img.shields.io/badge/Blender-3.x-orange.svg)
 ![License](https://img.shields.io/badge/License-Educational-green.svg)
 
-> **Note**: This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.
+[!NOTE] This project is a final diploma project for educational purposes. It is under active development, and some features may be incomplete or require fixes.
 
 ## 📖 Project Overview
 
