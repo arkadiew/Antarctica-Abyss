@@ -41,7 +41,7 @@ To run and modify the project locally, follow these steps:
    - Install and ensure it’s accessible in your IDE or system PATH.
 
 3. **Download Additional Assets**:
-   - Access extra asset files on [Google Drive – Antarctica Abyss Assets](https://drive.google.com/example-link).
+   - Access extra asset files on [Google Drive – Antarctica Abyss Assets](https://drive.google.com/file/d/1KM4pmeDYG1fXwFPEcdAOh_NMSYchsEYC/view?usp=sharing).
    - Place the downloaded files in the project’s root folder.
 
 4. **Open the Project**:
