@@ -1,8 +1,8 @@
 extends StaticBody3D
 
-@onready var player = get_node("/root/main/Player")
-@onready var camera = player.get_node("CameraPivot/Camera3D")
-@onready var interact_ray = player.get_node("CameraPivot/Camera3D/InteractRay")
+@onready var player = get_node_or_null("/root/main/Player")
+@onready var camera = player.get_node("CameraPivot/Camera3D") if player else null
+@onready var interact_ray = camera.get_node("InteractRay") if camera else null
 @export var repair_particles: PackedScene = preload("res://scenes/partical.tscn") # For repair effects
 
 var health: float = randf_range(20.0, 35.0)
@@ -33,7 +33,7 @@ func _ready():
 
 func _process(_delta):
 	var should_show_ui = false
-	if interact_ray.is_colliding():
+	if interact_ray and interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
 		if collider == self and is_repairable:
 			should_show_ui = true
@@ -58,7 +58,6 @@ func repair(amount: float):
 				print("Error: Could not find CPUParticles3D node named 'Particles' in repair_particles scene")
 	
 		health = min(health + amount, max_health)
-		# Rest of the function remains the same
 		update_health()
 		emit_signal("health_changed", health)
 		TaskManager.update_task_progress("pipe_repair", contributor_id, health)
@@ -67,11 +66,11 @@ func repair(amount: float):
 		if health >= max_health:
 			is_repairable = false
 			emit_signal("repair_ui_toggle", false)
-			if not has_awarded_money:
+			if not has_awarded_money and player:
 				player.add_money(35)
 				has_awarded_money = true
 				emit_signal("money_awarded", 35)
-			player.show_notification("Pipe repaired successfully!", 2)
+				player.show_notification("Pipe repaired successfully!", 2)
 			print("Pipe fully repaired: ID=", contributor_id)
 
 func update_health():

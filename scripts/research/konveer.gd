@@ -7,7 +7,7 @@ extends Area3D
 
 @onready var button_lenta: StaticBody3D = $"../Button_lenta"
 @onready var anim_player = $"../Lenta/lenta_/AnimationPlayer"
-@onready var audio_player = $AudioStreamPlayer3D  # Add this node in the scene
+@onready var audio_player = $AudioStreamPlayer3D 
 
 var is_conveyor_active: bool = false
 

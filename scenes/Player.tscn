@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://wssnx1an6whd"]
+[gd_scene load_steps=24 format=3 uid="uid://wssnx1an6whd"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_6qoym"]
 [ext_resource type="Texture2D" uid="uid://dptxs776qawaw" path="res://utils/img/suit/mask.png" id="3_k2huq"]
@@ -13,9 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/img/png_scary/fear_0.png" id="9_flnhe"]
 [ext_resource type="Shader" path="res://utils/shader/cameraw.gdshader" id="9_vculq"]
 [ext_resource type="PackedScene" uid="uid://rkfonp6ibni7" path="res://scenes/tash/task.tscn" id="10_qr72b"]
-[ext_resource type="PackedScene" uid="uid://c81ajvsxcn5ac" path="res://scenes/tash/statistic_info.tscn" id="11_w85dh"]
+[ext_resource type="PackedScene" uid="uid://c81ajvsxcn5ac" path="res://scenes/oxygentank/textures/statistic_info.tscn" id="11_w85dh"]
+[ext_resource type="PackedScene" uid="uid://b75xlvbavalrg" path="res://scenes/menu_/menu.tscn" id="12_vdfhl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]
+height = 1.5804
 
 [sub_resource type="LabelSettings" id="LabelSettings_7c3s7"]
 font_size = 31
@@ -62,17 +64,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.995118, 0)
 script = ExtResource("1_6qoym")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0301087, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.201233, 0)
 shape = SubResource("CapsuleShape3D_4q6bg")
 
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275471, -0.0167657)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.00616732)
 keep_aspect = 0
 current = true
-fov = 120.0
+fov = 90.0
 
 [node name="inbutton" type="RayCast3D" parent="CameraPivot/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.486921)
@@ -81,7 +83,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 
 transform = Transform3D(1, 0, 0, 0, 0.0918716, -0.999914, 0, 6.9994, 0.0131245, 0, 0, -0.935285)
 
 [node name="InteractRay" type="RayCast3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(1, -3.28624e-07, 0.000261803, 0, 0.999999, 0.00125523, -0.000261804, -0.00125523, 0.999999, -0.00150963, -0.0021795, -0.482054)
+transform = Transform3D(0.999915, -3.2849e-07, 0.000346616, 0, 0.999592, 0.00166187, -0.000261782, -0.00125472, 1.32396, -0.00150963, -0.0021795, -0.482054)
 target_position = Vector3(0, 0, -3)
 collide_with_areas = true
 
@@ -125,6 +127,13 @@ grow_horizontal = 0
 grow_vertical = 2
 label_settings = SubResource("LabelSettings_7c3s7")
 vertical_alignment = 1
+
+[node name="Label" type="Label" parent="CameraPivot/Camera3D/UI/Menu"]
+offset_left = 1420.0
+offset_top = 297.0
+offset_right = 1460.0
+offset_bottom = 317.0
+scale = Vector2(9.12, 2.96)
 
 [node name="mask" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
 anchors_preset = 15
@@ -327,6 +336,10 @@ text = "TAB - Open Tablet"
 label_settings = SubResource("LabelSettings_l6mxv")
 
 [node name="Statistic_Info" parent="CameraPivot/Camera3D/UI" instance=ExtResource("11_w85dh")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraPivot/Camera3D/UI"]
+
+[node name="menu" parent="CameraPivot/Camera3D/UI/CanvasLayer" instance=ExtResource("12_vdfhl")]
 
 [node name="task" parent="CameraPivot/Camera3D" instance=ExtResource("10_qr72b")]
 

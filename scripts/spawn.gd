@@ -1,177 +1,239 @@
 extends Node3D
 
-# Blueprints for spawned objects
-@export var spanner_scene: PackedScene = load("res://scenes/object/spanner.tscn")
-@export var gun_scene: PackedScene = load("res://scenes/object/damaging_object.tscn")
-@export var oxygen_scene: PackedScene = load("res://scenes/oxygentank/oxygen_tank.tscn")
-@export var destruction_particles: PackedScene = load("res://scenes/partical.tscn")
+# Blue_.
+
+@export var spanner_scene: PackedScene = preload("res://scenes/object/spanner.tscn")
+@export var gun_scene: PackedScene = preload("res://scenes/object/damaging_object.tscn")
+@export var oxygen_scene: PackedScene = preload("res://scenes/oxygentank/oxygen_tank.tscn")
+@export var destruction_particles: PackedScene = preload("res://scenes/partical.tscn")
 
 # Player and button nodes
 @onready var player = get_node("/root/main/Player")
-@onready var button_node: StaticBody3D = $"../Vending_Machine/button"
-@onready var delete_button_node: StaticBody3D = $"../Vending_Machine/delete_button"
-@onready var gun_button_node: StaticBody3D = $"../Vending_Machine/button_gun"
-@onready var oxygen_button_node: StaticBody3D = $"../Vending_Machine/button_oxygen"
+@onready var radar = get_node_or_null("/root/main/Radar")
+@onready var buttons = {
+	"spanner": $"../Vending_Machine/Buy_Spanner",
+	"gun": $"../Vending_Machine/Buy_Gun",
+	"oxygen": $"../Vending_Machine/Buy_Oxygen_Tank",
+	"delete": $"../Vending_Machine/Cashback"
+}
 
-# Prices
-var cube_price: int = 20
-var gun_price: int = 30
-var oxygen_price: int = 50
+# Item configurations
+const ITEM_CONFIG = {
+	"spanner": {"price": 20, "scene": "spanner_scene", "array": "spawned_spanners", "icon": "spanner"},
+	"gun": {"price": 30, "scene": "gun_scene", "array": "spawned_guns", "icon": "harpoon"},
+	"oxygen": {"price": 50, "scene": "oxygen_scene", "array": "spawned_oxygen", "icon": "oxygen"}
+}
 
 # Lists to track spawned objects
-var spawned_cubes: Array = []
+var spawned_spanners: Array = []
 var spawned_guns: Array = []
 var spawned_oxygen: Array = []
 
-# Reference to the radar (assuming it's at a known path)
-@onready var radar = get_node_or_null("/root/main/Radar")
+const SAVE_PATH = "user://object_save.json"
+const SAVE_INTERVAL = 1.0
+var time_since_last_save: float = 0.0
+var objects_to_save: Dictionary = {} # Tracks objects for saving
 
-func _ready():
+func _ready() -> void:
 	# Connect button signals
-	if button_node:
-		button_node.connect("button_state_changed", _on_button_state_changed)
-	if delete_button_node:
-		delete_button_node.connect("button_state_changed", _on_delete_button_state_changed)
-	if gun_button_node:
-		gun_button_node.connect("button_state_changed", _on_button_gun_changed)
-	if oxygen_button_node:
-		oxygen_button_node.connect("button_state_changed", _on_button_oxygen_changed)
-
-	# Warn if radar is not found
+	for item in buttons:
+		var button = buttons[item] as StaticBody3D
+		if button:
+			button.button_state_changed.connect(_on_button_pressed.bind(item))
+		else:
+			push_warning("Vending Machine: Button node for %s not found" % item)
+	
 	if not radar:
-		push_warning("Vending Machine: Radar node not found")
+		push_warning("Vending-machine: Radar node not found")
+	
+	load_spawned_items()
 
-func _on_button_state_changed(is_pressed: bool):
-	if is_pressed:
-		buy_and_spawn("cube")
+func _process(delta: float) -> void:
+	return
+	## Update objects that have moved
+	#for instance in objects_to_save:
+		#var obj_data = objects_to_save[instance]
+		#var current_transform = instance.global_transform
+		#if current_transform != obj_data.last_transform:
+			#obj_data.last_transform = current_transform
+			#obj_data.needs_save = true
+	#
 
-func _on_button_gun_changed(is_pressed: bool):
-	if is_pressed:
-		buy_and_spawn("gun")
 
-func _on_button_oxygen_changed(is_pressed: bool):
-	if is_pressed:
-		buy_and_spawn("oxygen")
-
-func _on_delete_button_state_changed(is_pressed: bool):
-	if is_pressed:
+func _on_button_pressed(is_pressed: bool, item: String) -> void:
+	if not is_pressed:
+		return
+	if item == "delete":
 		delete_last_object()
-
-func buy_and_spawn(item: String):
-	match item:
-		"cube":
-			if player.subtract_money(cube_price):
-				spawn_cube()
-		"gun":
-			if player.subtract_money(gun_price):
-				spawn_gun()
-		"oxygen":
-			if player.subtract_money(oxygen_price):
-				spawn_oxygen()
-
-func spawn_cube():
-	if spanner_scene:
-		var container = Node3D.new()
-		container.name = "spanner_container_" + str(spawned_cubes.size() + 1)
-		add_child(container)
-		var cube = spanner_scene.instantiate()
-		cube.name = "spanner"
-		# Add to minimap group and set icon
-		cube.add_to_group("minimap_objects")
-		cube.set_meta("minimap_icon", "spanner")
-		container.add_child(cube)
-		spawned_cubes.append(cube)
-		# Highlight on radar
-		if radar and is_instance_valid(cube):
-			radar.highlight_marker(cube)
-
-func spawn_gun():
-	if gun_scene:
-		var container = Node3D.new()
-		container.name = "gun_container_" + str(spawned_guns.size() + 1)
-		add_child(container)
-		var gun = gun_scene.instantiate()
-		gun.name = "gun"
-		# Add to minimap group and set icon
-		gun.add_to_group("minimap_objects")
-		gun.set_meta("minimap_icon", "harpoon")
-		container.add_child(gun)
-		spawned_guns.append(gun)
-		# Highlight on radar
-		if radar and is_instance_valid(gun):
-			radar.highlight_marker(gun)
-
-func spawn_oxygen():
-	if oxygen_scene:
-		var container = Node3D.new()
-		container.name = "oxygen_container_" + str(spawned_oxygen.size() + 1)
-		add_child(container)
-		var oxygen = oxygen_scene.instantiate()
-		oxygen.name = "oxygen_tank"
-		# Add to minimap group and set icon
-		oxygen.add_to_group("minimap_objects")
-		oxygen.set_meta("minimap_icon", "oxygen")
-		container.add_child(oxygen)
-		spawned_oxygen.append(oxygen)
-		# Highlight on radar
-		if radar and is_instance_valid(oxygen):
-			radar.highlight_marker(oxygen)
-
-func delete_last_object():
-	if spawned_cubes.size() >= spawned_guns.size() and spawned_cubes.size() >= spawned_oxygen.size():
-		delete_last_cube()
-	elif spawned_guns.size() >= spawned_cubes.size() and spawned_guns.size() >= spawned_oxygen.size():
-		delete_last_gun()
-	elif spawned_oxygen.size() >= spawned_cubes.size() and spawned_oxygen.size() >= spawned_guns.size():
-		delete_last_oxygen()
 	else:
-		if player.AudioManager:
-			player.AudioManager.play_sound("res://voice/button/wpn_denyselect.mp3")
-		print("No objects to delete.")
+		buy_and_spawn(item)
 
-func delete_last_cube():
-	if spawned_cubes.size() > 0:
-		var last_cube = spawned_cubes.pop_back()
-		if last_cube and is_instance_valid(last_cube):
-			partic(last_cube.global_transform.origin)
-			last_cube.queue_free()
-			if cube_price > 0:
-				player.add_money(cube_price)
-			print("Deleted a cube. Cubes left:", spawned_cubes.size())
+func buy_and_spawn(item: String) -> void:
+	var config = ITEM_CONFIG[item]
+	if player.subtract_money(config.price):
+		spawn_item(item, config)
+		player.show_notification("You bought " + item, 2.0)
+
+func spawn_item(item: String, config: Dictionary, position: Vector3 = Vector3.ZERO, rotation: Vector3 = Vector3.ZERO, scale: Vector3 = Vector3.ONE) -> void:
+	var scene = get(config.scene) as PackedScene
+	if not scene:
+		return
+	
+	var container = Node3D.new()
+	container.name = "%s_container_%d" % [item, get(config.array).size() + 1]
+	add_child(container)
+	
+	var instance = scene.instantiate()
+	instance.name = item
+	instance.add_to_group("minimap_objects")
+	instance.set_meta("minimap_icon", config.icon)
+	
+	# Apply transform
+	if position != Vector3.ZERO:
+		instance.global_position = position
+	if rotation != Vector3.ZERO:
+		instance.global_rotation = rotation
+	if scale != Vector3.ONE:
+		instance.scale = scale
+	
+	container.add_child(instance)
+	
+	get(config.array).append(instance)
+	
+	# Track for saving
+	if instance is Node3D:
+		objects_to_save[instance] = {
+			"type": item,
+			"last_transform": instance.global_transform,
+			"needs_save": false
+		}
+	
+	if radar and is_instance_valid(instance):
+		radar.highlight_marker(instance)
+
+func delete_last_object() -> void:
+	var arrays = [
+		{"array": spawned_spanners, "price": ITEM_CONFIG.spanner.price, "name": "spanner"},
+		{"array": spawned_guns, "price": ITEM_CONFIG.gun.price, "name": "gun"},
+		{"array": spawned_oxygen, "price": ITEM_CONFIG.oxygen.price, "name": "oxygen"}
+	]
+	
+	var largest_array = null
+	var max_size = -1
+	for arr in arrays:
+		if arr.array.size() > max_size:
+			max_size = arr.array.size()
+			largest_array = arr
+	
+	if largest_array and largest_array.array.size() > 0:
+		var last_item = largest_array.array.pop_back()
+		if last_item and is_instance_valid(last_item):
+			spawn_particles(last_item.global_transform.origin)
+			objects_to_save.erase(last_item)
+			last_item.queue_free()
+			if largest_array.price > 0:
+				player.add_money(largest_array.price)
+			print("Deleted a %s. %s left: %d" % [largest_array.name, largest_array.name.capitalize(), largest_array.array.size()])
 	else:
-		if player.AudioManager:
-			player.AudioManager.play_sound("res://voice/button/wpn_denyselect.mp3")
+		_play_deny_sound()
 
-func delete_last_gun():
-	if spawned_guns.size() > 0:
-		var last_gun = spawned_guns.pop_back()
-		if last_gun and is_instance_valid(last_gun):
-			partic(last_gun.global_transform.origin)
-			last_gun.queue_free()
-			if gun_price > 0:
-				player.add_money(gun_price)
-			print("Deleted a gun. Guns left:", spawned_guns.size())
-	else:
-		if player.AudioManager:
-			player.AudioManager.play_sound("res://voice/button/wpn_denyselect.mp3")
-
-func delete_last_oxygen():
-	if spawned_oxygen.size() > 0:
-		var last_oxygen = spawned_oxygen.pop_back()
-		if last_oxygen and is_instance_valid(last_oxygen):
-			partic(last_oxygen.global_transform.origin)
-			last_oxygen.queue_free()
-			if oxygen_price > 0:
-				player.add_money(oxygen_price)
-			print("Deleted an oxygen tank. Tanks left:", spawned_oxygen.size())
-	else:
-		if player.AudioManager:
-			player.AudioManager.play_sound("res://voice/button/wpn_denyselect.mp3")
-
-func partic(position: Vector3):
+func spawn_particles(position: Vector3) -> void:
 	if destruction_particles:
-		var particles_instance = destruction_particles.instantiate()
-		var shift = Vector3(0, -1, 0)
-		particles_instance.global_transform.origin = position + shift
-		get_parent().add_child(particles_instance)
-	await get_tree().create_timer(0.1).timeout
+		var particles = destruction_particles.instantiate()
+		particles.global_transform.origin = position + Vector3(0, -1, 0)
+		get_parent().add_child(particles)
+		await get_tree().create_timer(0.1, false).timeout
+
+func _play_deny_sound() -> void:
+	if player.AudioManager:
+		player.AudioManager.play_sound("res://voice/button/wpn_denyselect.mp3")
+
+func get_spawned_items_data() -> Array:
+	var items_data = []
+	for instance in objects_to_save:
+		if is_instance_valid(instance):
+			var item_data = {
+				"type": objects_to_save[instance].type,
+				"position": {
+					"x": instance.global_position.x,
+					"y": instance.global_position.y,
+					"z": instance.global_position.z
+				},
+				"rotation": {
+					"x": instance.global_rotation.x,
+					"y": instance.global_rotation.y,
+					"z": instance.global_rotation.z
+				},
+				"scale": {
+					"x": instance.scale.x,
+					"y": instance.scale.y,
+					"z": instance.scale.z
+				}
+			}
+			# Store high-precision floats as strings
+			for axis in ["position", "rotation", "scale"]:
+				for coord in ["x", "y", "z"]:
+					item_data[axis][coord] = str(item_data[axis][coord])
+			items_data.append(item_data)
+			objects_to_save[instance].needs_save = false
+	return items_data
+
+func save_spawned_items() -> void:
+	var save_data = load_existing_save_data()
+	save_data["spawned_items"] = get_spawned_items_data()
+	
+	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(save_data, "", false))
+		file.close()
+	else:
+		printerr("Error: Could not save spawned items to %s" % SAVE_PATH)
+
+func load_spawned_items() -> void:
+	# Clear existing items
+	for array_name in ["spawned_spanners", "spawned_guns", "spawned_oxygen"]:
+		var array = get(array_name)
+		for item in array:
+			if is_instance_valid(item):
+				item.queue_free()
+		array.clear()
+	objects_to_save.clear()
+	
+	var save_data = load_existing_save_data()
+	
+	if save_data.has("spawned_items"):
+		for item_data in save_data["spawned_items"]:
+			if item_data.has("type") and item_data.has("position") and item_data.has("rotation") and item_data.has("scale"):
+				var item_type = item_data["type"]
+				if ITEM_CONFIG.has(item_type):
+					var config = ITEM_CONFIG[item_type]
+					var position = Vector3(
+						float(item_data["position"]["x"]),
+						float(item_data["position"]["y"]),
+						float(item_data["position"]["z"])
+					)
+					var rotation = Vector3(
+						float(item_data["rotation"]["x"]),
+						float(item_data["rotation"]["y"]),
+						float(item_data["rotation"]["z"])
+					)
+					var scale = Vector3(
+						float(item_data["scale"]["x"]),
+						float(item_data["scale"]["y"]),
+						float(item_data["scale"]["z"])
+					)
+					spawn_item(item_type, config, position, rotation, scale)
+
+func load_existing_save_data() -> Dictionary:
+	var save_data = {}
+	if FileAccess.file_exists(SAVE_PATH):
+		var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+		if file:
+			var json_string = file.get_as_text()
+			file.close()
+			var json = JSON.new()
+			if json.parse(json_string) == OK:
+				save_data = json.data
+			else:
+				printerr("Error parsing save file: %s" % json.get_error_message())
+	return save_data

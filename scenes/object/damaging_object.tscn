@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b4pqbha6iclxh" path="res://blender/gun/textures/Rusted Red Metal_1_roughness.jpg" id="3_1y5p4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hlf7d"]
-size = Vector3(0.369751, 0.384033, 6.03926)
+size = Vector3(2.08798, 2.06834, 38.2632)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_foc5h"]
 resource_name = "Rusted Red Metal"
@@ -93,21 +93,21 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_o5wv5")
 
 [node name="DamagingObject" type="RigidBody3D" groups=["items", "spear"]]
-transform = Transform3D(0.490145, 0, 0, 0, 0.490145, 0, 0, 0, 0.42758, 0, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.088, 0, 0, 0)
 mass = 0.165
 script = ExtResource("1_wf3xp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00281084, -0.00873136, -1.93059)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0461851, -0.0384324, -14.3356)
 shape = SubResource("BoxShape3D_hlf7d")
 
 [node name="gun" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.162071, 0, 0, 0, 0.162071, 0, 0, 0, 0.162071, 0.00103945, 0, 0.377526)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00103945, 0, 0.377526)
 mesh = SubResource("ArrayMesh_15nl8")
 skeleton = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.178973, 0, 0, 0, 0.179035, 0, 0, 0, 0.172867, 0.00144155, 0, 0.352536)
+transform = Transform3D(1.035, 0, 0, 0, 1.035, 0, 0, 0, 1, 0.00144155, 0, 0.352536)
 transparency = 1.0
 mesh = SubResource("ArrayMesh_epkge")
 skeleton = NodePath("")

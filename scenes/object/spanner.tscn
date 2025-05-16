@@ -117,22 +117,23 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_hd7ih")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2pds3"]
-size = Vector3(2.20972, 2.75873, 18.2016)
+size = Vector3(0.675965, 1.01183, 4.28898)
 
 [node name="spanner" type="RigidBody3D" groups=["items", "spanner"]]
-transform = Transform3D(0.0381278, 0, 0, 0, 0.0381278, 0, 0, 0, 0.0381278, 0, 0, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 script = ExtResource("1_xdrs7")
 
 [node name="Spanner" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 mesh = SubResource("ArrayMesh_5or7b")
 skeleton = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.07995, 0, 0, 0, 1.05978, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0.204, 0, 0, 0, 0.2, 0, 0, 0, 0.189, 0, 0, 0)
 transparency = 1.0
 mesh = SubResource("ArrayMesh_fx6p2")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
-transform = Transform3D(1.00255, 0, 0, 0, 1.00255, 0, 0, 0, 1.00255, 0.0145264, -0.080658, -0.214203)
+transform = Transform3D(1.00255, 0, 0, 0, 1.00255, 0, 0, 0, 1.00255, -0.0108368, -0.00815433, -0.258017)
 shape = SubResource("BoxShape3D_2pds3")

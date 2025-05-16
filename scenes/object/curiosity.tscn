@@ -79,23 +79,23 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_jwdbq")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t8rbf"]
-size = Vector3(2.68074, 3.03217, 1)
+size = Vector3(6.20778, 7.06346, 3.65729)
 
 [node name="Curiosity" type="RigidBody3D" groups=["collectable", "conveyor_objects", "grab"]]
-transform = Transform3D(0.118692, 0, 0, 0, -5.18819e-09, 0.118692, 0, -0.118692, -5.18819e-09, 0, 0, 0)
+transform = Transform3D(0.103437, 0, 0, 0, -4.52138e-09, 0.103437, 0, -0.103437, -4.52138e-09, 0, 0, 0)
 script = ExtResource("1_ulp45")
 
 [node name="Curiosity" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.769949, 0, 0, 0, 0.769949, 0, 0, 0, 0.488246, 0, 0, 0)
+transform = Transform3D(1.577, 0, 0, 0, 1.577, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_rswcy")
 skeleton = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.803975, 0, 0, 0, 0.803975, 0, 0, 0, 0.509823, 0, 0, 0)
+transform = Transform3D(1.577, 0, 0, 0, 1.577, 0, 0, 0, 1, 0, 0, 0)
 transparency = 1.0
 mesh = SubResource("ArrayMesh_1r1p1")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0168991, 0.0160217, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.169249, -0.0288931, 0.18222)
 shape = SubResource("BoxShape3D_t8rbf")

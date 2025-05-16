@@ -1,7 +1,7 @@
 extends MarginContainer
 class_name Radar
 
-# Константы
+# Constants
 const MIN_ZOOM: float = 0.05
 const MAX_ZOOM: float = 1.0
 const DEFAULT_SIZE: Vector2 = Vector2(600, 600)
@@ -9,7 +9,7 @@ const GRID_SIZE: Vector2 = Vector2(600, 600)
 const FADE_ALPHA_MIN: float = 0.3
 const FADE_ALPHA_MAX: float = 1.0
 
-# Экспортируемые переменные
+# Exported variables
 @export var zoom: float = 0.3 : set = _set_zoom
 @export var radar_range: float = 50.0
 @export var marker_scale_duration: float = 0.3
@@ -20,10 +20,10 @@ const FADE_ALPHA_MAX: float = 1.0
 @export var update_interval: float = 0.1
 @export var invert_x: bool = false
 @export var invert_y: bool = false
-@export var highlight_duration: float = 1.0  # Длительность подсветки
-@export var highlight_scale: float = 1.5    # Масштаб подсветки
+@export var highlight_duration: float = 1.0  # Highlight duration
+@export var highlight_scale: float = 1.5    # Highlight scale
 
-# Ссылки на узлы
+# Node references
 @onready var grid: Control = $Grid
 @onready var player_marker: Control = $Grid/PlayerMarker
 @onready var player = get_node_or_null("/root/main/Player")
@@ -40,7 +40,7 @@ const FADE_ALPHA_MAX: float = 1.0
 	"spanner": $Grid/spannerMarker
 }
 
-# Внутренние переменные
+# Internal variables
 var grid_scale: Vector2
 var markers: Dictionary = {}
 var target_zoom: float = 0.3
@@ -48,44 +48,48 @@ var update_timer: float = 0.0
 var viewport_size: Vector2
 
 func _ready() -> void:
-	# Инициализация контейнера и сетки
+	# Initialize container and grid
 	custom_minimum_size = DEFAULT_SIZE
 	if grid:
 		grid.size = GRID_SIZE
 		grid.pivot_offset = GRID_SIZE / 2
 	else:
-		push_error("Радар: Узел Grid не найден")
+		push_error("Radar: Grid node not found")
 		return
 
-	# Проверка критических узлов
+	# Validate critical nodes
 	if not is_instance_valid(player):
-		push_error("Радар: Игрок не найден")
+		push_error("Radar: Player not found")
 	if not is_instance_valid(player_marker):
-		push_error("Радар: Узел PlayerMarker не найден")
+		push_error("Radar: PlayerMarker not found")
 	if not _validate_icon_nodes():
 		return
 
-	# Центрирование маркера игрока
+	# Center player marker
 	player_marker.position = GRID_SIZE / 2
 	_update_grid_scale()
 
-	# Скрытие шаблонов маркеров
+	# Hide marker templates
 	for marker in icons.values():
 		marker.hide()
 
-	# Подключение к спавнеру
+	# Connect to spawner
 	var spawner = get_node_or_null("/root/main/SeaCreatureSpawner")
 	if spawner:
 		spawner.creatures_spawned.connect(_on_creatures_spawned)
 	else:
-		push_warning("Радар: Спавнер не найден")
+		push_warning("Radar: Spawner not found")
+
+	# Log no_water_effect_zone nodes for debugging
+	var no_water_zones = get_tree().get_nodes_in_group("no_water_effect_zone")
+	print("Found ", no_water_zones.size(), " no_water_effect_zone nodes")
 
 	update_radar()
 
 func _validate_icon_nodes() -> bool:
 	for key in icons:
 		if not is_instance_valid(icons[key]):
-			push_error("Радар: Маркер '%s' не найден" % key)
+			push_error("Radar: Marker '%s' not found" % key)
 			return false
 	return true
 
@@ -106,7 +110,7 @@ func _update_grid_scale() -> void:
 	if grid and viewport_size != Vector2.ZERO:
 		grid_scale = GRID_SIZE / (viewport_size * zoom)
 	else:
-		push_error("Радар: Не удалось вычислить grid_scale")
+		push_error("Radar: Failed to compute grid_scale")
 
 func update_radar() -> void:
 	if not _is_radar_valid():
@@ -114,6 +118,7 @@ func update_radar() -> void:
 
 	player_marker.position = GRID_SIZE / 2
 	var objects = _collect_radar_objects()
+
 
 	for item in objects:
 		if not is_instance_valid(item):
@@ -123,27 +128,40 @@ func update_radar() -> void:
 		if icon_type == "":
 			continue
 
-		# Создание нового маркера, если отсутствует
+		
+
 		if not markers.has(item):
 			_create_marker(item, icon_type)
 
-		# Обновление позиции и видимости маркера
 		_update_marker(item, icon_type)
 
 func _is_radar_valid() -> bool:
 	if not is_instance_valid(player) or not grid or not player_marker:
-		push_error("Радар: Неверный игрок, сетка или маркер игрока")
+		push_error("Radar: Invalid player, grid, or player marker")
 		return false
 	return true
 
 func _collect_radar_objects() -> Array:
+	var unique_objects: Array = []
+	var seen_objects: Dictionary = {}
+
 	var minimap_objects = get_tree().get_nodes_in_group("minimap_objects")
 	var no_water_effect_zones = get_tree().get_nodes_in_group("no_water_effect_zone")
 	var suit_items = get_tree().get_nodes_in_group("suit_items")
-	return minimap_objects + no_water_effect_zones + suit_items
+
+	for item in minimap_objects + no_water_effect_zones + suit_items:
+		if is_instance_valid(item) and not seen_objects.has(item):
+			unique_objects.append(item)
+			seen_objects[item] = true
+
+	return unique_objects
 
 func _get_icon_type(item: Node) -> String:
 	if item.is_in_group("no_water_effect_zone"):
+		# Only allow the first no_water_effect_zone as "home"
+		var no_water_zones = get_tree().get_nodes_in_group("no_water_effect_zone")
+		if no_water_zones.size() > 1 and item != no_water_zones[0]:
+			return ""
 		return "home"
 	if item.is_in_group("suit_items"):
 		return "submarine"
@@ -152,6 +170,12 @@ func _get_icon_type(item: Node) -> String:
 	return ""
 
 func _create_marker(item: Node, icon_type: String) -> void:
+	if markers.has(item) and is_instance_valid(markers[item]):
+		return
+
+	if icon_type == "home":
+		print("Creating home marker for item: ", item, " at position: ", item.global_position)
+
 	var new_marker = icons[icon_type].duplicate()
 	grid.add_child(new_marker)
 	new_marker.scale = Vector2.ZERO
@@ -162,7 +186,8 @@ func _create_marker(item: Node, icon_type: String) -> void:
 	var tween = create_tween()
 	tween.tween_property(new_marker, "scale", target_scale, marker_scale_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 
-	item.tree_exited.connect(_on_object_removed.bind(item))
+	if not item.tree_exited.is_connected(_on_object_removed.bind(item)):
+		item.tree_exited.connect(_on_object_removed.bind(item))
 
 func _update_marker(item: Node, icon_type: String) -> void:
 	var relative_pos = _calculate_relative_position(item)
@@ -194,7 +219,7 @@ func _update_marker(item: Node, icon_type: String) -> void:
 	var fade_factor = clamp(distance_to_edge / boundary_fade_distance, 0.0, 1.0)
 	marker.modulate.a = lerp(FADE_ALPHA_MIN, FADE_ALPHA_MAX, fade_factor)
 
-	# Динамическое масштабирование в зависимости от расстояния
+	# Dynamic scaling based on distance
 	var distance = relative_pos.length()
 	var base_scale = home_marker_scale if icon_type in ["home", "submarine"] else marker_scale
 	var dynamic_scale = lerp(base_scale, base_scale * 0.5, distance / radar_range)
@@ -229,7 +254,6 @@ func _on_object_removed(item: Node) -> void:
 func _on_creatures_spawned() -> void:
 	update_radar()
 
-# Новая функция для подсветки маркера
 func highlight_marker(item: Node) -> void:
 	if markers.has(item):
 		var marker = markers[item]

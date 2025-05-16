@@ -14,7 +14,7 @@ func generate_terrain():
 	var vertices = PackedVector3Array()
 	var indices = PackedInt32Array()
 	var uvs = PackedVector2Array()  # Для текстуры
-	var size = 100.0  # Размер террейна
+	var size = 300.0  # Размер террейна
 	var resolution = 50  # Количество вершин на сторону
 
 	# Генерация вершин и UV-координат

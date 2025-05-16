@@ -20,12 +20,12 @@ shader_parameter/exponent_factor_top = 1.0
 shader_parameter/exponent_factor_bottom = 1.0
 shader_parameter/intensity_amp = 1.0
 
-[sub_resource type="Sky" id="Sky_hfysu"]
+[sub_resource type="Sky" id="Sky_s72xd"]
 sky_material = SubResource("ShaderMaterial_lh5a2")
 
 [sub_resource type="Environment" id="Environment_1grc2"]
 background_mode = 2
-sky = SubResource("Sky_hfysu")
+sky = SubResource("Sky_s72xd")
 ambient_light_sky_contribution = 0.0
 ambient_light_energy = 0.0
 fog_mode = 1
@@ -44,14 +44,6 @@ script = ExtResource("1_rpcql")
 
 [node name="Player" parent="." instance=ExtResource("1_s72jo")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.515723, -0.501149)
-throw_force = 7.5
-follow_speed = 3.5
-follow_distance = 2.5
-max_distance_from_camera = 5.0
-drop_below_player = false
-swim_up_speed = 10.0
-climb_speed = 7.0
-suit_scene = ExtResource("11_1iwbf")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1grc2")
@@ -62,7 +54,7 @@ light_energy = 0.75
 shadow_enabled = true
 
 [node name="spawn" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.666666, 1.0998, -5.16885)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.806651, 0.710709, -4.23743)
 script = ExtResource("12_l60vt")
 
 [node name="Vending_Machine" parent="." instance=ExtResource("7_qf6pw")]

@@ -22,6 +22,7 @@ func _ready() -> void:
 	
 	await get_tree().process_frame
 	connect_signals()
+	
 	for task_id in TaskManager.tasks:
 		var task = TaskManager.tasks[task_id]
 		_on_task_registered(task_id, task.name, task.max_progress)

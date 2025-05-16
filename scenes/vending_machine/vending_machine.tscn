@@ -22,17 +22,8 @@ script = ExtResource("1_igcq5")
 [node name="shop" parent="." instance=ExtResource("1_6roje")]
 transform = Transform3D(0.396689, 0, 0, 0, 0.396689, 0, 0, 0, 0.396689, -0.0104761, -0.700417, 0.00999832)
 
-[node name="button" parent="." instance=ExtResource("2_323mb")]
-transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.33263, 0.598563, -0.581701)
-
-[node name="delete_button" parent="." instance=ExtResource("2_323mb")]
+[node name="Cashback" parent="." instance=ExtResource("2_323mb")]
 transform = Transform3D(-8.26286e-09, 0.189032, 8.26287e-09, 0, -8.26287e-09, 0.189032, 0.189032, 8.26286e-09, 3.61181e-16, 0.38447, -0.538097, -0.601622)
-
-[node name="button_gun" parent="." instance=ExtResource("2_323mb")]
-transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.33263, 0.304263, -0.581701)
-
-[node name="button_oxygen" parent="." instance=ExtResource("2_323mb")]
-transform = Transform3D(-7.6208e-09, 0.174344, 7.6208e-09, 0, -7.6208e-09, 0.174344, 0.174344, 7.6208e-09, 3.33116e-16, 0.32786, -0.00620306, -0.572742)
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -60,3 +51,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_35nws")
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.00307182, 0.999995, 0, -0.999995, -0.00307182, 0.51635, 1.17083, 0)
 spot_range = 4.59235
+
+[node name="Buy_Oxygen_Tank" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0, 0.2, 0.361885, 0.0318129, -0.599173)
+
+[node name="Buy_Gun" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0, 0.2, 0.362575, 0.278271, -0.600414)
+
+[node name="Buy_Spanner" parent="." instance=ExtResource("2_323mb")]
+transform = Transform3D(-8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0, 0.2, 0.367612, 0.512063, -0.600414)

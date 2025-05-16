@@ -1,0 +1,306 @@
+[gd_scene load_steps=20 format=3 uid="uid://b75xlvbavalrg"]
+
+[ext_resource type="Texture2D" uid="uid://b2dlo4t0vnpcm" path="res://utils/img/icon_menu/Continue.png" id="1_1mkb0"]
+[ext_resource type="Script" path="res://scenes/menu_/menu.gd" id="1_7uwua"]
+[ext_resource type="Texture2D" uid="uid://cgc0f7n26ieb4" path="res://utils/img/icon_menu/Settings.png" id="2_8wm46"]
+[ext_resource type="Shader" path="res://utils/shader/menu.gdshader" id="2_nbm6i"]
+[ext_resource type="Texture2D" uid="uid://caotjakex103w" path="res://utils/img/icon_menu/Frame.png" id="3_d2a8f"]
+[ext_resource type="Texture2D" uid="uid://dsxmwlsjxkfbi" path="res://utils/img/icon_menu/Exit.png" id="4_kmi5d"]
+[ext_resource type="Texture2D" uid="uid://bkupwkywjtbi7" path="res://utils/img/icon_menu/Creadits.png" id="7_4huv2"]
+[ext_resource type="Script" path="res://scripts/creadits.gd" id="8_xgdk6"]
+[ext_resource type="Texture2D" uid="uid://rdtrfif020hy" path="res://utils/img/icon_menu/github-mark-white.png" id="9_kjxuj"]
+[ext_resource type="Texture2D" uid="uid://bthsf7ui5eaof" path="res://utils/img/tablet.png" id="10_ikf2d"]
+[ext_resource type="Script" path="res://scripts/setting.gd" id="11_l08ea"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rlih"]
+shader = ExtResource("2_nbm6i")
+shader_parameter/blur_amount = 2.833
+shader_parameter/opacity = 0.827
+
+[sub_resource type="LabelSettings" id="LabelSettings_x7pg7"]
+font_size = 92
+
+[sub_resource type="LabelSettings" id="LabelSettings_mr230"]
+font_size = 38
+
+[sub_resource type="Theme" id="Theme_timp4"]
+default_font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_alx6c"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_jtijj"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_w5ifx"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_dq0pd"]
+font_size = 40
+
+[node name="menu" type="Control"]
+process_mode = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7uwua")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_6rlih")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="menu_pause" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 166.0
+offset_top = -365.0
+offset_right = 514.0
+offset_bottom = -277.0
+grow_vertical = 0
+
+[node name="Continue" type="Button" parent="menu_pause"]
+layout_mode = 2
+icon = ExtResource("1_1mkb0")
+flat = true
+
+[node name="menu_setting" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 170.0
+offset_top = -256.0
+offset_right = 502.0
+offset_bottom = -152.0
+grow_vertical = 0
+
+[node name="Setting" type="Button" parent="menu_setting"]
+layout_mode = 2
+icon = ExtResource("2_8wm46")
+flat = true
+
+[node name="Frame" type="Button" parent="menu_setting"]
+layout_mode = 2
+icon = ExtResource("3_d2a8f")
+flat = true
+
+[node name="Exit" type="Button" parent="menu_setting"]
+layout_mode = 2
+icon = ExtResource("4_kmi5d")
+flat = true
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 57.0
+offset_right = 907.0
+offset_bottom = 232.0
+text = "Antarctica-Abyss"
+label_settings = SubResource("LabelSettings_x7pg7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="yesornot" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -306.0
+offset_top = -103.0
+offset_right = 306.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="yesornot"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 46.0
+grow_horizontal = 2
+text = "Are you sure you want to quit?"
+label_settings = SubResource("LabelSettings_mr230")
+horizontal_alignment = 1
+
+[node name="QUIT" type="HBoxContainer" parent="yesornot"]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_timp4")
+alignment = 1
+
+[node name="YES" type="Button" parent="yesornot/QUIT"]
+layout_mode = 2
+text = "YES"
+
+[node name="NO" type="Button" parent="yesornot/QUIT"]
+layout_mode = 2
+text = "NO"
+
+[node name="Creadits" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.0
+offset_top = -266.0
+offset_right = 910.0
+offset_bottom = 385.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_4huv2")
+script = ExtResource("8_xgdk6")
+
+[node name="1" type="Button" parent="Creadits"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -305.0
+offset_top = -153.5
+offset_right = -247.0
+offset_bottom = -96.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("9_kjxuj")
+
+[node name="2" type="Button" parent="Creadits"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -246.0
+offset_top = -43.5
+offset_right = -188.0
+offset_bottom = 13.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("9_kjxuj")
+
+[node name="3" type="Button" parent="Creadits"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -353.0
+offset_top = 60.5
+offset_right = -295.0
+offset_bottom = 117.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("9_kjxuj")
+
+[node name="Setting" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -392.0
+offset_top = -394.0
+offset_right = 750.0
+offset_bottom = 390.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_ikf2d")
+script = ExtResource("11_l08ea")
+
+[node name="Panel" type="Panel" parent="Setting"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -342.0
+offset_top = -224.0
+offset_right = 339.0
+offset_bottom = 254.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Setting=" type="VBoxContainer" parent="Setting/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Setting" type="Label" parent="Setting/Panel/Setting="]
+layout_mode = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_alx6c")
+horizontal_alignment = 1
+
+[node name="FOV" type="Label" parent="Setting/Panel/Setting="]
+layout_mode = 2
+text = "FOV"
+label_settings = SubResource("LabelSettings_jtijj")
+horizontal_alignment = 1
+
+[node name="fov_slider" type="HSlider" parent="Setting/Panel/Setting="]
+layout_mode = 2
+min_value = 50.0
+max_value = 120.0
+step = 5.0
+value = 70.0
+
+[node name="Fullscreen" type="Label" parent="Setting/Panel/Setting="]
+layout_mode = 2
+text = "Fullscreen"
+label_settings = SubResource("LabelSettings_w5ifx")
+horizontal_alignment = 1
+
+[node name="CheckBox" type="CheckBox" parent="Setting/Panel/Setting="]
+layout_mode = 2
+
+[node name="sound_slider" type="Label" parent="Setting/Panel/Setting="]
+layout_mode = 2
+text = "Sound"
+label_settings = SubResource("LabelSettings_dq0pd")
+horizontal_alignment = 1
+
+[node name="sound_slider2" type="HSlider" parent="Setting/Panel/Setting="]
+layout_mode = 2
+step = 5.0
+
+[connection signal="pressed" from="menu_pause/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="menu_setting/Setting" to="." method="_on_setting_pressed"]
+[connection signal="pressed" from="menu_setting/Frame" to="." method="_on_frame_pressed"]
+[connection signal="pressed" from="menu_setting/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="yesornot/QUIT/YES" to="." method="_on_yes_pressed"]
+[connection signal="pressed" from="yesornot/QUIT/NO" to="." method="_on_no_pressed"]
+[connection signal="pressed" from="Creadits/1" to="Creadits" method="_on__pressd1"]
+[connection signal="pressed" from="Creadits/2" to="Creadits" method="_on__pressed2"]
+[connection signal="pressed" from="Creadits/3" to="Creadits" method="_on__pressed3"]
+[connection signal="value_changed" from="Setting/Panel/Setting=/fov_slider" to="Setting" method="_on_fov_slider_value_changed"]
+[connection signal="toggled" from="Setting/Panel/Setting=/CheckBox" to="Setting" method="_on_check_box_toggled"]
+[connection signal="value_changed" from="Setting/Panel/Setting=/sound_slider2" to="Setting" method="_on_sound_slider_2_value_changed"]

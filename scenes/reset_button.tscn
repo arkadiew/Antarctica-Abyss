@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://du06j82p660jf" path="res://blender/bed/textures/patched_cloth_BaseColor.png" id="9_r4bx5"]
 [ext_resource type="Texture2D" uid="uid://dui6w6lr5hfuy" path="res://blender/bed/textures/tiled_plane_DefaultMaterial_BaseColor.jpg" id="10_pvw7s"]
 [ext_resource type="Texture2D" uid="uid://bmgaciji3v4r8" path="res://blender/bed/textures/tiled_plane_DefaultMaterial_Roughness.jpg" id="11_pjes5"]
-[ext_resource type="Texture2D" uid="uid://b3rs0s7cmqtfs" path="res://blender/bed/textures/tiled_plane_DefaultMaterial_Normal.jpg" id="12_wwmto"]
+[ext_resource type="Texture2D" uid="uid://c2a73lhlo6m3p" path="res://blender/bed/textures/tiled_plane_DefaultMaterial_Normal.jpg" id="12_wwmto"]
 [ext_resource type="Texture2D" uid="uid://dkkr1dtwcd3ye" path="res://blender/bed/textures/sharp denim yellow_BaseColor.jpg" id="13_4muuv"]
 [ext_resource type="Texture2D" uid="uid://hd8v3oosxe8o" path="res://blender/bed/textures/sharp denim yellow_Roughness.jpg" id="14_f86ur"]
 [ext_resource type="Texture2D" uid="uid://by0h3wvg3jyar" path="res://blender/bed/textures/sharp denim yellow_Normal.jpg" id="15_b6lwv"]

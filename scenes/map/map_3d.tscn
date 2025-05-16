@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c4yqa63bbswvh" path="res://scenes/map/textures/sand01_Normal.jpg" id="3_q72jd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dvv75"]
-size = Vector3(5, 3.5, 8.696)
+size = Vector3(12.9821, 5.07654, 8.696)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yq5ru"]
 normal_texture = ExtResource("3_q72jd")
@@ -21,14 +21,7 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 [node name="no_water_zone" type="Area3D" parent="." groups=["no_water_effect_zone"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="no_water_zone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.03249, -0.0216066, -2.37687)
-shape = SubResource("BoxShape3D_dvv75")
-
-[node name="no_water_zone2" type="Area3D" parent="." groups=["no_water_effect_zone"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.98345, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="no_water_zone2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.68109, -0.0216066, -2.37687)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0360684, -0.310975, -2.37687)
 shape = SubResource("BoxShape3D_dvv75")
 
 [node name="map" type="MeshInstance3D" parent="."]

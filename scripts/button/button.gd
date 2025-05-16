@@ -1,34 +1,57 @@
-# This makes it a 3D object that doesn’t move, like a button stuck in place
 extends StaticBody3D
 
-# A signal to let other stuff know when the button’s pressed or released (Godot ignores the "unused" warning)
+signal button_state_changed(is_pressed: bool)  # Сигнал изменения состояния кнопки
 
-signal button_state_changed(is_pressed: bool)  # Sends out a “hey, the button’s state changed” message
-
-@onready var player = get_node("/root/main/Player")  # The player character in the game
-
-# Grabs the AnimationPlayer node when the button’s ready
-@onready var anim = $AnimationPlayer  # For playing press-down or press-up animations
-
-# Keeps track of whether the button’s currently pressed
-var is_pressed: bool = false  # Starts off as not pressed (false)
-
-# Finds the player’s raycast (a line that checks what they’re looking at) when the button loads
+@onready var player = get_node("/root/main/Player")  # Ссылка на игрока
+@onready var anim = $AnimationPlayer  # Анимация кнопки
 @onready var interact_ray: RayCast3D = get_tree().get_first_node_in_group("player").get_node("CameraPivot/Camera3D/inbutton")
 
-# Runs every frame to check if the player’s interacting with the button
+var is_pressed: bool = false  # Состояние кнопки (нажата или нет)
+var button_name: String = "Button"  # Название кнопки по умолчанию
+
+func _ready() -> void:
+	# Определяем название кнопки на основе группы
+	set_button_name_from_group()
+
 func _process(delta: float) -> void:
-	# If the player’s looking right at this button with their raycast...
+	# Проверяем, смотрит ли игрок на кнопку
 	if interact_ray.is_colliding() and interact_ray.get_collider() == self:
-		# If they hit the "use_item" key (like E) and the button’s not pressed yet...
+		# Обновляем текст в интерфейсе игрока
+		player.label_3d.text = "Interact with " + button_name
+		player.Menu.visible = true
+		player.label_3d.visible = true
+		
+		# Обработка нажатия
 		if Input.is_action_just_pressed("player_use_item") and not is_pressed:
 			if player.AudioManager:
 				player.AudioManager.play_sound("res://sounds/button/button.mp3")
-			anim.play("pressdown")  # Play the animation of the button going down
-			is_pressed = true  # Mark it as pressed
-			emit_signal("button_state_changed", is_pressed)  # Tell everyone the button’s now pressed
-		# If they let go of the "use_item" key and the button’s currently pressed...
+			anim.play("pressdown")
+			is_pressed = true
+			emit_signal("button_state_changed", is_pressed)
+		# Обработка отпускания
 		elif Input.is_action_just_released("player_use_item") and is_pressed:
-			anim.play("pressup")  # Play the animation of the button popping back up
-			is_pressed = false  # Mark it as not pressed anymore
-			emit_signal("button_state_changed", is_pressed)  # Tell everyone the button’s released
+			anim.play("pressup")
+			is_pressed = false
+			emit_signal("button_state_changed", is_pressed)
+	else:
+		# Скрываем интерфейс, если игрок не смотрит на кнопку
+		if player.label_3d.text.begins_with("Interact with " + button_name):
+			player.label_3d.visible = false
+			player.Menu.visible = false
+
+# Устанавливаем название кнопки на основе группы
+func set_button_name_from_group() -> void:
+	var groups = get_groups()  # Получаем все группы, к которым принадлежит кнопка
+	if groups.size() > 0:
+		# Используем первую группу как основу для имени
+		var group_name = groups[0]
+		# Преобразуем имя группы в читаемое название (например, "MainRoomButtons" → "Main Room Button")
+		button_name = group_name.replace("Buttons", " Button").replace("_", " ")
+		# Добавляем уникальный идентификатор, если нужно (например, по позиции или индексу)
+		var buttons_in_group = get_tree().get_nodes_in_group(group_name)
+		var index = buttons_in_group.find(self) + 1
+		if buttons_in_group.size() > 1:
+			button_name += " " + str(index)
+	else:
+		# Если групп нет, используем имя узла или стандартное название
+		button_name = name if name != "" else "Button"

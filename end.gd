@@ -2,7 +2,7 @@
 extends Control
 
 # A constant that points to the main scene file we’ll load
-const START_SCENE_PATH = "res://global.tscn"
+const START_SCENE_PATH = "res://global_menu.tscn"
 
 # Runs when this UI thing shows up
 func _ready():

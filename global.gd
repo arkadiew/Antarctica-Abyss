@@ -2,14 +2,16 @@
 extends Control
 
 # Grabs the Continue button when the menu loads
-@onready var continue_button = $VBoxContainer/Continue
+@onready var continue_button = $menu/Continue
 
 # Where the save file lives and the game scene we’ll jump to
 const SAVE_PATH = "user://player_save.json"  # Path for saving player progress
 const GAME_SCENE_PATH = "res://Main.tscn"  # Path to the main game scene
-
+const SAVE_PATH2 = "user://object_save.json"
 # Runs when the menu first shows up
 func _ready():
+	$Creadits.visible = false
+	$Setting.visible = false
 	# Show the Continue button only if there’s a save file
 	continue_button.visible = FileAccess.file_exists(SAVE_PATH)
 	# Make the mouse cursor visible for clicking buttons
@@ -20,6 +22,11 @@ func _on_new_game_pressed() -> void:
 	# If there’s an old save file, delete it to start fresh
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(SAVE_PATH)
+	if FileAccess.file_exists(SAVE_PATH2):
+		DirAccess.remove_absolute(SAVE_PATH2)
+	# Reset TaskManager to clear task requirements
+	if TaskManager:
+		TaskManager.reset_tasks()
 	# Jump to the main game scene
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 
@@ -30,5 +37,13 @@ func _on_exit_pressed() -> void:
 
 # Called when the "Continue" button is pressed
 func _on_continue_pressed() -> void:
+	if TaskManager:
+		TaskManager.reset_tasks()
 	# Load the main game scene (save file will be checked there)
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+
+func _on_frame_pressed() -> void:
+	$Creadits.visible = !$Creadits.visible
+
+func _on_setting_pressed() -> void:
+	$Setting.visible = !$Setting.visible

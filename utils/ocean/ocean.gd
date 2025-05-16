@@ -9,8 +9,8 @@ class_name FishSpawner
 @export var enemy_scenes: Array[PackedScene] = [
 	preload("res://scenes/fish/giant_squid.tscn")
 ]
-@export var max_fish: int = 10
-@export var max_enemies: int = 2
+@export var max_fish: int = 30
+@export var max_enemies: int = 6
 @export var spawn_radius: float = 10.0
 @export var enemy_spawn_chance: float = 1.0 # Set to 1.0 for testing
 @export var avoid_overlap: bool = false # Disabled for testing
