@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://bn206awwo2248"
+path="res://.godot/imported/metal floor_ao.bmp-ade1fa92551f15935b88251e9e99c9b4.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://scenes/oxygentank/textures/metal floor_ao.bmp"
+dest_files=["res://.godot/imported/metal floor_ao.bmp-ade1fa92551f15935b88251e9e99c9b4.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

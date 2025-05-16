@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://bi5lrt3032dn8"]
+
+[ext_resource type="Script" path="res://scenes/infobutton/v_box_container.gd" id="1_h8a4b"]
+
+[sub_resource type="Theme" id="Theme_twcqs"]
+default_font_size = 17
+
+[node name="ControlInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="info_button" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 590.0
+offset_top = 73.0
+offset_right = 630.0
+offset_bottom = 113.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_twcqs")
+
+[node name="ControlInfo" type="VBoxContainer" parent="info_button" groups=["ControlInfo"]]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -288.0
+offset_right = -288.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+script = ExtResource("1_h8a4b")

@@ -13,7 +13,7 @@ void sky() {
 	float p1 = 1.0f - pow(min(1.0f, 1.0f - p), exponent_factor_top);
 	float p3 = 1.0f - pow(min(1.0f, 1.0f + p), exponent_factor_bottom);
 	float p2 = 1.0f - p1 - p3;
-	
+
 	COLOR = (
 		color_top * p1 +
 		color_horizon * p2 +

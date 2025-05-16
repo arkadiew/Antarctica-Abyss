@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw23xw1vfplju"]
+
+[ext_resource type="PackedScene" uid="uid://css8sosc5ppc0" path="res://scenes/player_cpu_particles_3d.tscn" id="1_x1he1"]
+[ext_resource type="Script" path="res://scripts/damage.gd" id="2_s82j5"]
+
+[node name="Partical" type="Node3D"]
+
+[node name="CPUParticles3D" parent="." instance=ExtResource("1_x1he1")]
+script = ExtResource("2_s82j5")

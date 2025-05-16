@@ -1,0 +1,247 @@
+[gd_scene load_steps=24 format=3 uid="uid://c246jxnh0y1hk"]
+
+[ext_resource type="Script" path="res://scripts/map/radar.gd" id="1_3rbx5"]
+[ext_resource type="Texture2D" uid="uid://bthsf7ui5eaof" path="res://utils/img/tablet.png" id="1_hvcyu"]
+[ext_resource type="Shader" path="res://scenes/mapp/map.gdshader" id="2_4p40t"]
+[ext_resource type="Texture2D" uid="uid://h52dec73d7s0" path="res://utils/img/player.png.png" id="4_k1ldp"]
+[ext_resource type="Texture2D" uid="uid://0322lnfowkay" path="res://utils/img/obj/jewelry 1.png" id="4_tlh4k"]
+[ext_resource type="Texture2D" uid="uid://bxcv1wlt8x24d" path="res://utils/img/obj/stone-1.png" id="5_gmxsf"]
+[ext_resource type="Texture2D" uid="uid://6or8v5h2pygw" path="res://utils/img/obj/big_pipe 1.png" id="6_6i526"]
+[ext_resource type="Texture2D" uid="uid://584u5ax8vl7s" path="res://utils/img/obj/fiish 1.png" id="7_56kd7"]
+[ext_resource type="Texture2D" uid="uid://btcwavvxwsgf4" path="res://utils/img/obj/squid 1.png" id="8_vjgbq"]
+[ext_resource type="Texture2D" uid="uid://gpes6w6myfbs" path="res://utils/img/HOME.png.png" id="10_xl6nu"]
+[ext_resource type="Texture2D" uid="uid://c6nvqfihih8q1" path="res://utils/img/submarine.png.png" id="11_cou2i"]
+[ext_resource type="Texture2D" uid="uid://goovt31i0gqa" path="res://utils/img/harpoon_icon-1.png.png" id="12_7ae01"]
+[ext_resource type="Texture2D" uid="uid://dna1s1ajaa38w" path="res://utils/img/spanner_icon-1.png.png" id="13_1w8xj"]
+[ext_resource type="Texture2D" uid="uid://dm2rbb1xeheu6" path="res://utils/img/oxygen_icon-1.png.png" id="14_emcit"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e1sim"]
+font_size = 49
+
+[sub_resource type="LabelSettings" id="LabelSettings_est7o"]
+font_size = 49
+
+[sub_resource type="LabelSettings" id="LabelSettings_4l4a0"]
+font_size = 49
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ul63c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ix8pg"]
+shader = ExtResource("2_4p40t")
+shader_parameter/primary_color = Color(0.980392, 0.576471, 0.129412, 1)
+shader_parameter/secondary_color = Color(0.492535, 0.773849, 0.913452, 1)
+shader_parameter/fade_distance = 0.817
+shader_parameter/pulse_speed = 1.112
+shader_parameter/pulse_intensity = 0.0
+shader_parameter/grid_strength = 0.2
+shader_parameter/glow_intensity = 0.5
+shader_parameter/noise_scale = 5.0
+
+[sub_resource type="Curve" id="Curve_hcmks"]
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_on3qu"]
+curve_x = SubResource("Curve_hcmks")
+
+[sub_resource type="Gradient" id="Gradient_lpiaj"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ckjwy"]
+gradient = SubResource("Gradient_lpiaj")
+
+[node name="Map" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(700, 700)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -571.0
+offset_top = -392.0
+offset_right = 571.0
+offset_bottom = 392.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_hvcyu")
+
+[node name="MONEY" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 193.0
+offset_top = -190.0
+offset_right = 428.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Money" type="Label" parent="MONEY"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_e1sim")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Money?" type="Label" parent="MONEY"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_est7o")
+horizontal_alignment = 2
+
+[node name="Day" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 192.0
+offset_top = -295.0
+offset_right = 427.0
+offset_bottom = -217.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Day" type="Label" parent="Day"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_4l4a0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Radar" type="MarginContainer" parent="."]
+material = SubResource("ShaderMaterial_ul63c")
+custom_minimum_size = Vector2(600, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -442.0
+offset_top = -299.0
+offset_right = 158.0
+offset_bottom = 301.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3rbx5")
+
+[node name="Grid" type="TextureRect" parent="Radar"]
+material = SubResource("ShaderMaterial_ix8pg")
+custom_minimum_size = Vector2(600, 600)
+layout_mode = 2
+texture = SubResource("CurveXYZTexture_on3qu")
+
+[node name="PlayerMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 31.0
+offset_right = 270.0
+offset_bottom = 456.0
+scale = Vector2(0.185646, 0.11533)
+texture = ExtResource("4_k1ldp")
+
+[node name="EnemyMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 36.0
+offset_right = 302.0
+offset_bottom = 290.0
+scale = Vector2(0.173276, 0.173276)
+texture = SubResource("GradientTexture2D_ckjwy")
+
+[node name="AlertMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 38.0
+offset_right = 78.0
+offset_bottom = 78.0
+scale = Vector2(0.266597, 0.250635)
+
+[node name="CuriosityMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 35.0
+offset_right = 98.0
+offset_bottom = 135.0
+texture = ExtResource("4_tlh4k")
+
+[node name="StoneMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 51.0
+offset_right = 151.0
+offset_bottom = 151.0
+texture = ExtResource("5_gmxsf")
+
+[node name="PipeMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = -18.0
+offset_top = 55.0
+offset_right = 82.0
+offset_bottom = 155.0
+texture = ExtResource("6_6i526")
+
+[node name="HaddockMarker" type="TextureRect" parent="Radar/Grid"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("7_56kd7")
+
+[node name="CodMarker" type="TextureRect" parent="Radar/Grid"]
+visible = false
+layout_mode = 0
+offset_left = 79.0
+offset_top = 13.0
+offset_right = 179.0
+offset_bottom = 113.0
+texture = ExtResource("7_56kd7")
+
+[node name="GiantSquidMarker" type="TextureRect" parent="Radar/Grid"]
+visible = false
+layout_mode = 0
+offset_left = 65.0
+offset_top = 24.0
+offset_right = 165.0
+offset_bottom = 124.0
+texture = ExtResource("8_vjgbq")
+
+[node name="HomeMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 15.0
+offset_right = 103.0
+offset_bottom = 115.0
+texture = ExtResource("10_xl6nu")
+
+[node name="SubmarineMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("11_cou2i")
+
+[node name="harpoonMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("12_7ae01")
+
+[node name="spannerMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("13_1w8xj")
+
+[node name="oxygenMarker" type="TextureRect" parent="Radar/Grid"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("14_emcit")

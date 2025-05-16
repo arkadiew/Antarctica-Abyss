@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://addons/devblocks/blocks/colored_block.gd" id="2_in130"]
 [ext_resource type="Texture2D" uid="uid://cmpphmam0hwe6" path="res://addons/devblocks/textures/dark/texture_01.png" id="3_whpuj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hp6vr"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1imu"]
 albedo_texture = ExtResource("3_whpuj")
 uv1_offset = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
@@ -14,4 +14,4 @@ script = ExtResource("2_in130")
 block_color = Color(1, 1, 1, 1)
 
 [node name="Mesh" parent="." index="1"]
-surface_material_override/0 = SubResource("StandardMaterial3D_hp6vr")
+surface_material_override/0 = SubResource("StandardMaterial3D_o1imu")

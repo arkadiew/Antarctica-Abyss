@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://ipd8es5sqws6"]
+
+[ext_resource type="PackedScene" uid="uid://5ptoqub6vdyo" path="res://blender/fish/cod.blend" id="1_iytg6"]
+
+[node name="cod" groups=["fishe"] instance=ExtResource("1_iytg6")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/rotation = Quaternion(0.00920894, 1.19204e-07, 1.0978e-09, 0.999958)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.0223547, 2.15229e-14, -5.32979e-09, 0.99975)
+bones/2/rotation = Quaternion(0.0190026, 1.05039e-14, 4.53057e-09, 0.999819)
+bones/3/rotation = Quaternion(-0.0122968, -2.13286e-14, -2.93179e-09, 0.999924)

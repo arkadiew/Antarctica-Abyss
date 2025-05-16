@@ -1,61 +1,31 @@
-[gd_scene load_steps=18 format=3 uid="uid://bj3l75816anov"]
+[gd_scene load_steps=15 format=3 uid="uid://bj3l75816anov"]
 
-[ext_resource type="PackedScene" uid="uid://wssnx1an6whd" path="res://TSCN/Player.tscn" id="1_s72jo"]
-[ext_resource type="PackedScene" uid="uid://m0sqhkvhgsdd" path="res://TSCN/cube.tscn" id="3_258lm"]
-[ext_resource type="PackedScene" uid="uid://ca0wevg1lb4rx" path="res://utils/WaterMaker3D/WaterMaker3D.tscn" id="4_002id"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_rpcql"]
+[ext_resource type="PackedScene" uid="uid://wssnx1an6whd" path="res://scenes/Player.tscn" id="1_s72jo"]
 [ext_resource type="Shader" path="res://sky.gdshader" id="5_sy4wd"]
-[ext_resource type="PackedScene" uid="uid://5v2ic1cxc6l8" path="res://bool.tscn" id="6_1v1di"]
-[ext_resource type="PackedScene" uid="uid://bbr1dv50ac64l" path="res://TSCN/beta.tscn" id="8_6paqb"]
-[ext_resource type="PackedScene" uid="uid://nbwwfl61lklx" path="res://TSCN/oxygen_tank.tscn" id="8_r3o46"]
-[ext_resource type="PackedScene" uid="uid://cd1aps3p688pv" path="res://TSCN/damaging_object.tscn" id="9_8loda"]
-[ext_resource type="Script" path="res://SCR/fish_spawner.gd" id="9_wxqbo"]
-[ext_resource type="PackedScene" uid="uid://ctwkjwrmoqokp" path="res://TSCN/suit.tscn" id="10_onwfj"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_7yh6u"]
-resource_local_to_scene = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ymp55"]
-resource_local_to_scene = true
-seamless = true
-as_normal_map = true
-noise = SubResource("FastNoiseLite_7yh6u")
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r1x7b"]
-resource_local_to_scene = true
-seamless = true
-as_normal_map = true
-noise = SubResource("FastNoiseLite_7yh6u")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p8gj2"]
-resource_local_to_scene = true
-transparency = 1
-cull_mode = 2
-depth_draw_mode = 1
-albedo_color = Color(0.097825, 0.249085, 0.456925, 0.388235)
-roughness = 0.0
-normal_enabled = true
-normal_texture = SubResource("NoiseTexture2D_ymp55")
-refraction_enabled = true
-refraction_texture = SubResource("NoiseTexture2D_r1x7b")
-uv1_scale = Vector3(0.01, 0.01, 0.01)
-uv1_triplanar = true
-uv1_world_triplanar = true
+[ext_resource type="PackedScene" uid="uid://bs41h7hha0clm" path="res://scenes/vending_machine/vending_machine.tscn" id="7_qf6pw"]
+[ext_resource type="PackedScene" uid="uid://v7k7teo1oqpy" path="res://scenes/research/framework.tscn" id="8_jvupn"]
+[ext_resource type="PackedScene" uid="uid://bl6tsurhnun81" path="res://scenes/research/base.tscn" id="9_xdnjo"]
+[ext_resource type="PackedScene" uid="uid://cbw7phol7apu0" path="res://scenes/reset_button.tscn" id="10_3njp3"]
+[ext_resource type="PackedScene" uid="uid://ctwkjwrmoqokp" path="res://scenes/suit.tscn" id="11_1iwbf"]
+[ext_resource type="Script" path="res://scripts/spawn.gd" id="12_l60vt"]
+[ext_resource type="PackedScene" uid="uid://c0pml65ywmb02" path="res://scenes/map/map_3d.tscn" id="12_ngcod"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lh5a2"]
 shader = ExtResource("5_sy4wd")
-shader_parameter/color_top = Color(0.706645, 0.564346, 0.382121, 1)
-shader_parameter/color_horizon = Color(1, 0.469137, 0.475752, 1)
-shader_parameter/color_bottom = Color(0.641518, 0.499707, 0.106451, 1)
+shader_parameter/color_top = Color(0.835294, 0.537255, 0.270588, 1)
+shader_parameter/color_horizon = Color(0.584314, 0.517647, 0.509804, 1)
+shader_parameter/color_bottom = Color(0.0607279, 0.382143, 0.521547, 1)
 shader_parameter/exponent_factor_top = 1.0
 shader_parameter/exponent_factor_bottom = 1.0
 shader_parameter/intensity_amp = 1.0
 
-[sub_resource type="Sky" id="Sky_hfysu"]
+[sub_resource type="Sky" id="Sky_s72xd"]
 sky_material = SubResource("ShaderMaterial_lh5a2")
 
 [sub_resource type="Environment" id="Environment_1grc2"]
 background_mode = 2
-sky = SubResource("Sky_hfysu")
+sky = SubResource("Sky_s72xd")
 ambient_light_sky_contribution = 0.0
 ambient_light_energy = 0.0
 fog_mode = 1
@@ -64,51 +34,54 @@ fog_density = 0.0
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_orvig"]
+custom_solver_bias = 0.234
+size = Vector3(82.2456, 1, 93.4873)
+
 [node name="main" type="Node3D"]
+process_mode = 3
+script = ExtResource("1_rpcql")
 
 [node name="Player" parent="." instance=ExtResource("1_s72jo")]
-
-[node name="cube" parent="." instance=ExtResource("3_258lm")]
-transform = Transform3D(0.609789, 0, 0, 0, 0.609789, 0, 0, 0, 0.609789, -9.04842, 0.354248, 1.38169)
-disable_mode = 1
-mass = 0.5
-
-[node name="cube2" parent="." instance=ExtResource("3_258lm")]
-transform = Transform3D(0.609789, 0, 0, 0, 0.609789, 0, 0, 0, 0.609789, -7.98577, -0.129985, 1.44789)
-mass = 0.5
-
-[node name="WaterMaker3D" parent="." instance=ExtResource("4_002id")]
-transform = Transform3D(-4.57448e-06, 0, -138.293, 0, 32.7294, 0, 104.652, 0, -6.04498e-06, 22.6129, -5.7341, 56.8993)
-size = Vector3(1, 1.58386, 1)
-material = SubResource("StandardMaterial3D_p8gj2")
-
-[node name="stamina" type="Label3D" parent="WaterMaker3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.76609)
-
-[node name="девушка" parent="." groups=["grab"] instance=ExtResource("6_1v1di")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.99872, -0.428483, -0.00714874)
-mass = 0.065
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.515723, -0.501149)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1grc2")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866024, -0.433015, 0.250001, -0.353555, 0.883882, 0.306189, -0.353556, 0.176778, -0.918557, 51.348, 17.487, 0)
+transform = Transform3D(-0.866024, -0.433015, 0.250001, -0.353555, 0.883882, 0.306189, -0.353556, 0.176778, -0.918557, 18.7294, 51.4932, -31.6385)
 light_energy = 0.75
 shadow_enabled = true
 
-[node name="OxygenTank" parent="." groups=["oxygen_source"] instance=ExtResource("8_r3o46")]
-transform = Transform3D(1, 0, 0, 0, 1.12033, 0, 0, 0, 0.266534, 0, 0.444346, -15.4115)
-mass = 10.0
+[node name="spawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.806651, 0.710709, -4.23743)
+script = ExtResource("12_l60vt")
 
-[node name="FishSpawner" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3971, -7.79171, -9.84295)
-script = ExtResource("9_wxqbo")
+[node name="Vending_Machine" parent="." instance=ExtResource("7_qf6pw")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 1.34706, -0.588004, -1.90373)
 
-[node name="suit_items" parent="." instance=ExtResource("10_onwfj")]
+[node name="point" type="Node3D" parent="."]
 
-[node name="beta" parent="." instance=ExtResource("8_6paqb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.6325, 0)
+[node name="exercisespawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3108, -10.9839, 63.1315)
 
-[node name="DamagingObject" parent="." instance=ExtResource("9_8loda")]
-transform = Transform3D(0.23288, 0, 0, 0, 0.23288, 0, 0, 0, 0.331181, -3.13429, -0.762629, -7.7527)
+[node name="base" parent="." instance=ExtResource("9_xdnjo")]
+transform = Transform3D(-1.01197e-08, 0, -0.231511, 0, 0.231511, 0, 0.231511, 0, -1.01197e-08, -2.99797, -1.67618, -5.78575)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.9207, -0.152132, -13.3155)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.1017, -1.79579, 12.0315)
+shape = SubResource("BoxShape3D_orvig")
+
+[node name="reset_button" parent="." instance=ExtResource("10_3njp3")]
+transform = Transform3D(0.204527, 0, -8.88178e-16, 0, 0.204527, 0, 8.88178e-16, 0, 0.204527, -4.93764, -1.45623, 1.51572)
+
+[node name="Submarine" parent="." instance=ExtResource("11_1iwbf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.69844, -0.810004, -3.67389)
+
+[node name="Map3d" parent="." instance=ExtResource("12_ngcod")]
+
+[node name="research" parent="." instance=ExtResource("8_jvupn")]
+transform = Transform3D(-1.14989e-08, 0, -0.263063, 0, 0.263063, 0, 0.263063, 0, -1.14989e-08, -5.82947, -0.757253, -5.69247)

@@ -1,0 +1,236 @@
+[gd_scene load_steps=19 format=3 uid="uid://ddi4jofogmejv"]
+
+[ext_resource type="Script" path="res://global.gd" id="1_lyv6l"]
+[ext_resource type="Texture2D" uid="uid://nqkmvsbd0ykn" path="res://utils/img/icon_menu/NewGame.png" id="2_ghk2n"]
+[ext_resource type="Shader" path="res://utils/shader/menu.gdshader" id="2_nmvtq"]
+[ext_resource type="Texture2D" uid="uid://dv3v8q6oqhrfs" path="res://utils/img/icon_menu/LoadGame.png" id="3_1wljy"]
+[ext_resource type="Texture2D" uid="uid://dsxmwlsjxkfbi" path="res://utils/img/icon_menu/Exit.png" id="4_2eo2a"]
+[ext_resource type="Texture2D" uid="uid://cgc0f7n26ieb4" path="res://utils/img/icon_menu/Settings.png" id="5_6valh"]
+[ext_resource type="Texture2D" uid="uid://caotjakex103w" path="res://utils/img/icon_menu/Frame.png" id="6_sdvwp"]
+[ext_resource type="Texture2D" uid="uid://bkupwkywjtbi7" path="res://utils/img/icon_menu/Creadits.png" id="8_0tvtt"]
+[ext_resource type="Script" path="res://scripts/creadits.gd" id="9_xe2k1"]
+[ext_resource type="Texture2D" uid="uid://rdtrfif020hy" path="res://utils/img/icon_menu/github-mark-white.png" id="10_58wd2"]
+[ext_resource type="Texture2D" uid="uid://bthsf7ui5eaof" path="res://utils/img/tablet.png" id="11_1rpat"]
+[ext_resource type="Script" path="res://scripts/setting.gd" id="12_g1017"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yysmj"]
+shader = ExtResource("2_nmvtq")
+shader_parameter/blur_amount = 4.115
+shader_parameter/opacity = 0.853
+
+[sub_resource type="LabelSettings" id="LabelSettings_2p7ql"]
+font_size = 92
+
+[sub_resource type="Theme" id="Theme_e0co1"]
+default_font_size = 39
+
+[sub_resource type="LabelSettings" id="LabelSettings_onvak"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_8leqv"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_n5hgf"]
+font_size = 40
+
+[node name="Global" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lyv6l")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_yysmj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 1
+offset_left = 49.0
+offset_top = 57.0
+offset_right = 907.0
+offset_bottom = 232.0
+text = "Antarctica-Abyss"
+label_settings = SubResource("LabelSettings_2p7ql")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="menu" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 174.0
+offset_top = -350.0
+offset_right = 522.0
+offset_bottom = -170.0
+grow_vertical = 0
+theme = SubResource("Theme_e0co1")
+alignment = 1
+
+[node name="NewGame" type="Button" parent="menu"]
+layout_mode = 2
+icon = ExtResource("2_ghk2n")
+flat = true
+icon_alignment = 1
+
+[node name="Continue" type="Button" parent="menu"]
+layout_mode = 2
+icon = ExtResource("3_1wljy")
+flat = true
+icon_alignment = 1
+
+[node name="menu_" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 181.0
+offset_top = -164.0
+offset_right = 513.0
+offset_bottom = -60.0
+grow_vertical = 0
+
+[node name="Setting" type="Button" parent="menu_"]
+layout_mode = 2
+icon = ExtResource("5_6valh")
+flat = true
+
+[node name="Frame" type="Button" parent="menu_"]
+layout_mode = 2
+icon = ExtResource("6_sdvwp")
+flat = true
+
+[node name="Exit" type="Button" parent="menu_"]
+layout_mode = 2
+icon = ExtResource("4_2eo2a")
+flat = true
+
+[node name="Creadits" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.0
+offset_top = -266.0
+offset_right = 910.0
+offset_bottom = 385.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_0tvtt")
+script = ExtResource("9_xe2k1")
+
+[node name="1" type="Button" parent="Creadits"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -305.0
+offset_top = -153.5
+offset_right = -247.0
+offset_bottom = -96.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("10_58wd2")
+
+[node name="2" type="Button" parent="Creadits"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -246.0
+offset_top = -43.5
+offset_right = -188.0
+offset_bottom = 13.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("10_58wd2")
+
+[node name="3" type="Button" parent="Creadits"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -353.0
+offset_top = 60.5
+offset_right = -295.0
+offset_bottom = 117.5
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("10_58wd2")
+
+[node name="Setting" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -392.0
+offset_top = -394.0
+offset_right = 750.0
+offset_bottom = 390.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_1rpat")
+script = ExtResource("12_g1017")
+
+[node name="Setting=" type="VBoxContainer" parent="Setting"]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 54.0
+offset_right = 1037.0
+offset_bottom = 725.0
+
+[node name="Setting" type="Label" parent="Setting/Setting="]
+layout_mode = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_onvak")
+horizontal_alignment = 1
+
+[node name="Fullscreen" type="Label" parent="Setting/Setting="]
+layout_mode = 2
+text = "Fullscreen"
+label_settings = SubResource("LabelSettings_8leqv")
+horizontal_alignment = 1
+
+[node name="CheckBox" type="CheckBox" parent="Setting/Setting="]
+layout_mode = 2
+alignment = 1
+
+[node name="sound_slider" type="Label" parent="Setting/Setting="]
+layout_mode = 2
+text = "Sound"
+label_settings = SubResource("LabelSettings_n5hgf")
+horizontal_alignment = 1
+
+[node name="sound_slider2" type="HSlider" parent="Setting/Setting="]
+layout_mode = 2
+step = 5.0
+
+[connection signal="pressed" from="menu/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="menu/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="menu_/Setting" to="." method="_on_setting_pressed"]
+[connection signal="pressed" from="menu_/Frame" to="." method="_on_frame_pressed"]
+[connection signal="pressed" from="menu_/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Creadits/1" to="Creadits" method="_on__pressd1"]
+[connection signal="pressed" from="Creadits/2" to="Creadits" method="_on__pressed2"]
+[connection signal="pressed" from="Creadits/3" to="Creadits" method="_on__pressed3"]
+[connection signal="toggled" from="Setting/Setting=/CheckBox" to="Setting" method="_on_check_box_toggled"]
+[connection signal="value_changed" from="Setting/Setting=/sound_slider2" to="Setting" method="_on_sound_slider_2_value_changed"]

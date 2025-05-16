@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctwkjwrmoqokp"]
+
+[ext_resource type="PackedScene" uid="uid://0i42wqii8ieb" path="res://blender/Submarine/Submarine.blend" id="1_erydy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w860a"]
+size = Vector3(1.30966, 1.63732, 4.34149)
+
+[node name="Submarine" type="StaticBody3D" groups=["Interactable", "suit_items"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0272428, 0.253933, 1.01999)
+shape = SubResource("BoxShape3D_w860a")
+
+[node name="Submarine" parent="." instance=ExtResource("1_erydy")]
+transform = Transform3D(0.580158, 0, 0, 0, 0.580158, 0, 0, 0, 0.580158, 0, 0, 0)

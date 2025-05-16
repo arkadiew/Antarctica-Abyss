@@ -1,0 +1,367 @@
+[gd_scene load_steps=23 format=3 uid="uid://wssnx1an6whd"]
+
+[ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_6qoym"]
+[ext_resource type="Texture2D" uid="uid://dptxs776qawaw" path="res://utils/img/suit/mask.png" id="3_k2huq"]
+[ext_resource type="Texture2D" uid="uid://dx81nigoc35r2" path="res://utils/img/suit/pro.png" id="4_77hi1"]
+[ext_resource type="Texture2D" uid="uid://c88e5v5pwpor5" path="res://utils/img/suit/ho.png" id="4_cpcni"]
+[ext_resource type="Texture2D" uid="uid://ly63slxye3bs" path="res://utils/img/suit/icon.png" id="6_kxttt"]
+[ext_resource type="Script" path="res://scripts/audio_manager.gd" id="8_3vx6c"]
+[ext_resource type="Texture2D" uid="uid://dv0k0pm2prh6j" path="res://utils/img/suit/menu.png" id="8_n87jm"]
+[ext_resource type="PackedScene" uid="uid://c246jxnh0y1hk" path="res://scenes/mapp/map.tscn" id="9_6line"]
+[ext_resource type="Texture2D" uid="uid://b7acqecrl00g2" path="res://utils/img/suit/eng.png" id="9_84wo5"]
+[ext_resource type="PackedScene" uid="uid://bi5lrt3032dn8" path="res://scenes/infobutton/control_info.tscn" id="9_ddc17"]
+[ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/img/png_scary/fear_0.png" id="9_flnhe"]
+[ext_resource type="Shader" path="res://utils/shader/cameraw.gdshader" id="9_vculq"]
+[ext_resource type="PackedScene" uid="uid://rkfonp6ibni7" path="res://scenes/tash/task.tscn" id="10_qr72b"]
+[ext_resource type="PackedScene" uid="uid://c81ajvsxcn5ac" path="res://scenes/tash/statistic_info.tscn" id="11_w85dh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7c3s7"]
+font_size = 31
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j6d24"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_opqr3"]
+line_spacing = 9.0
+font_size = 41
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_l6mxv"]
+font_size = 28
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g1ve8"]
+viewport_path = NodePath("CameraPivot/Camera3D/SubViewport")
+
+[sub_resource type="QuadMesh" id="QuadMesh_yke17"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mhxql"]
+render_priority = 0
+shader = ExtResource("9_vculq")
+shader_parameter/pixel_size = 4
+
+[node name="Player" type="CharacterBody3D" groups=["player", "players"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.995118, 0)
+script = ExtResource("1_6qoym")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0301087, 0)
+shape = SubResource("CapsuleShape3D_4q6bg")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+keep_aspect = 0
+current = true
+fov = 120.0
+
+[node name="inbutton" type="RayCast3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.486921)
+
+[node name="Rayscary3D" type="RayCast3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.0918716, -0.999914, 0, 6.9994, 0.0131245, 0, 0, -0.935285)
+
+[node name="InteractRay" type="RayCast3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1, -3.28624e-07, 0.000261803, 0, 0.999999, 0.00125523, -0.000261804, -0.00125523, 0.999999, -0.00150963, -0.0021795, -0.482054)
+target_position = Vector3(0, 0, -3)
+collide_with_areas = true
+
+[node name="Label3D" type="Label3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.883044)
+pixel_size = 0.006
+
+[node name="HandSlot" type="Node3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.337421, 0.117052, -1.87381)
+
+[node name="UI" type="Node" parent="CameraPivot/Camera3D"]
+
+[node name="Menu" type="Node" parent="CameraPivot/Camera3D/UI"]
+
+[node name="Menu" type="TextureRect" parent="CameraPivot/Camera3D/UI/Menu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -227.0
+offset_top = -152.0
+offset_right = 7773.0
+offset_bottom = 7848.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.0548601, 0.0401663)
+texture = ExtResource("8_n87jm")
+stretch_mode = 2
+
+[node name="Menu?la" type="Label" parent="CameraPivot/Camera3D/UI/Menu"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -659.0
+offset_top = -42.0
+offset_bottom = 42.0
+grow_horizontal = 0
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_7c3s7")
+vertical_alignment = 1
+
+[node name="mask" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -7.0
+offset_top = -6.0
+offset_right = 5.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_k2huq")
+expand_mode = 1
+
+[node name="Pro3" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -33.0
+offset_top = -238.0
+offset_right = 873.0
+offset_bottom = 942.0
+grow_vertical = 0
+scale = Vector2(0.298985, 0.23807)
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("4_77hi1")
+
+[node name="Pro2" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 46.0
+offset_top = -202.0
+offset_right = 1001.0
+offset_bottom = 753.0
+grow_vertical = 0
+scale = Vector2(0.30692, 0.30692)
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("4_77hi1")
+
+[node name="Pro" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -157.0
+offset_right = 971.0
+offset_bottom = 636.0
+grow_vertical = 0
+scale = Vector2(0.28, 0.28)
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("4_77hi1")
+expand_mode = 1
+
+[node name="FearSprite" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 171.0
+offset_top = -353.0
+offset_right = 788.0
+offset_bottom = 264.0
+grow_vertical = 0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("9_flnhe")
+
+[node name="icon2" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = -287.0
+offset_right = 540.0
+offset_bottom = 230.0
+grow_vertical = 0
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_kxttt")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
+layout_direction = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 37.0
+offset_top = -270.0
+offset_right = 187.0
+offset_bottom = -124.0
+grow_vertical = 0
+scale = Vector2(1.2, 1.2)
+step = 4.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("9_84wo5")
+
+[node name="icon" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 187.0
+offset_top = -206.0
+offset_right = 787.0
+offset_bottom = 394.0
+grow_vertical = 0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("6_kxttt")
+
+[node name="o2" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
+layout_direction = 1
+anchors_preset = -1
+anchor_top = 0.9975
+anchor_right = 0.0111111
+anchor_bottom = 1.02125
+offset_left = 198.0
+offset_top = -190.0
+offset_right = 287.0
+offset_bottom = -101.0
+grow_vertical = 0
+scale = Vector2(1.48, 1.406)
+size_flags_horizontal = 2
+size_flags_vertical = 2
+step = 4.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("4_cpcni")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="CameraPivot/Camera3D/UI"]
+y_sort_enabled = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j6d24")
+
+[node name="NotificationLabel" type="Label" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 2.0
+offset_top = 39.0
+offset_right = 2.0
+offset_bottom = 210.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_opqr3")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+justification_flags = 171
+
+[node name="SuitNotification" type="Label" parent="CameraPivot/Camera3D/UI"]
+offset_left = 442.0
+offset_top = 34.0
+offset_right = 621.0
+offset_bottom = 205.0
+
+[node name="DarkenScreen" type="ColorRect" parent="CameraPivot/Camera3D/UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -57.0
+offset_right = 97.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="CameraPivot/Camera3D/UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Map" parent="CameraPivot/Camera3D/UI" instance=ExtResource("9_6line")]
+
+[node name="ControlInfo" parent="CameraPivot/Camera3D/UI/Map" groups=["player"] instance=ExtResource("9_ddc17")]
+layout_mode = 1
+
+[node name="Label" type="Label" parent="CameraPivot/Camera3D/UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -235.0
+offset_top = -34.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "TAB - Open Tablet"
+label_settings = SubResource("LabelSettings_l6mxv")
+
+[node name="Statistic_Info" parent="CameraPivot/Camera3D/UI" instance=ExtResource("11_w85dh")]
+
+[node name="task" parent="CameraPivot/Camera3D" instance=ExtResource("10_qr72b")]
+
+[node name="cameraw" type="TextureRect" parent="CameraPivot/Camera3D"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = -17.0
+offset_right = 2.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_g1ve8")
+
+[node name="SubViewport" type="SubViewport" parent="CameraPivot/Camera3D"]
+transparent_bg = true
+handle_input_locally = false
+vrs_mode = 2
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
+transform = Transform3D(1.79059, 0, 0, 0, 0.820363, 0, 0, 0, 0.583701, 0, 0, -0.54547)
+visible = false
+mesh = SubResource("QuadMesh_yke17")
+surface_material_override/0 = SubResource("ShaderMaterial_mhxql")
+
+[node name="GroundRay" type="RayCast3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396872, -1.60949, -0.00424123)
+target_position = Vector3(0, -0.1, 0)
+
+[node name="AudioManager" type="Node" parent="."]
+script = ExtResource("8_3vx6c")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AudioManager"]
+
+[node name="WalkPlayer" type="AudioStreamPlayer" parent="AudioManager"]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://css8sosc5ppc0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yywhy"]
+albedo_color = Color(0.0923971, 0.0923971, 0.0923971, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cb7ki"]
+material = SubResource("StandardMaterial3D_yywhy")
+uv2_padding = 1.2
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="CPUParticles3D" type="CPUParticles3D"]
+transform = Transform3D(-0.98908, 0.147378, 0, -0.147378, -0.98908, 0, 0, 0, 1, 0, 0, 0)
+amount = 7
+lifetime = 0.8
+mesh = SubResource("BoxMesh_cb7ki")
+emission_shape = 2
+emission_sphere_radius = 1.0
+gravity = Vector3(2, 2, 2)
