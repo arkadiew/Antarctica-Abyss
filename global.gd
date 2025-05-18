@@ -1,49 +1,50 @@
-# This makes it a UI thing (like a main menu screen)
 extends Control
 
-# Grabs the Continue button when the menu loads
 @onready var continue_button = $menu/Continue
 
-# Where the save file lives and the game scene we’ll jump to
-const SAVE_PATH = "user://player_save.json"  # Path for saving player progress
-const GAME_SCENE_PATH = "res://Main.tscn"  # Path to the main game scene
+const SAVE_PATH = "user://player_save.json"
 const SAVE_PATH2 = "user://object_save.json"
-# Runs when the menu first shows up
+const GAME_SCENE_PATH = "res://Main.tscn"
+
 func _ready():
 	$Creadits.visible = false
 	$Setting.visible = false
-	# Show the Continue button only if there’s a save file
 	continue_button.visible = FileAccess.file_exists(SAVE_PATH)
-	# Make the mouse cursor visible for clicking buttons
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	get_tree().paused = false  # Убедимся, что игра не на паузе
+	$menu/NewGame.grab_focus()  # Устанавливаем фокус на кнопку "New Game"
+	print("Main menu loaded, mouse mode: ", Input.get_mouse_mode())
 
-# Called when the "New Game" button is pressed
 func _on_new_game_pressed() -> void:
-	# If there’s an old save file, delete it to start fresh
+	print("New Game button pressed")
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(SAVE_PATH)
 	if FileAccess.file_exists(SAVE_PATH2):
 		DirAccess.remove_absolute(SAVE_PATH2)
-	# Reset TaskManager to clear task requirements
 	if TaskManager:
 		TaskManager.reset_tasks()
-	# Jump to the main game scene
+	else:
+		print("TaskManager not found!")
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 
-# Called when the "Exit" button is pressed
-func _on_exit_pressed() -> void:
-	# Shut down the game completely
-	get_tree().quit()
-
-# Called when the "Continue" button is pressed
 func _on_continue_pressed() -> void:
+	print("Continue button pressed")
 	if TaskManager:
 		TaskManager.reset_tasks()
-	# Load the main game scene (save file will be checked there)
+	else:
+		print("TaskManager not found!")
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+
+func _on_exit_pressed() -> void:
+	print("Exit button pressed")
+	get_tree().quit()
 
 func _on_frame_pressed() -> void:
 	$Creadits.visible = !$Creadits.visible
+	if $Creadits.visible:
+		$Creadits.grab_focus()  # Устанавливаем фокус на Credits, если нужно
 
 func _on_setting_pressed() -> void:
 	$Setting.visible = !$Setting.visible
+	if $Setting.visible:
+		$Setting.grab_focus()  # Устанавливаем фокус на Settings, если нужно

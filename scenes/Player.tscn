@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://tl2n84tyfbe7" path="res://utils/img/png_scary/fear_0.png" id="9_flnhe"]
 [ext_resource type="Shader" path="res://utils/shader/cameraw.gdshader" id="9_vculq"]
 [ext_resource type="PackedScene" uid="uid://rkfonp6ibni7" path="res://scenes/tash/task.tscn" id="10_qr72b"]
-[ext_resource type="PackedScene" uid="uid://c81ajvsxcn5ac" path="res://scenes/oxygentank/textures/statistic_info.tscn" id="11_w85dh"]
+[ext_resource type="PackedScene" uid="uid://c81ajvsxcn5ac" path="res://scenes/tash/statistic_info.tscn" id="11_w85dh"]
 [ext_resource type="PackedScene" uid="uid://b75xlvbavalrg" path="res://scenes/menu_/menu.tscn" id="12_vdfhl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4q6bg"]

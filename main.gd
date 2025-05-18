@@ -33,6 +33,7 @@ func _ready():
 	if background_music:
 		background_music_player = AudioStreamPlayer3D.new()
 		background_music_player.name = "BackgroundMusic"
+	
 		background_music_player.stream = background_music
 		if background_music_player.stream is AudioStreamMP3 or background_music_player.stream is AudioStreamWAV:
 			background_music_player.stream.loop = true
@@ -46,6 +47,7 @@ func _ready():
 	if background_music_base:
 		base_music_player = AudioStreamPlayer3D.new()
 		base_music_player.name = "BaseMusic"
+	
 		base_music_player.stream = background_music_base
 		if base_music_player.stream is AudioStreamMP3 or base_music_player.stream is AudioStreamWAV:
 			base_music_player.stream.loop = true
