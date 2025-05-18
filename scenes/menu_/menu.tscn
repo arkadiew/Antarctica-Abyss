@@ -281,6 +281,7 @@ horizontal_alignment = 1
 
 [node name="CheckBox" type="CheckBox" parent="Setting/Panel/Setting="]
 layout_mode = 2
+icon_alignment = 1
 
 [node name="sound_slider" type="Label" parent="Setting/Panel/Setting="]
 layout_mode = 2
