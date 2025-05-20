@@ -1,9 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl7ss0qo8fuq6"]
+[gd_scene load_steps=5 format=3 uid="uid://bl7ss0qo8fuq6"]
 
 [ext_resource type="Script" path="res://end.gd" id="1_idf13"]
+[ext_resource type="Texture2D" uid="uid://bj3kaw54v2ur4" path="res://utils/img/icon_menu/Repeat_.png" id="2_scxvl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dlaqs"]
 font_size = 90
+outline_size = 18
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wjnpm"]
+font_size = 92
+outline_size = 14
+outline_color = Color(0, 0, 0, 1)
 
 [node name="End" type="Control"]
 layout_mode = 3
@@ -16,26 +24,51 @@ script = ExtResource("1_idf13")
 
 [node name="Text" type="Label" parent="."]
 clip_contents = true
-layout_mode = 0
-offset_left = 290.0
-offset_top = 271.0
-offset_right = 1479.0
-offset_bottom = 487.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -573.0
+offset_top = -108.0
+offset_right = 575.0
+offset_bottom = 108.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "is this  the end?"
 label_settings = SubResource("LabelSettings_dlaqs")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Name" type="Label" parent="."]
+offset_left = 49.0
+offset_top = 57.0
+offset_right = 907.0
+offset_bottom = 232.0
+text = "Antarctica-Abyss"
+label_settings = SubResource("LabelSettings_wjnpm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 1402.0
-offset_top = 498.0
-offset_right = 1736.0
-offset_bottom = 736.0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -385.0
+offset_top = -243.0
+offset_right = -51.0
+offset_bottom = -5.0
+grow_horizontal = 0
+grow_vertical = 0
 alignment = 1
 
 [node name="Repeat" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "Repeat?"
+icon = ExtResource("2_scxvl")
+flat = true
 
 [connection signal="pressed" from="VBoxContainer/Repeat" to="." method="_on_repeat_pressed"]

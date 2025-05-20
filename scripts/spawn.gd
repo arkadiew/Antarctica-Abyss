@@ -50,14 +50,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	return
-	## Update objects that have moved
-	#for instance in objects_to_save:
-		#var obj_data = objects_to_save[instance]
-		#var current_transform = instance.global_transform
-		#if current_transform != obj_data.last_transform:
-			#obj_data.last_transform = current_transform
-			#obj_data.needs_save = true
-	#
+	
 
 
 func _on_button_pressed(is_pressed: bool, item: String) -> void:
@@ -73,6 +66,8 @@ func buy_and_spawn(item: String) -> void:
 	if player.subtract_money(config.price):
 		spawn_item(item, config)
 		player.show_notification("You bought " + item, 2.0)
+	else:
+		player.show_notification("No money", 2.0)
 
 func spawn_item(item: String, config: Dictionary, position: Vector3 = Vector3.ZERO, rotation: Vector3 = Vector3.ZERO, scale: Vector3 = Vector3.ONE) -> void:
 	var scene = get(config.scene) as PackedScene
@@ -133,10 +128,14 @@ func delete_last_object() -> void:
 			last_item.queue_free()
 			if largest_array.price > 0:
 				player.add_money(largest_array.price)
+				player.show_notification("Cashback: " + str(largest_array.price), 2.0)
 			print("Deleted a %s. %s left: %d" % [largest_array.name, largest_array.name.capitalize(), largest_array.array.size()])
+		else:
+			player.show_notification("No valid item to delete", 2.0)
+			_play_deny_sound()
 	else:
+		player.show_notification("No items to delete", 2.0)
 		_play_deny_sound()
-
 func spawn_particles(position: Vector3) -> void:
 	if destruction_particles:
 		var particles = destruction_particles.instantiate()
@@ -146,7 +145,7 @@ func spawn_particles(position: Vector3) -> void:
 
 func _play_deny_sound() -> void:
 	if player.AudioManager:
-		player.AudioManager.play_sound("res://voice/button/wpn_denyselect.mp3")
+		player.AudioManager.play_sound("res://sounds/button/wpn_denyselect.mp3")
 
 func get_spawned_items_data() -> Array:
 	var items_data = []

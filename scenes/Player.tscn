@@ -246,13 +246,14 @@ texture = ExtResource("6_kxttt")
 [node name="o2" type="TextureProgressBar" parent="CameraPivot/Camera3D/UI"]
 layout_direction = 1
 anchors_preset = -1
-anchor_top = 0.9975
-anchor_right = 0.0111111
-anchor_bottom = 1.02125
-offset_left = 198.0
-offset_top = -190.0
-offset_right = 287.0
-offset_bottom = -101.0
+anchor_left = -0.0173611
+anchor_top = 0.970679
+anchor_right = -0.0078125
+anchor_bottom = 0.987654
+offset_left = 231.0
+offset_top = -160.0
+offset_right = 320.0
+offset_bottom = -70.9999
 grow_vertical = 0
 scale = Vector2(1.48, 1.406)
 size_flags_horizontal = 2
@@ -299,7 +300,6 @@ offset_right = 621.0
 offset_bottom = 205.0
 
 [node name="DarkenScreen" type="ColorRect" parent="CameraPivot/Camera3D/UI"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

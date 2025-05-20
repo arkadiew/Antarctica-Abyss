@@ -20,6 +20,8 @@ shader_parameter/opacity = 0.853
 
 [sub_resource type="LabelSettings" id="LabelSettings_2p7ql"]
 font_size = 92
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Theme" id="Theme_e0co1"]
 default_font_size = 39

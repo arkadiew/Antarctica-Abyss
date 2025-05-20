@@ -214,17 +214,18 @@ func restart_scene():
 	print("func working2")
 	info_tablet_view()
 	await get_tree().create_timer(5.0).timeout
-	save_player_state()
 	var total_percentage = get_total_task_completion()
 	if total_percentage > 40.0 and total_percentage <= 60.0:
 		player.show_notification("Alright, halfway there. Progress: %.1f%%" % total_percentage, 6.0)
 		print("Alright, halfway there. Progress: %.1f%%" % total_percentage)
 		await get_tree().create_timer(5.0).timeout
+		save_player_state()
 		get_tree().reload_current_scene()
 	elif total_percentage > 60.0 and total_percentage <= 100.0:
 		player.show_notification("Great job! Progress: %.1f%%" % total_percentage, 6.0)
 		print("Great job! Progress: %.1f%%" % total_percentage)
 		await get_tree().create_timer(5.0).timeout
+		save_player_state()
 		get_tree().reload_current_scene()
 
 func _on_button_state_changed(is_pressed: bool):

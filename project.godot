@@ -22,17 +22,11 @@ StatisticInfo="*res://scripts/statistic/statistic_info.gd"
 
 [display]
 
-window/size/viewport_width=1800
-window/size/viewport_height=800
-window/size/initial_position_type=0
+window/size/mode=3
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg")
-
-[filesystem]
-
-import/blender/enabled=false
 
 [gui]
 

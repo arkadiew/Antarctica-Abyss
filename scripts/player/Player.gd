@@ -9,7 +9,7 @@ var log_interval: float = 20.0
 var logged_events: Dictionary = {}  # Словарь для одноразовых логов
 var paused = false
 # Where to go when the game ends
-const END_SCENE_PATH = "res://end.tscn"
+const END_SCENE_PATH = "res://global_end.tscn"
 # Camera height stuff
 const DEFAULT_CAMERA_HEIGHT: float = 0.3  # Normal eye level
 const SUIT_CAMERA_HEIGHT: float = -0.5   # Lower when wearing a suit

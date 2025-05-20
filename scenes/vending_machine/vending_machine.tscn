@@ -1,8 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://bs41h7hha0clm"]
+[gd_scene load_steps=26 format=4 uid="uid://bs41h7hha0clm"]
 
-[ext_resource type="PackedScene" uid="uid://yk0cuyjgf3jt" path="res://scenes/vending_machine/shop.tscn" id="1_6roje"]
 [ext_resource type="Script" path="res://scripts/vending/vending_machine.gd" id="1_igcq5"]
 [ext_resource type="PackedScene" uid="uid://d20ci4ihilkwo" path="res://scenes/button/button.tscn" id="2_323mb"]
+[ext_resource type="Texture2D" uid="uid://bwkqers8xry3t" path="res://blender/shop/textures/metal03_diffuse.jpg" id="3_e41tq"]
+[ext_resource type="Texture2D" uid="uid://bo1r2vkqglovo" path="res://blender/shop/textures/metal03_roughness.jpg" id="4_xcakm"]
+[ext_resource type="Texture2D" uid="uid://cdiga3h0ja8bp" path="res://blender/shop/textures/metal03_normal.jpg" id="5_ia5tw"]
+[ext_resource type="Texture2D" uid="uid://coob0s30w5gfn" path="res://blender/shop/textures/tiled_plane_DefaultMaterial_BaseColor.jpg" id="6_r8mlp"]
+[ext_resource type="Texture2D" uid="uid://clrl0aofw6s0l" path="res://blender/shop/textures/tiled_plane_DefaultMaterial_Roughness.jpg" id="7_37tpk"]
+[ext_resource type="Texture2D" uid="uid://x3kvr110vllq" path="res://blender/shop/textures/tiled_plane_DefaultMaterial_Normal.jpg" id="8_41o6r"]
+[ext_resource type="Texture2D" uid="uid://6fc7r0m0wrov" path="res://blender/shop/textures/Metal_basecolor.jpg" id="9_6mkpa"]
+[ext_resource type="Texture2D" uid="uid://cu6hl43ye2xjf" path="res://blender/shop/textures/Metal_roughness.jpg" id="10_6iary"]
+[ext_resource type="Texture2D" uid="uid://da64hqgiyc66i" path="res://blender/shop/textures/Metal_normal.jpg" id="11_g1tix"]
+[ext_resource type="Texture2D" uid="uid://dey07x0cr50hc" path="res://blender/shop/textures/Rusted Red Metal_1_diffuseOriginal.png" id="12_gl7l8"]
+[ext_resource type="Texture2D" uid="uid://chvjomerlmchj" path="res://blender/shop/textures/Rusted Red Metal_1_roughness.jpg" id="13_sai4v"]
+[ext_resource type="Texture2D" uid="uid://hwwlvrdy6bmr" path="res://blender/shop/textures/Rusted Red Metal_1_normal.jpg" id="14_is837"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_iii23"]
 font_size = 35
@@ -16,11 +27,160 @@ viewport_path = NodePath("SubViewport")
 resource_local_to_scene = true
 albedo_texture = SubResource("ViewportTexture_vx1b6")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_11d8s"]
+resource_name = "Dirty metal"
+cull_mode = 2
+albedo_texture = ExtResource("3_e41tq")
+metallic = 1.0
+metallic_texture = ExtResource("4_xcakm")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("4_xcakm")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("5_ia5tw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5w06g"]
+resource_name = "Light iron"
+cull_mode = 2
+albedo_texture = ExtResource("6_r8mlp")
+metallic = 1.0
+metallic_texture = ExtResource("7_37tpk")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("7_37tpk")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 0.3
+normal_texture = ExtResource("8_41o6r")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_km13n"]
+resource_name = "Metal.001"
+cull_mode = 2
+albedo_texture = ExtResource("9_6mkpa")
+metallic = 1.0
+metallic_texture = ExtResource("10_6iary")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("10_6iary")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("11_g1tix")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w0m35"]
+resource_name = "Rusted Red Metal"
+cull_mode = 2
+albedo_texture = ExtResource("12_gl7l8")
+metallic = 1.0
+metallic_texture = ExtResource("13_sai4v")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("13_sai4v")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("14_is837")
+uv1_scale = Vector3(1, 1, 1)
+uv1_offset = Vector3(0, 4.17233e-07, 0)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ink0h"]
+_surfaces = [{
+"aabb": AABB(-1.10103, 0.69028, -2.12141, 2.20206, 3.80976, 4.18739),
+"format": 34896613377,
+"index_count": 96,
+"index_data": PackedByteArray("AQANAAUAAQAJAA0ABQAMAAQABQANAAwAAwAWAAYAAwAUABYABAAIAAAABAAMAAgAAQAEAAAAAQAFAAQAEwAOABIAEwAPAA4ADgAMAA0ADgAPAAwACAAPAAsACAAMAA8ACgANAAkACgAOAA0AEgAKABAAEgAOAAoAEQAPABMAEQALAA8ABwASAAYABwATABIABgAQAAMABgASABAAAgATAAcAAgARABMABwAVAAIABwAXABUABgAXAAcABgAWABcA"),
+"name": "Dirty metal",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("vgtSAsTwAAC+C1ICOg8AAED0nAWl6AAAQPScBVkXAAC+CwXnxPAAAL4LBec6DwAAQPQu4lkXAABA9C7ipegAAAAAAAD//wAAAAAAAAAAAAD//wAAAAAAAP//AAD//wAAAAD/////AAAAAP//AAAAAP////8AAAAA////////AABA9FICOg8AAED0UgLE8AAAQPQF5zoPAABA9AXnxPAAAPPjnAVZFwAA8+OcBaXoAADz4y7iWRcAAPPjLuKl6AAA")
+}, {
+"aabb": AABB(-1.10103, -0.853377, -2.12141, 2.20206, 1.5782, 4.18739),
+"format": 34896613377,
+"index_count": 54,
+"index_data": PackedByteArray("AQAHAAAAAQAIAAcABQAMAAQABQAKAAwABgALAAkABgAKAAsADAAIAA0ADAAHAAgABgAMAAoABgAHAAwABAANAA8ABAAMAA0ADgAKAAUADgALAAoAAgAJAAMAAgAGAAkAAAAGAAIAAAAHAAYA"),
+"name": "Light iron",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("vgtkI8TwAAC+C///xPAAAL4LZCM6DwAAvgv//zoPAABA9GQjxPAAAED0ZCM6DwAAAAAAAAAAAAAAAAAA//8AAAAAZPr//wAAAABk+gAAAAD//wAAAAAAAP//ZPoAAAAA//8AAP//AAD//2T6//8AAED0//86DwAAQPT//8TwAAA=")
+}, {
+"aabb": AABB(-1, -0.635175, -1.87231, 2, 1.40897, 3.68918),
+"format": 34896613377,
+"index_count": 24,
+"index_data": PackedByteArray("AAADAAEAAAACAAMABgAJAAgABgAEAAkABwAJAAUABwAIAAkABQAKAAcABQALAAoA"),
+"name": "Metal.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("AAAAAP//AAAAABn3//8AAAAAAAAAAAAAAAAZ9wAAAAD//wAA//8AAP/////H9gAA//8AAAAAAAD/////NwkAAP//GfcAAAAA//8Z9///AAAM7v//NwkAAAzu///H9gAA")
+}, {
+"aabb": AABB(0.859796, 0.773792, -1.73946, 1e-05, 3.28255, 3.42349),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray("AQACAAAAAQADAAIA"),
+"name": "Rusted Red Metal",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAA//8AAAAA//8AAAAAAAD/////AAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_vm2g3"]
+resource_name = "shop_Cube_001"
+_surfaces = [{
+"aabb": AABB(-1.10103, 0.69028, -2.12141, 2.20206, 3.80976, 4.18739),
+"attribute_data": PackedByteArray("31httN9YbbTHom20x6JttDuLBFM7TGK1nYUEU6YHYrXfWJj431iY+N9YmPjHopj4x6KY+MeimPidhcaUzoIxUKYHIvc7i8aUzoLGlDtMIvf/f3RI4lOxs8SnrbPEp7Gz4dOtswAArrPiU3RI4lOus/9/xpTh0///4lP//+JT///Ep///4dMcrMSn///Ep///4dP/////HKwAAP//AAD//+JTxpT/////4lP//+JT///9BGe0/QRntOROZ7TkTme0/QSU+P0ElPj9BJT45E6U+OROlPjkTpT4bIgEU2yIBFNsiMaUnYUxUGyIxpSdhcaU"),
+"format": 34896613399,
+"index_count": 96,
+"index_data": PackedByteArray("AgAiAAsAAgAXACIADAAfAAkADAAjAB8ABgA4AA4ABgA2ADgACAAVAAAACAAeABUAAwAKAAEAAwANAAoANAAnADEANAArACcAJQAdACEAJQApAB0AFAAoABoAFAAcACgAGAAgABYAGAAkACAAMAAZACwAMAAmABkALgAqADMALgAbACoAEwAyABAAEwA1ADIAEAAtAAcAEAAyAC0ABQA1ABMABQAvADUAEQA3AAQAEQA6ADcADwA7ABIADwA5ADsA"),
+"material": SubResource("StandardMaterial3D_11d8s"),
+"name": "Dirty metal",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 60,
+"vertex_data": PackedByteArray("vgtSAsTw0f++C1ICxPD//74LUgI6D7v/vgtSAjoP//9A9JwFpej//0D0nAWl6P//QPScBVkX//9A9JwFWRf//74LBefE8NH/vgsF58TwXPi+CwXnxPD//74LBec6D7v/vgsF5zoPXPi+CwXnOg///0D0LuJZF///QPQu4lkX//9A9C7iWRf//0D0LuKl6P//QPQu4qXo//9A9C7ipej//wAAAAD/////AAAAAP//0f8AAAAAAAD//wAAAAAAALv///8AAAAA/////wAAAADS////AAD///////8AAP//4f8AAP///////wAA//////+/AAD/////0f8AAP////9c+AAA//8AAP//AAD//wAA/78AAP//AAC7/wAA//8AAFz4/////wAA////////AAD/v/////8AANL//////wAAXPj///////////////////+/////////4f////////9c+ED0UgI6D9L/QPRSAjoP//9A9FICxPDh/0D0UgLE8P//QPQF5zoP0v9A9AXnOg9c+ED0Bec6D///QPQF58Tw4f9A9AXnxPBc+ED0BefE8P//8+OcBVkX///z45wFpej///PjLuJZF///8+Mu4lkX///z4y7ipej///PjLuKl6P//sTNLgP8//3/L/4/M/z//f////3//v/9//3//f/+//3+xM0uAAET9d/8//3/L/4/MAET9d/8//3//f/9//3//P/+//3////9//3//P/+//3//f/9/sTNLgP///3/L/4/M////f3az3X//f/9/MgBdTP9//3////9/sTNLgABE/Xf///9/////f8v/j8wARP13////f////392s91/AggAxP9//3////9/MgBdTAIIAMR2s91//7//fzIAXUz/v/9/drPdfwIIAMT/v/9/MgBdTAIIAMT/v/9//3//f////3//f/9//3//P////3//f/8/")
+}, {
+"aabb": AABB(-1.10103, -0.853377, -2.12141, 2.20206, 1.5782, 4.18739),
+"attribute_data": PackedByteArray("31gwmd9YMJnfWG20x6IwmceiMJnHom205E4pmeROKZn9BCmZ/QQpmcSnwJTh095AxKfGlMSnxpT/f4gp4dPAlOJTxpTiU8aU/390SOJTsbPEp62zxKexs+HTwJTEp95AAADDlAAAw5Th062zAACus+JTiCnEp8CU4lPDlOJTw5TiU3RI4lOus/0EZ7TkTme0"),
+"format": 34896613399,
+"index_count": 54,
+"index_data": PackedByteArray("AgARAAEAAgATABEACAAeAAYACAAYAB4ACgAaABQACgAWABoAHAASACAAHAAOABIACwAdABcACwAPAB0ABwAhACMABwAfACEAIgAZAAkAIgAbABkABAAVAAUABAANABUAAAAMAAMAAAAQAAwA"),
+"material": SubResource("StandardMaterial3D_5w06g"),
+"name": "Light iron",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("vgtkI8TwjfO+C2QjxPDR/74L///E8NH/vgtkIzoPjfO+C2QjOg+7/74L//86D7v/QPRkI8TwjfNA9GQjxPDh/0D0ZCM6D43zQPRkIzoP0v8AAAAAAAD//wAAAAAAAP//AAAAAAAAjfMAAAAAAAC7/wAAAAD/////AAAAAP////8AAAAA//+N8wAAAAD//9H/AABk+v////8AAGT6///R/wAAZPoAAP//AABk+gAAu////wAAAAD/////AAAAAP////8AAAAAjfP//wAAAADS////ZPoAAP////9k+gAA0v///wAA////////AAD///////8AAP//jfP//wAA///h////ZPr///////9k+v//4f9A9P//Og/S/0D0///E8OH/S/OmObEzS4CxM0uAS/OmOcv/j8zL/4/MpbmyjDIAXUylubKMdrPdf////3//f/8/S/OmOcv/j8z/f/9//3//P0vzpjmxM0uA/3//f7EzS4D///9/y/+PzP///3//f/8/pbmyjHaz3X////9/drPdf/9//3//f/8/pbmyjDIAXUz/f/9/MgBdTHaz3X8yAF1M")
+}, {
+"aabb": AABB(-1, -0.635175, -1.87231, 2, 1.40897, 3.68918),
+"attribute_data": PackedByteArray("31gwmd9YbbTHojCZx6JttOROKZnOgsaUO0xitf0EKZnOgjFQpgditf0EZ7TkTme0/38xUP9/xpQ="),
+"format": 34896613399,
+"index_count": 24,
+"index_data": PackedByteArray("AAADAAEAAAACAAMABwALAAoABwAEAAsACQALAAYACQAKAAsABQAMAAgABQANAAwA"),
+"material": SubResource("StandardMaterial3D_km13n"),
+"name": "Metal.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 14,
+"vertex_data": PackedByteArray("AAAAAP////8AABn3/////wAAAAAAAP//AAAZ9wAA/////wAA///////////H9v+//////8f2/////wAAAAD///////83Cf+//////zcJ/////xn3AAD/////Gff/////DO7//zcJ/78M7v//x/b/v/8//3//P/9//z//f/8//3//v/9/////f/+//3//v/9/////f/+//3//v/9//7//f////3////9/")
+}, {
+"aabb": AABB(0.859796, 0.773792, -1.73946, 1e-05, 3.28255, 3.42349),
+"attribute_data": PackedByteArray("/v/8xP//////f/zE/3///w=="),
+"format": 34896613399,
+"index_count": 6,
+"index_data": PackedByteArray("AQACAAAAAQADAAIA"),
+"material": SubResource("StandardMaterial3D_w0m35"),
+"name": "Rusted Red Metal",
+"primitive": 3,
+"uv_scale": Vector4(0.513698, 1.16223, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAAAAAAAVNUAAAAA//9U1QAA//8AAFTVAAD/////VNWqqlRVqqpUVaqqVFWqqlRV")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_ink0h")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_naiwp"]
+size = Vector3(0.706299, 2.02344, 1.55835)
+
 [node name="Vending_Machine" type="Node3D"]
 script = ExtResource("1_igcq5")
-
-[node name="shop" parent="." instance=ExtResource("1_6roje")]
-transform = Transform3D(0.396689, 0, 0, 0, 0.396689, 0, 0, 0, 0.396689, -0.0104761, -0.700417, 0.00999832)
 
 [node name="Cashback" parent="." instance=ExtResource("2_323mb")]
 transform = Transform3D(-8.26286e-09, 0.189032, 8.26287e-09, 0, -8.26287e-09, 0.189032, 0.189032, 8.26286e-09, 3.61181e-16, 0.38447, -0.538097, -0.601622)
@@ -60,3 +220,15 @@ transform = Transform3D(-8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0, 0.2, 
 
 [node name="Buy_Spanner" parent="." instance=ExtResource("2_323mb")]
 transform = Transform3D(-8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0, 0.2, 0.367612, 0.512063, -0.600414)
+
+[node name="Shop" type="StaticBody3D" parent="."]
+transform = Transform3D(1.03461, 0, 0, 0, 1.03461, 0, 0, 0, 1.03461, -0.0192657, 0, 0.112245)
+
+[node name="Cube" type="MeshInstance3D" parent="Shop"]
+transform = Transform3D(0.37462, 0, 0, 0, 0.37462, 0, 0, 0, 0.37462, 0.00885326, -0.592764, -0.139246)
+mesh = SubResource("ArrayMesh_vm2g3")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0474282, 0.0952376, -0.144211)
+shape = SubResource("BoxShape3D_naiwp")
