@@ -16,6 +16,8 @@ func _ready() -> void:
 	super._ready()
 
 func _physics_process(delta: float) -> void:
+	if get_tree().paused:
+		return
 	dash_timer += delta
 	_timer += delta
 
@@ -60,7 +62,12 @@ func _get_random_direction() -> Vector3:
 	return Vector3(randf_range(-1.0, 1.0), randf_range(-0.5, 0.5), randf_range(-1.0, 1.0)).normalized()
 
 func _play_walk_animation() -> void:
+	if get_tree().paused:
+		return
 	var anim_player = find_child("AnimationPlayer", true, false)
 	if anim_player and anim_player.has_animation("enemy"):
-		if anim_player.current_animation != "enemy":
-			anim_player.play("enemy")
+		if get_tree().paused:
+			anim_player.stop()  # Останавливаем анимацию при паузе сцены
+		else:
+			if anim_player.current_animation != "enemy":
+				anim_player.play("enemy")

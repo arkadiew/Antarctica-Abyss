@@ -37,7 +37,7 @@ To run and modify the project locally, follow these steps:
    ```
 
 2. **Install Godot Engine**:
-   - Download [Godot Engine](https://godotengine.org/download/archive/) (version 4.3 recommended).
+   - Download [Godot Engine](https://godotengine.org/) (version 4.3 recommended).
    - Install and ensure it’s accessible in your IDE or system PATH.
 
 3. **Download Additional Assets**:

@@ -5,7 +5,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_w860a"]
 size = Vector3(1.30966, 1.63732, 4.34149)
 
-[node name="Submarine" type="StaticBody3D" groups=["Interactable", "suit_items"]]
+[node name="Submarine" type="RigidBody3D" groups=["Interactable", "suit_items"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0272428, 0.253933, 1.01999)

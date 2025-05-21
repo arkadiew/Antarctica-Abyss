@@ -75,7 +75,6 @@ roughness_texture = ExtResource("13_sai4v")
 roughness_texture_channel = 1
 normal_enabled = true
 normal_texture = ExtResource("14_is837")
-uv1_scale = Vector3(1, 1, 1)
 uv1_offset = Vector3(0, 4.17233e-07, 0)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ink0h"]

@@ -6,6 +6,11 @@ func _ready():
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	noise.frequency = 0.01
 	generate_terrain()
+	
+	# Добавление источника света для проверки
+	var light = DirectionalLight3D.new()
+	light.rotation = Vector3(-PI/4, PI/4, 0)  # Наклон света
+	add_child(light)
 
 func generate_terrain():
 	var plane_mesh = ArrayMesh.new()
@@ -13,8 +18,8 @@ func generate_terrain():
 	arrays.resize(Mesh.ARRAY_MAX)
 	var vertices = PackedVector3Array()
 	var indices = PackedInt32Array()
-	var uvs = PackedVector2Array()  # Для текстуры
-	var size = 300.0  # Размер террейна
+	var uvs = PackedVector2Array()
+	var size = 100.0  # Размер террейна
 	var resolution = 50  # Количество вершин на сторону
 
 	# Генерация вершин и UV-координат
@@ -36,16 +41,28 @@ func generate_terrain():
 	arrays[Mesh.ARRAY_VERTEX] = vertices
 	arrays[Mesh.ARRAY_INDEX] = indices
 	arrays[Mesh.ARRAY_TEX_UV] = uvs
+
+	# Создание поверхности
 	plane_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 	# Создание и настройка материала
 	var material = StandardMaterial3D.new()
-	material.albedo_texture = load("res://scenes/map/textures/sand01_BaseColor.jpg")  # Укажите путь к текстуре
-	material.uv1_scale = Vector3(10.0, 10.0, 10.0)  # Масштаб текстуры
-	plane_mesh.surface_set_material(0, material)
+	var texture_path = "res://scenes/map/textures/sand01_BaseColor.jpg"
+	var texture = load(texture_path)
+	if texture == null:
+		push_error("Failed to load texture at '" + texture_path + "'")
+		material.albedo_color = Color(1, 0, 0)  # Красный цвет для диагностики
+	else:
+		material.albedo_texture = texture
+		material.uv1_scale = Vector3(10.0, 10.0, 10.0)
+		material.uv1_offset = Vector3(0.0, 0.0, 0.0)
 
-	
-	self.mesh = plane_mesh  
+	# Включение Unshaded для тестирования (отключает влияние света)
+	# material.flags_unshaded = true  # Раскомментируйте для теста
+
+	plane_mesh.surface_set_material(0, material)
+	self.mesh = plane_mesh
+
 	# Добавление коллизии
 	var static_body = StaticBody3D.new()
 	var collision_shape = CollisionShape3D.new()
@@ -60,4 +77,4 @@ func generate_terrain():
 	shape.set_faces(faces)
 	collision_shape.shape = shape
 	static_body.add_child(collision_shape)
-	self.add_child(static_body)  # Используем self.add_child, так как add_child - метод узла
+	self.add_child(static_body)

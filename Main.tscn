@@ -36,7 +36,7 @@ volumetric_fog_density = 0.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_orvig"]
 custom_solver_bias = 0.234
-size = Vector3(82.2456, 1, 93.4873)
+size = Vector3(104.848, 1, 93.4873)
 
 [node name="main" type="Node3D"]
 process_mode = 3
@@ -72,7 +72,7 @@ transform = Transform3D(-1.01197e-08, 0, -0.231511, 0, 0.231511, 0, 0.231511, 0,
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.9207, -0.152132, -13.3155)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.1017, -1.79579, 12.0315)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.4029, -1.79579, 12.0315)
 shape = SubResource("BoxShape3D_orvig")
 
 [node name="reset_button" parent="." instance=ExtResource("10_3njp3")]

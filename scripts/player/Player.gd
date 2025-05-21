@@ -32,10 +32,10 @@ const OXYGEN_LOW_MOVEMENT_PENALTY: float = 0.5
 const WATER_DENSITY: float = 1.0
 const PLAYER_VOLUME: float = 0.5
 const BUOYANCY_FACTOR: float = 1.0
-const SWIM_SPEED: float = 9.0
-const SWIM_UP_SPEED: float = 12.0
+const SWIM_SPEED: float = 20.0
+const SWIM_UP_SPEED: float = 20.0
 const MIN_VERTICAL_SPEED: float = -0.5
-const SWIM_DOWN_SPEED: float = 19.0
+const SWIM_DOWN_SPEED: float = 25.0
 const STAMINA_DOWN_COST: float = 2.0
 const MAX_VERTICAL_ANGLE: float = 89.0
 const RUN_SPEED_MULTIPLIER: float = 2.0
@@ -256,7 +256,8 @@ func _on_money_awarded(amount: int):
 	log_message("Money awarded: " + str(amount), true)
 
 func _process(delta):
-
+	if get_tree().paused:
+		return
 	if is_changing_scene:
 		log_message("Scene change in progress, skipping process", true)
 		return
@@ -332,7 +333,8 @@ func escape_menu():
 	log_message("Escape menu " + ("opened" if is_menu_open else "closed"), true)
 		
 func _input(event):
-	
+	if get_tree().paused:
+		return
 	if Input.is_action_just_pressed("esc"):
 		escape_menu()
 		
@@ -600,6 +602,8 @@ func determine_character_speed() -> float:
 	return WALK_SPEED
 
 func update_movement(delta: float) -> void:
+	if get_tree().paused:
+		return
 	if not can_move or not is_inside_tree():
 		log_message("Movement blocked: can_move=" + str(can_move) + ", is_inside_tree=" + str(is_inside_tree()), true)
 		return
@@ -667,6 +671,8 @@ func handle_character_jump(delta: float) -> void:
 		log_message("Jumping, velocity.y=" + str(velocity.y) + ", stamina=" + str(stamina), true)
 
 func apply_character_turn_tilt(delta: float) -> void:
+	if get_tree().paused:
+		return
 	var input_direction = Input.get_vector("player_move_left", "player_move_right", "player_move_forward", "player_move_backward")
 	var target_tilt_angle = -input_direction.x * max_tilt
 	tilt_angle = lerp(tilt_angle, target_tilt_angle, delta * tilt_speed)
@@ -685,6 +691,8 @@ func apply_stamina_penalty_for_holding(delta):
 		log_message("Stamina penalty for holding object, stamina=" + str(stamina), true)
 
 func update_stamina(delta):
+	if get_tree().paused:
+		return
 	var in_water = is_in_water()
 	var moving = get_input_direction().length() > 0
 	if can_run and stamina > 0 and Input.is_action_pressed("player_run") and moving and not in_water:
@@ -754,6 +762,8 @@ func is_in_water() -> bool:
 	return false
 
 func handle_water_physics(delta: float) -> void:
+	if get_tree().paused:
+		return
 	if not is_inside_tree() or not get_tree():
 		log_message("Error: Cannot handle water physics, not in scene tree", true)
 		return
@@ -814,6 +824,8 @@ func handle_swimming_input_scuba(delta: float) -> void:
 		log_timer = 0.0
 
 func update_o2(delta: float) -> void:
+	if get_tree().paused:
+		return
 	if o2 <= 0:
 		if not is_changing_scene:
 			log_message("Oxygen depleted, waiting 2s before scene change", true)
@@ -1107,7 +1119,10 @@ func show_notification(text: String, delay: float = 2.0):
 		NotificationLabel.visible = false
 		log_message("Notification hidden: " + text, true)
 
+
 func _physics_process(delta):
+	if get_tree().paused:
+		return
 	interact_ray.force_raycast_update()
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()

@@ -13,6 +13,8 @@ class_name BaseBreakable
 @export var impact_volume: float = 0.0  # Volume for collision sound
 @export var max_sound_distance: float = 20.0  # Max distance for sound
 @export var break_stages: Array[Texture2D] = []  # Textures for crack animation
+@export var destruction_delay: float = 0.1  # Delay before deletion to allow effects
+@export var particle_lifetime: float = 1.0  # Lifetime for destruction particles
 
 # Internal variables
 var hp: int
@@ -21,16 +23,32 @@ var break_progress: float = 0.0  # Breaking progress (0.0 to 1.0)
 var is_breaking: bool = false  # Is the player manually breaking
 var break_timer: float = 0.0  # Time spent breaking
 var sprite: Sprite3D  # For crack animation
+var is_destroyed: bool = false  # Prevent double deletion
 
 func _ready() -> void:
-	hp = max_hp
+	# Ensure contact monitoring is enabled
 	contact_monitor = true
 	max_contacts_reported = 1
+	
+	# Connect body_entered signal safely
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
+	
+	hp = max_hp
 	setup_audio()
 	setup_visuals()
-	
-	# Connect body_entered signal (Godot 4.3 compatible)
-	body_entered.connect(_on_body_entered)
+	set_strength_by_group()
+
+func set_strength_by_group() -> void:
+	# Define strength values based on group membership
+	if is_in_group("weak"):
+		strength = 1.5  # Takes more damage
+	elif is_in_group("medium"):
+		strength = 1.0  # Default strength
+	elif is_in_group("strong"):
+		strength = 0.5  # Takes less damage
+	# If no group is specified, the exported strength value is used
+	print(name, " strength set to ", strength, " based on group membership")
 
 func setup_audio() -> void:
 	audio_player = AudioStreamPlayer3D.new()
@@ -41,6 +59,8 @@ func setup_audio() -> void:
 		audio_player.max_distance = max_sound_distance
 		audio_player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 		audio_player.volume_db = impact_volume
+	else:
+		push_warning("No collision sound assigned for ", name)
 
 func setup_visuals() -> void:
 	sprite = Sprite3D.new()
@@ -50,6 +70,8 @@ func setup_visuals() -> void:
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD  # For transparent textures
 	if break_stages.size() > 0:
 		sprite.texture = break_stages[0]
+	else:
+		push_warning("No break stages assigned for ", name)
 	add_child(sprite)
 
 func _physics_process(delta: float) -> void:
@@ -81,7 +103,6 @@ func _on_body_entered(body: Node) -> void:
 	
 	print("Collision with ", body.name, " at ", global_position, " with estimated impulse ", impulse)
 
-
 func update_break_visuals() -> void:
 	if break_stages.size() == 0:
 		return
@@ -93,25 +114,38 @@ func update_break_visuals() -> void:
 	sprite.visible = break_progress > 0
 
 func take_damage(amount: int) -> void:
+	if is_destroyed:
+		return
+	
 	var modified_damage = int(amount * strength)
 	hp -= modified_damage
 	print(name, " took ", modified_damage, " damage (original: ", amount, ", strength: ", strength, "). HP left: ", hp)
 	if hp <= 0:
+		print(name, " is breaking at position ", global_position)
 		break_object()
 
 func break_object() -> void:
+	if is_destroyed:
+		return
+	is_destroyed = true
+	
 	if audio_player and break_sound:
 		audio_player.stream = break_sound
 		audio_player.play()
 	
 	if destruction_particles:
 		var particles_instance = destruction_particles.instantiate()
-		get_tree().current_scene.add_child(particles_instance)
-		particles_instance.global_position = global_position
-		if particles_instance is GPUParticles3D:
-			particles_instance.emitting = true
+		if particles_instance is Node3D:
+			get_tree().current_scene.add_child(particles_instance)
+			particles_instance.global_position = global_position
+			if particles_instance is GPUParticles3D:
+				particles_instance.lifetime = particle_lifetime
+				particles_instance.emitting = true
+		else:
+			push_warning("Destruction particles is not a valid Node3D scene for ", name)
 	
-	await get_tree().create_timer(0.1).timeout
+	# Wait for the destruction delay before calling _on_destroyed and freeing
+	await get_tree().create_timer(destruction_delay).timeout
 	_on_destroyed()
 	queue_free()
 

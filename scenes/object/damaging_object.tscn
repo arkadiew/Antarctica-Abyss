@@ -92,7 +92,7 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_o5wv5")
 
-[node name="DamagingObject" type="RigidBody3D" groups=["items", "spear"]]
+[node name="DamagingObject" type="RigidBody3D" groups=["items", "spear", "weak"]]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.088, 0, 0, 0)
 mass = 0.165
 script = ExtResource("1_wf3xp")

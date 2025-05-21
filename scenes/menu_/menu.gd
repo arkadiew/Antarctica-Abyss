@@ -7,6 +7,8 @@ func resume():
 	get_tree().paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Adjust to your game's mouse mode
 	Input.flush_buffered_events() # Clear any stale inputs
+	set_physics_process(false)  # Отключить физику
+	set_process(false)  # Отключить процесс
 
 func pause():
 	get_tree().paused = true
@@ -17,6 +19,7 @@ func _ready():
 	$Creadits.visible = false
 	$yesornot.visible = false
 	$Setting.visible = false
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 

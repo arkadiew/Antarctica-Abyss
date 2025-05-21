@@ -27,8 +27,11 @@ func _ready() -> void:
 	if has_node("HitArea"):
 		var hit_area = $HitArea as Area3D
 		hit_area.connect("body_entered", _on_hit_area_body_entered)
+		print("HITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 
 func _physics_process(delta: float) -> void:
+	if get_tree().paused:
+		return
 	_timer += delta
 	
 	if is_fleeing:
@@ -49,18 +52,25 @@ func _physics_process(delta: float) -> void:
 	_keep_inside_bounds(delta)
 	_face_direction(delta)
 
+var can_flee: bool = true
+var flee_cooldown: float = 0.5
+
 func _on_hit_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("spear"):
+	if body.is_in_group("spear") and can_flee:
 		is_fleeing = true
 		flee_timer = flee_duration
-		# Направление побега — строго от копья
 		flee_direction = (global_position - body.global_position).normalized()
 		_timer = 0.0
-
+		can_flee = false
+		await get_tree().create_timer(flee_cooldown).timeout
+		can_flee = true
+		
 func _get_random_direction() -> Vector3:
 	return Vector3(randf() * 2.0 - 1.0, randf() * 2.0 - 1.0, randf() * 2.0 - 1.0).normalized()
 
 func _keep_inside_bounds(delta: float) -> void:
+	if get_tree().paused:
+		return
 	if not swimmable_area:
 		return
 
