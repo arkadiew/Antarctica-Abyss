@@ -1,15 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0pml65ywmb02"]
+[gd_scene load_steps=10 format=3 uid="uid://c0pml65ywmb02"]
 
 [ext_resource type="PackedScene" uid="uid://cpxmsseaujvi" path="res://scenes/map/base.tscn" id="1_rtn4k"]
 [ext_resource type="Script" path="res://scenes/map/map.gd" id="2_btsax"]
 [ext_resource type="Texture2D" uid="uid://c13jtdkwof4mf" path="res://scenes/map/textures/sand01_BaseColor.jpg" id="2_lcfq3"]
 [ext_resource type="PackedScene" uid="uid://dohcee5vu1o8v" path="res://utils/ocean/ocean.tscn" id="2_tl8a8"]
+[ext_resource type="Texture2D" uid="uid://c4yqa63bbswvh" path="res://scenes/map/textures/sand01_Normal.jpg" id="3_0khey"]
+[ext_resource type="Texture2D" uid="uid://cc7b5q5dyso3w" path="res://scenes/map/textures/sand01_Roughness.jpg" id="4_rx7db"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dvv75"]
 size = Vector3(12.9821, 5.07654, 8.696)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ehtp"]
 albedo_texture = ExtResource("2_lcfq3")
+roughness_texture = ExtResource("4_rx7db")
+normal_enabled = true
+normal_texture = ExtResource("3_0khey")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_3u8vk"]
 
@@ -31,4 +36,4 @@ mesh = SubResource("ArrayMesh_3u8vk")
 script = ExtResource("2_btsax")
 
 [node name="Ocean" parent="." instance=ExtResource("2_tl8a8")]
-transform = Transform3D(212.778, 0, 0, 0, 131.415, 0, 0, 0, 212.778, 1.62089, 7.68025, -2.87978)
+transform = Transform3D(212.778, 0, 0, 0, 61.5949, 0, 0, 0, 212.778, 1.62089, 25.2083, -2.87978)

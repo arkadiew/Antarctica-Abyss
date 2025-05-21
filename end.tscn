@@ -1,16 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://bl7ss0qo8fuq6"]
+[gd_scene load_steps=7 format=3 uid="uid://bl7ss0qo8fuq6"]
 
 [ext_resource type="Script" path="res://end.gd" id="1_idf13"]
+[ext_resource type="Shader" path="res://utils/shader/menu.gdshader" id="2_k8o2n"]
 [ext_resource type="Texture2D" uid="uid://bj3kaw54v2ur4" path="res://utils/img/icon_menu/Repeat_.png" id="2_scxvl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_frncj"]
+shader = ExtResource("2_k8o2n")
+shader_parameter/blur_amount = 4.115
+shader_parameter/opacity = 0.853
 
 [sub_resource type="LabelSettings" id="LabelSettings_dlaqs"]
 font_size = 90
-outline_size = 18
+outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wjnpm"]
 font_size = 92
-outline_size = 14
+outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
 [node name="End" type="Control"]
@@ -21,6 +27,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_idf13")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_frncj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Text" type="Label" parent="."]
 clip_contents = true
