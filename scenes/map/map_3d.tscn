@@ -36,4 +36,4 @@ mesh = SubResource("ArrayMesh_3u8vk")
 script = ExtResource("2_btsax")
 
 [node name="Ocean" parent="." instance=ExtResource("2_tl8a8")]
-transform = Transform3D(212.778, 0, 0, 0, 61.5949, 0, 0, 0, 212.778, 1.62089, 25.2083, -2.87978)
+transform = Transform3D(100, 0, 0, 0, 28.948, 0, 0, 0, 100, 1.62089, 8.20394, -2.87978)

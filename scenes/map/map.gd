@@ -105,6 +105,7 @@ func generate_seaweed():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 
+	# Shader setup (unchanged)
 	seaweed_material = ShaderMaterial.new()
 	seaweed_material.shader = Shader.new()
 	seaweed_material.shader.code = """
@@ -114,7 +115,7 @@ func generate_seaweed():
 		uniform float sway_amplitude = 0.4;
 		uniform float sway_frequency = 1.2;
 		uniform vec4 algae_color : source_color = vec4(0.0, 0.5, 0.2, 1.0);
-		uniform float animation_time;  // Custom time uniform
+		uniform float animation_time;
 
 		void vertex() {
 			float sway = sin(animation_time * sway_frequency + VERTEX.y) * sway_amplitude * VERTEX.y;
@@ -129,7 +130,7 @@ func generate_seaweed():
 			METALLIC = 0.0;
 		}
 	"""
-	# Optional seaweed texture code (unchanged)
+	# Optional seaweed texture (unchanged)
 	var seaweed_texture_path = "res://scenes/map/textures/seaweed.png"
 	var seaweed_texture = load(seaweed_texture_path)
 	if seaweed_texture:
@@ -166,29 +167,58 @@ func generate_seaweed():
 				var vertices = PackedVector3Array()
 				var uvs = PackedVector2Array()
 				var indices = PackedInt32Array()
+				var normals = PackedVector3Array()
 
-				var height_scale = rng.randf_range(2.5, 6.0)
-				var width = rng.randf_range(0.2, 0.5)
-				vertices.append_array([
-					Vector3(-width, 0, 0), Vector3(width, 0, 0),
-					Vector3(width, height_scale, 0), Vector3(-width, height_scale, 0)
-				])
-				uvs.append_array([
-					Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)
-				])
-				indices.append_array([0, 1, 2, 0, 2, 3])
-				vertices.append_array([
-					Vector3(0, 0, -width), Vector3(0, 0, width),
-					Vector3(0, height_scale, width), Vector3(0, height_scale, -width)
-				])
-				uvs.append_array([
-					Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)
-				])
-				indices.append_array([4, 5, 6, 4, 6, 7])
+				# Segment parameters
+				var segments = 5  # Number of segments per seaweed blade
+				var height_scale = rng.randf_range(2.5, 6.0)  # Total height of seaweed
+				var width = rng.randf_range(0.2, 0.5)  # Base width of seaweed
+				var segment_height = height_scale / segments  # Height of each segment
+
+				# Generate vertices for two perpendicular blades (cross shape)
+				for i in range(segments + 1):
+					var y = i * segment_height
+					var width_factor = 1.0 - (y / height_scale) * 0.5  # Taper towards the top
+					var current_width = width * width_factor
+
+					# Blade 1 (X-plane)
+					vertices.append(Vector3(-current_width, y, 0))
+					vertices.append(Vector3(current_width, y, 0))
+					# Blade 2 (Z-plane)
+					vertices.append(Vector3(0, y, -current_width))
+					vertices.append(Vector3(0, y, current_width))
+
+					# Normals (approximate, facing outward)
+					normals.append(Vector3(-1, 0, 0))  # Left side of Blade 1
+					normals.append(Vector3(1, 0, 0))   # Right side of Blade 1
+					normals.append(Vector3(0, 0, -1))  # Left side of Blade 2
+					normals.append(Vector3(0, 0, 1))   # Right side of Blade 2
+
+					# UVs for texture mapping
+					var v = y / height_scale
+					uvs.append(Vector2(0, v))
+					uvs.append(Vector2(1, v))
+					uvs.append(Vector2(0, v))
+					uvs.append(Vector2(1, v))
+
+				# Generate indices for each segment (two quads per segment for cross shape)
+				for i in range(segments):
+					var base_idx = i * 4
+					# Blade 1 (X-plane)
+					indices.append_array([
+						base_idx, base_idx + 1, base_idx + 5,  # First triangle
+						base_idx, base_idx + 5, base_idx + 4   # Second triangle
+					])
+					# Blade 2 (Z-plane)
+					indices.append_array([
+						base_idx + 2, base_idx + 3, base_idx + 7,  # First triangle
+						base_idx + 2, base_idx + 7, base_idx + 6   # Second triangle
+					])
 
 				arrays[Mesh.ARRAY_VERTEX] = vertices
 				arrays[Mesh.ARRAY_TEX_UV] = uvs
 				arrays[Mesh.ARRAY_INDEX] = indices
+				arrays[Mesh.ARRAY_NORMAL] = normals
 				seaweed_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 				seaweed.mesh = seaweed_mesh
